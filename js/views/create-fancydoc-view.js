@@ -38,7 +38,7 @@ module.exports = React.createClass({
           <div className="header">fancydocs</div>
         </div>
         <div className="ui segment attached top">
-          <h2 className="ui header">Convert your markdown file</h2>
+          <h2 className="ui header">Fancydocify your markdown file</h2>
 
           <form onSubmit={this.onSubmit}>
             <div className="ui form segment">
