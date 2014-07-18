@@ -20,7 +20,7 @@ Sections
 
 ### How does it work?
 
-Once you have [created your fancydoc file](http://jhudson8.github.io/fancydocs/index.html#create) using your markdown file, you need to include it in your repository [public branch](https://pages.github.com/) (*gh-pages*) as fancydocs.js ([see example](FIXME)).
+Once you have [created your fancydoc file](http://jhudson8.github.io/fancydocs/index.html#create) using your markdown file, you need to include it in your repository [public branch](https://pages.github.com/) (*gh-pages*) as fancydocs.js ([see example](https://github.com/jhudson8/fancydocs/blob/gh-pages/fancydocs.js)).
 
 Then, you simply browse to [http://jhudson8.github.io/fancydocs/index.html#project/{organization}/{repo}](http://jhudson8.github.io/fancydocs/index.html#project/{organization}/{repo}) (ie: [http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/fancydocs](http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/fancydocs)).
 
