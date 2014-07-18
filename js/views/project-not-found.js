@@ -16,6 +16,12 @@ module.exports = React.createClass({
           <p>
             You're actually supposed to replace <strong>{'{organization}'}</strong> and <strong>{'{repo}'}</strong> with your own settings.
           </p>
+          <p>
+            It would look something like this: <a href="http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/reactive-backbone">http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/reactive-backbone</a>.
+          </p>
+          <p>
+            By the way, <strong>reactive-backbone</strong> was used to build the <strong>fancydocs</strong> application.
+          </p>
         </div>
       );
     } else {
