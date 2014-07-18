@@ -45,6 +45,7 @@ module.exports = React.createClass({
           </div>
           <div className="pad-all">
             <Markdown tag="p" className="sub header" body={project.get('summary')}/>
+            <BundledProjectsSection model={project}/>
             {children}
             <ProjectSectionList model={project.sections} level={3}/>
           </div>
@@ -160,87 +161,37 @@ var MethodView = React.createClass({
   }
 });
 
-var IconSection = React.createClass({
+var BundledProjectsSection = React.createClass({
   mixins: ['modelAware'],
 
   render: function() {
-    var child;
-    if (this.props.children !== undefined) {
-      child = this.props.children;
+    var project = this.getModel(),
+        bundledProjects = project.get('bundledProjects');
+    if (!project.bundledProjects || _.isEmpty(bundledProjects)) {
+      return <div/>;
     } else {
-      child = <p dangerouslySetInnerHTML={{__html: converter.makeHtml(this.props.body)}}/>
+      var children = _.map(bundledProjects, function(projectInfo) {
+        var id = projectInfo.id, name = projectInfo.id;
+        if (id.indexOf('/') < 0) {
+          id = project.get('repo') + '/' + id;
+        }
+        return (
+          <tr>
+            <td><a href={'#project/' + id}>{name}</a></td>
+            <Markdown tag='td' body={projectInfo.description}/>
+          </tr>
+        );
+      });
     }
-    var Header = React.DOM[this.props.type || 'h3'];
-    var subHeader;
-    if (this.props.subHeader) {
-      subHeader = <Markdown className="sub header" body={this.props.subHeader}/>
-    }
-
     return (
-      <div id={this.props.id} className={'ui icon message ' + (this.props.className || '')}>
-        <i className={this.props.icon + ' icon'}></i>
-        <div className="content">
-          <div className="header">{this.props.header}</div>
-          {this.props.children}
-        </div>
+      <div className="main-section">
+        <h3 className="ui header">Bundled Projects</h3>
+        <div className="ui divider"/>
+        <table className="ui basic table">
+          {children}
+        </table>
       </div>
     );
-  }
-});
-
-var TitledSection = React.createClass({
-  mixins: ['modelAware'],
-
-  render: function() {
-    var child;
-    if (this.props.children !== undefined) {
-      child = this.props.children;
-    } else {
-      child = <p dangerouslySetInnerHTML={{__html: converter.makeHtml(this.props.body)}}/>
-    }
-    var Header = React.DOM[this.props.type || 'h3'];
-    var subHeader;
-    if (this.props.subHeader) {
-      subHeader = <Markdown className="sub header" body={this.props.subHeader}/>
-    }
-
-    return (
-      <div id={this.props.id} className={'ui segment ' + (this.props.className || '')}>
-        <Header className={'ui header ' + (this.props.headerClass || '')}>
-          {this.props.header}
-          {subHeader}
-        </Header>
-        {child}
-      </div>
-    );
-  }
-});
-
-var ToggleSection = React.createClass({
-  mixins: ['modelAware'],
-
-  render: function() {
-    var mixin = this.getModel();
-
-    return (
-      <div className="ui basic accordion field">
-        <div className="title">
-          <i className="icon dropdown"></i>
-          {this.props.label}
-        </div>
-        <div className="content field">
-          {this.props.children}
-        </div>
-      </div>
-    );
-  },
-
-  componentDidMount: function() {
-    $(this.getDOMNode()).accordion();
-  },
-
-  componentWillUnmount: function() {
-    $(this.getDOMNode()).accordion('destroy');
   }
 });
 

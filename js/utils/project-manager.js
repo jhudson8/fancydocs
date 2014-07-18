@@ -3,7 +3,10 @@ var ProjectCollection = require('../models/project-collection');
 var projects = new ProjectCollection();
 var nextId;
 var lastImport;
+var tmpOrganization;
 var index = {};
+
+var TEMP_PROJECT = '_tmp';
 
 module.exports = {
   all: projects,
@@ -29,7 +32,12 @@ module.exports = {
 
   register: function(data) {
     data.name = data.name || data.title;
-    data.id = nextId;
+    if (nextId === TEMP_PROJECT) {
+      data.id = 'tmp/' + data.name;
+      data.repo = tmpOrganization;
+    } else {
+      data.id = nextId;
+    }
     nextId = undefined;
     var project = new Project();
     project.set(project.parse(data));
@@ -38,6 +46,19 @@ module.exports = {
     lastImport = project;
 
     App.trigger('registered', project);
+  },
+
+  viewTempProject: function(organization, data, callback) {
+    nextId = TEMP_PROJECT;
+    tmpOrganization = organization;
+    eval(data);
+    var project = lastImport;
+    project.set('repo', organization);
+    lastImport = undefined;
+    nextId = undefined;
+    module.exports.importProjectBundles(project, function() {
+      Backbone.history.navigate('project/' + project.id, true);
+    });
   },
 
   search: function(searchTerm) {
@@ -56,41 +77,45 @@ module.exports = {
         return callback();
       }
 
-      function complete() {
-        callback(parentLastImport);
-      }
+      module.exports.importProjectBundles(parentLastImport, callback);
+    });
+  },
 
-      var projects = parentLastImport.get('bundledProjects');
-      if (projects) {
-        var childProjects = [];
-        function loadFirstProject(childProject) {
-          if (childProject) {
-            childProject.parent = parentLastImport;
-            childProjects.push(childProject);
-          }
-          if (projects.length === 0) {
-            parentLastImport.bundledProjects = new ProjectCollection(childProjects, {parent: parentLastImport});
-            complete();
+  importProjectBundles: function(project, callback) {
+    function complete() {
+      callback(project);
+    }
+
+    var projects = _.clone(project.get('bundledProjects'));
+    if (projects) {
+      var childProjects = [];
+      function loadFirstProject(childProject) {
+        if (childProject) {
+          childProject.parent = project;
+          childProjects.push(childProject);
+        }
+        if (projects.length === 0) {
+          project.bundledProjects = new ProjectCollection(childProjects, {parent: project});
+          complete();
+        } else {
+          var projectInfo = projects.splice(0, 1)[0];
+          var match = projectInfo.id.match(/([^\/]*)\/(.*)/);
+          if (match) {
+            module.exports.get(match[1], match[2], loadFirstProject);
           } else {
-            var projectInfo = projects.splice(0, 1)[0];
-            var match = projectInfo.id.match(/([^\/]*)\/(.*)/);
-            if (match) {
-              module.exports.get(match[1], match[2], loadFirstProject);
-            } else {
-              module.exports.get(parentLastImport.get('repo'), projectInfo.id, loadFirstProject);
-            }
+            module.exports.get(project.get('repo'), projectInfo.id, loadFirstProject);
           }
         }
-        loadFirstProject();
-      } else {
-        complete();
       }
-      
-    });
+      loadFirstProject();
+    } else {
+      complete();
+    }
   }
 };
 
 global.registerMixin = module.exports.register;
+global.registerProject = module.exports.register;
 
 function addToIndex(model) {
   var used = {};

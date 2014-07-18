@@ -1,13 +1,19 @@
 /** @jsx React.DOM */
 
+var projectManager = require('../utils/project-manager');
+
 module.exports = React.createClass({
   render: function() {
     var parsed = (this.state || {}).parsed;
     if (parsed) {
       parsed = (
         <div>
+          <br/>
           Here is your readme code
-          <textarea defaultValue={parsed}/>
+          <br/>
+          <textarea className="ui fluid input" defaultValue={parsed}/>
+          <br/><br/>
+          <a onClick={this.preview(parsed)} href="#">Preview your project</a> but be sure to copy the code first.
         </div>
       )
     }
@@ -20,7 +26,8 @@ module.exports = React.createClass({
 
           Add your readme file below
           <form onSubmit={this.onSubmit}>
-            <textarea ref="input"/>
+            <textarea className="ui fluid input" ref="input"/>
+            <br/>
             <button type="submit">Submit</button>
           </form>
           <br/><br/>
@@ -35,5 +42,13 @@ module.exports = React.createClass({
     var text = this.refs.input.getDOMNode().value;
     var parsed = require('../parser/parser')(text);
     this.setState({parsed: parsed});
+  },
+
+  preview: function(data) {
+    return function(event) {
+      event.preventDefault();
+      var org = prompt('What is your github user/organization name?') || 'none';
+      projectManager.viewTempProject(org, data);
+    }
   }
 });

@@ -51,7 +51,7 @@ module.exports = function(contents) {
     }
   }
 
-  return 'registerMixin(' + JSON.stringify(data) + ');';
+  return 'registerProject(' + JSON.stringify(data) + ');';
 };
 
 function parseBody (contents) {
