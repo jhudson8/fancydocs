@@ -12,9 +12,9 @@ React.mixins.add('state', {
 
 var projectManager = require('./utils/project-manager');
 var SideNav = require('./views/nav/side-nav');
-var HomeView = require('./views/home-view');
 var ProjectView = require('./views/project-view');
 var CreateView = require('./views/create-fancydoc-view');
+var ProjectNotFoundView = require('./views/project-not-found');
 
 global.App = _.extend({}, Backbone.Events);
 // alow for "app" declarative event bindings
@@ -56,63 +56,63 @@ var Router = Backbone.Router.extend({
     showView(new CreateView());
   },
 
-  showBundleProject: function(repo, name, childRepo, childName) {
-    this.withBundle(repo, name, childRepo, childName, function(project) {
+  showBundleProject: function(org, repo, childOrg, childRepo) {
+    this.withBundle(org, repo, childOrg, childRepo, function(project) {
       this._showProject(project, {top: true}, 'default');
     });
   },
 
-  showBundleProjectOverview: function(repo, name, childRepo, childName) {
-    this.withBundle(repo, name, childRepo, childName, function(project) {
+  showBundleProjectOverview: function(org, repo, childOrg, childRepo) {
+    this.withBundle(org, repo, childOrg, childRepo, function(project) {
       this._showProject(project, {overview: true});
     });
   },
 
-  showBundleProjectSection: function(repo, name, childRepo, childName, section) {
-    this.withBundle(repo, name, childRepo, childName, function(project) {
+  showBundleProjectSection: function(org, repo, childOrg, childRepo, section) {
+    this.withBundle(org, repo, childOrg, childRepo, function(project) {
       this._showProject(project, {section: section});
     });
   },
 
-  showBundleProjectPackage: function(repo, name, childRepo, childName, package) {
-    this.withBundle(repo, name, childRepo, childName, function(project) {
+  showBundleProjectPackage: function(org, repo, childOrg, childRepo, package) {
+    this.withBundle(org, repo, childOrg, childRepo, function(project) {
       this._showProject(project, {package: package});
     });
   },
 
-  showBundleProjectMethod: function(repo, name, childRepo, childName, method) {
-    this.withBundle(repo, name, childRepo, childName, function(project) {
+  showBundleProjectMethod: function(org, repo, childOrg, childRepo, method) {
+    this.withBundle(org, repo, childOrg, childRepo, function(project) {
       this._showProject(project, {method: method});
     });
   },
 
 
-  showProjectOverview: function(repo, name) {
-    this.withProject(repo, name, function(project) {
+  showProjectOverview: function(org, repo) {
+    this.withProject(org, repo, function(project) {
       this._showProject(project, {overview: true});
     });
   },
 
-  showProjectSection: function(repo, name, section) {
-    this.withProject(repo, name, function(project) {
+  showProjectSection: function(org, repo, section) {
+    this.withProject(org, repo, function(project) {
       this._showProject(project, {section: section});
     });
   },
 
-  showProjectPackage: function(repo, name, package) {
-    this.withProject(repo, name, function(project) {
+  showProjectPackage: function(org, repo, package) {
+    this.withProject(org, repo, function(project) {
       this._showProject(project, {package: package});
     });
   },
 
-  showProjectMethod: function(repo, name, method) {
-    this.withProject(repo, name, function(project) {
+  showProjectMethod: function(org, repo, method) {
+    this.withProject(org, repo, function(project) {
       this._showProject(project, {method: method});
     });
   },
 
-  showProject: function(repo, name) {
-    this.withProject(repo, name, function(project) {
+  showProject: function(org, repo) {
+    this.withProject(org, repo, function(project) {
       this._showProject(project, {top: true}, 'default');
     });
   },
@@ -132,27 +132,35 @@ var Router = Backbone.Router.extend({
     showView(view);
   },
 
-  withProject: function(repo, name, callback) {
+  withProject: function(org, repo, callback) {
     var self = this;
-    projectManager.get(repo, name, function(project) {
+    projectManager.get(org, repo, function(project) {
       if (project) {
         callback.call(self, project);
+      } else {
+        self.projectNotFound(org, repo);
       }
     });
   },
 
-  withBundle: function(repo, name, childRepo, childName, callback) {
+  withBundle: function(org, repo, childOrg, childRepo, callback) {
     var self = this;
-    projectManager.get(repo, name, function(project) {
+    projectManager.get(org, repo, function(project) {
       if (project && project.bundledProjects) {
         var id = childRepo + '/' + childName;
         var childProject = project.bundledProjects.get(id);
         if (childProject) {
           callback.call(self, childProject);
+        } else {
+          self.projectNotFound(org, repo);
         }
       }
     });
   },
+
+  projectNotFound: function(org, repo) {
+    showView(new ProjectNotFoundView({org: org, repo: repo}));
+  }
 });
 
 // utility method to show a view as the main page

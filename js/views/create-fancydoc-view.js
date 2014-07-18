@@ -66,8 +66,10 @@ module.exports = React.createClass({
   preview: function(data) {
     return function(event) {
       event.preventDefault();
-      var org = prompt('What is your github user/organization name?') || 'none';
-      projectManager.viewTempProject(org, data);
+      var org = prompt('What is your github user/organization name?');
+      if (org) {
+        projectManager.viewTempProject(org, data);
+      }
     }
   }
 });
