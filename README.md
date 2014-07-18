@@ -20,7 +20,9 @@ Sections
 
 ### Examples
 
-[jhudson8/reactive-backbone](http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/reactive-backbone) contains both enhancements to [React](http://facebook.github.io/react/), [Backbone](http://backbonejs.org/), and additional mixins to allow React to work seamelessly with Backbone.
+[jhudson8/reactive-backbone](http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/reactive-backbone) (used to build the *fancydocs* application)
+
+*reactive-backbone* contains both enhancements to [React](http://facebook.github.io/react/), [Backbone](http://backbonejs.org/), with additional mixins to allow React to work seamelessly with Backbone.
 
 The following projects are bundled together with *reactive-backbone*
 
