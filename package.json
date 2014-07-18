@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "gulp-web-modules": "*",
+    "reactify": "*",
+    "gwm-lib": "*",
+    "gwm-if": "*",
+    "gwm-uglify": "*",
+    "jsdom": "*",
+    "jquery": "*",
+    "backbone": "*"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "sinon": "*"
+  },
+  "scripts": {
+    "test": "mocha build/test/index.js"
+  }
+}
