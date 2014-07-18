@@ -20,11 +20,11 @@ Sections
 
 ### Examples
 
-[jhudson8/reactive-backbone](http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/reactive-backbone) (used to build the *fancydocs* application)
+[jhudson8/reactbone](http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/reactbone) (used to build the *fancydocs* application)
 
-*reactive-backbone* contains both enhancements to [React](http://facebook.github.io/react/), [Backbone](http://backbonejs.org/), with additional mixins to allow React to work seamelessly with Backbone.
+*reactbone* contains both enhancements to [React](http://facebook.github.io/react/), [Backbone](http://backbonejs.org/), with additional mixins to allow React to work seamelessly with Backbone.
 
-The following projects are bundled together with *reactive-backbone*
+The following projects are bundled together with *reactbone*
 
 * [jhudson8/react-mixin-manager](http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/react-mixin-manager) to allow mixins to be defined with dependencies
 * [jhudson8/react-events](http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/react-events) declarative component events similar to what you get with Backbone.View

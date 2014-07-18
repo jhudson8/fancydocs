@@ -18,10 +18,7 @@ gwm({
         {dev: 'semantic.js', prod: 'semantic.min.js'},
         {dev: 'react.js', prod: 'react.min.js'},
         {dev: 'script.js', prod: 'script.min.js'},
-        {dev: 'bower:/backbone-async-event/backbone-async-event.js', prod: 'bower:/backbone-async-event/backbone-async-event.min.js'},
-        {dev: 'bower:react-mixin-manager/react-mixin-manager.js', prod: 'bower:react-mixin-manager/react-mixin-manager.min.js'},
-        {dev: 'bower:/react-events/react-events.js', prod: 'bower:/react-events/react-events.min.js'},
-        {dev: 'bower:/react-backbone/react-backbone.js', prod: 'bower:/react-backbone/react-backbone.min.js'}
+        {dev: 'reactbone.js', prod: 'reactbone.min.js'}
       ]
     }),
     gwmIf(uglify(), 'prod')
