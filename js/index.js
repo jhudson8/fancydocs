@@ -147,7 +147,7 @@ var Router = Backbone.Router.extend({
     var self = this;
     projectManager.get(org, repo, function(project) {
       if (project && project.bundledProjects) {
-        var id = childRepo + '/' + childName;
+        var id = childOrg + '/' + childRepo;
         var childProject = project.bundledProjects.get(id);
         if (childProject) {
           callback.call(self, childProject);
