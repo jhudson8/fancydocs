@@ -3,7 +3,22 @@ fancydocs
 
 Convert your plain README.md file into a rich interactive documentation application
 
-View some example projects that are using *fancydocs*
+Documentation
+-------------
+You can read this boring old README file or you can view [fancydocs in action](http://jhudson8.github.io/fancydocs/index.html)
+
+
+Sections
+--------
+
+### Try it!
+
+1. [create your fancydoc file](http://jhudson8.github.io/fancydocs/index.html#create) using your markdown file
+2. Include the fancydoc file in your [project's public branch](https://pages.github.com/) (*gh-pages*) as /fancydocs.js
+3. That's it.  Now, just browse to [http://jhudson8.github.io/fancydocs/index.html#project/{organization}/{repo}](http://jhudson8.github.io/fancydocs/index.html#project/{organization}/{repo})
+
+
+### Examples
 
 [jhudson8/reactive-backbone](http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/reactive-backbone) contains both enhancements to [React](http://facebook.github.io/react/), [Backbone](http://backbonejs.org/), and additional mixins to allow React to work seamelessly with Backbone.
 
@@ -13,18 +28,6 @@ The following projects are bundled together with *reactive-backbone*
 * [jhudson8/react-events](http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/react-events) declarative component events similar to what you get with Backbone.View
 * [jhudson8/react-backbone](http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/react-backbone) tight integration of React and Backbone using a suite of mixins
 * [jhudson8/backbone-async-event](http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/backbone-async-event) add ajax activity events to your Backbone models and collections
-
-
-Sections
---------
-
-### How does it work?
-
-Once you have [created your fancydoc file](http://jhudson8.github.io/fancydocs/index.html#create) using your markdown file, you need to include it in your repository [public branch](https://pages.github.com/) (*gh-pages*) as fancydocs.js ([see example](https://github.com/jhudson8/fancydocs/blob/gh-pages/fancydocs.js)).
-
-Then, you simply browse to [http://jhudson8.github.io/fancydocs/index.html#project/{organization}/{repo}](http://jhudson8.github.io/fancydocs/index.html#project/{organization}/{repo}) (ie: [http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/fancydocs](http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/fancydocs)).
-
-The application will automatically retrieve your fancydocs config file that you hosted with your repository public branch.
 
 
 ### Markdown structure
