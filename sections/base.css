@@ -15198,12 +15198,21 @@ body {
   color: #A1CF64;
 }
 
+.centered {
+  text-align: center;
+}
+
 #page-container, #nav-container {
   margin-bottom: 2rem;
 }
 
 .pad-all {
   padding: 10px;
+}
+
+.restrict-width {
+  max-width: 968px;
+  margin: auto;
 }
 
 strong {
@@ -15216,6 +15225,10 @@ strong {
 
 .ui.section.segment.level-4, .api-container {
   background-color: #EFEFEF !important;
+}
+
+.ui.section.segment.level-5:last-child {
+  margin-bottom: 2em;
 }
 
 .sidebar {
