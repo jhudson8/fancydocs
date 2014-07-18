@@ -35,6 +35,8 @@ module.exports = {
     if (nextId === TEMP_PROJECT) {
       data.id = 'tmp/' + data.name;
       data.repo = tmpOrganization;
+      // in case this same temp project has already been created
+      projects.remove(projects.get(data.id));
     } else {
       data.id = nextId;
     }

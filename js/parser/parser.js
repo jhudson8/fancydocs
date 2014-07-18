@@ -64,7 +64,7 @@ function parseBody (contents) {
 
   function execute(end) {
     if (currentName) {
-      var body = buffer.slice(0, buffer.length-(end?1:2));
+      var body = _.clone(buffer),
         name = currentName;
       sections.push({name: name, content: body});
     } else {

@@ -14,6 +14,7 @@ var projectManager = require('./utils/project-manager');
 var SideNav = require('./views/nav/side-nav');
 var HomeView = require('./views/home-view');
 var ProjectView = require('./views/project-view');
+var CreateView = require('./views/create-fancydoc-view');
 
 global.App = _.extend({}, Backbone.Events);
 // alow for "app" declarative event bindings
@@ -31,6 +32,7 @@ var Router = Backbone.Router.extend({
   routes: {
     '': 'home',
     'home': 'home',
+    'create': 'create',
 
     'project/:repo/:project': 'showProject',
     'project/:repo/:project/overview': 'showProjectOverview',
@@ -47,12 +49,11 @@ var Router = Backbone.Router.extend({
 
   // show the home page
   home: function() {
-    var p = App.utils.getParameter('p');
-    if (App.project) {
-      showProject(App.project.get('repo'), App.project.get('name'));
-    } else {
-      showView(new HomeView());
-    }
+    this.showProject('jhudson8', 'fancydocs');
+  },
+
+  create: function() {
+    showView(new CreateView());
   },
 
   showBundleProject: function(repo, name, childRepo, childName) {
