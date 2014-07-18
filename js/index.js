@@ -211,3 +211,10 @@ App.utils = {
       return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   }
 };
+
+
+if (!String.prototype.trim) {
+  String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g, '');
+  };
+}

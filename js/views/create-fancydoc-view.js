@@ -26,7 +26,9 @@ module.exports = React.createClass({
 
             <br/><br/>
 
-            Then, just browse to <a href={'http://jhudson8.github.io/fancydocs/index.html#project/{organization}/{repo}'}>{'http://jhudson8.github.io/fancydocs/index.html#project/{organization}/{repo}</a> and see the magic happen.'}</a>
+            Then, just browse to <a href={'http://jhudson8.github.io/fancydocs/index.html#project/{organization}/{repo}'}>
+              {'http://jhudson8.github.io/fancydocs/index.html#project/{organization}/{repo}'}
+              </a> and see the magic happen.
           </p>
         </div>
       )
@@ -58,9 +60,17 @@ module.exports = React.createClass({
 
   onSubmit: function(e) {
     e.preventDefault();
-    var text = this.refs.input.getDOMNode().value;
-    var parsed = require('../parser/parser')(text);
-    this.setState({parsed: parsed});
+    var text = this.refs.input.getDOMNode().value.trim();
+    if (text) {
+      try {
+        var parsed = require('../parser/parser')(text);
+        this.setState({parsed: parsed});
+      } catch (e) {
+        alert('the markdown file is invalid (working on meaningful error reporting)')
+      }
+    } else {
+      alert('You need to ernter your file contents first.')
+    }
   },
 
   preview: function(data) {
