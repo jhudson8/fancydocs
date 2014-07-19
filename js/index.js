@@ -66,8 +66,7 @@ projectRoutes = _.map(projectRoutes, function(func, route) {
     var self = this;
     var rootArgs = _.toArray(arguments);
     this._withProject(org, repo, function(project) {
-      func = func(project);
-      func.apply(self, rootArgs.slice(2));
+      func(project).apply(self, rootArgs.slice(2));
     });
   };
 
@@ -75,8 +74,7 @@ projectRoutes = _.map(projectRoutes, function(func, route) {
     var self = this;
     var rootArgs = _.toArray(arguments);
     this._withBundle(org, repo, childOrg, childRepo, function(project) {
-      func = func(project);
-      func.apply(self, rootArgs.slice(4));
+      func(project).apply(self, rootArgs.slice(4));
     });
   };
 

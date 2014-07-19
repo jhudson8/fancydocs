@@ -11,7 +11,13 @@ var data = {
     }
   },
   packages: {
-    title: 'Packages',
+    title: function(project) {
+      var apiNames = _.map(project.api, function(value, name) {
+        return (name === 'API') ? 'Packages' : name;
+      });
+      return apiNames.join(' and ');
+
+    },
     icon: util.icons.package,
     applies: function(project) {
       return !_.isEmpty(project.api);
@@ -60,11 +66,12 @@ module.exports = React.createClass({
     });
 
     var focusData = data[focus];
+    var title = _.isFunction(focusData.title) ? focusData.title(project) : focusData.title;
     return (
       <div>
         <div className="ui attached message">
           <div className="header">
-            {focusData.title}
+            {title}
           </div>
         </div>
         <div className="ui pointing menu project-nav-selector">
