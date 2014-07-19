@@ -44,6 +44,11 @@ module.exports = React.createClass({
             </div>
           </div>
           <div className="pad-all">
+            <span className="github-label">
+              <a href={'https://github.com/' + project.get('repo') + '/' + project.get('name')} className="ui purple label">
+                {'github.com/' + project.get('repo') + '/' + project.get('name')}
+              </a>
+            </span>
             <Markdown tag="p" className="sub header" body={project.get('summary')}/>
             <BundledProjectsSection model={project}/>
             {children}
