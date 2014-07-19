@@ -64,14 +64,15 @@ function parseBody (contents) {
 
   function execute(end) {
     if (currentName) {
-      var body = _.clone(buffer),
+      var body = buffer.slice(0, buffer.length - (end?0:1));
         name = currentName;
       sections.push({name: name, content: body});
     } else {
       summary = buffer.slice(0, buffer.length-2).join('\n').trim();
     }
     if (!end) {
-      currentName = buffer[buffer.length-1].trim();     buffer = [];
+      currentName = buffer[buffer.length-1].trim();
+      buffer = [];
     }
   }
 
