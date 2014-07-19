@@ -15202,6 +15202,10 @@ a {
   color: #A1CF64; 
 }
 
+.button + .button {
+  margin-left: 8px;
+}
+
 .github-label {
   display: inline-block;
   float: right;
