@@ -15198,6 +15198,22 @@ body {
   color: #A1CF64;
 }
 
+a {
+  color: #A1CF64; 
+}
+
+.github-label {
+  display: inline-block;
+  float: right;
+  padding-top: 1em;
+  padding-left: 1em;
+  padding-bottom: 1em;
+}
+
+.github-label > a.ui.label {
+  text-transform: none;
+}
+
 .centered {
   text-align: center;
 }
