@@ -4,7 +4,10 @@ var projectManager = require('../utils/project-manager');
 
 module.exports = React.createClass({
   render: function() {
-    var parsed = (this.state || {}).parsed;
+    var parsed = (this.state || {}).parsed,
+        actionButtons = <button className="ui green button" type="submit">Give me the fancydocs</button>;
+
+
     if (parsed) {
       // this sucks but jsx parser screws up on js reserved words
       var _public = 'public';
@@ -16,11 +19,10 @@ module.exports = React.createClass({
           <br/>
           <div className="field">
             <label>Here is your fancydoc file content</label>
-            <textarea className="markdown-entry" ref="input" defaultValue={parsed}/>
+            <textarea className="markdown-entry" defaultValue={parsed}/>
           </div>
 
-          <a onClick={this.preview(parsed)} href="#">Preview your project</a>
-
+          <button type="button" className="ui green button" onClick={this.preview(parsed)}>Preview your project</button>
           <p>
             If you like what you see, copy the fancydoc contents to your repository <a href="https://pages.github.com">public branch</a> (<strong>gh-pages</strong>) as /fancydocs.js.
 
@@ -31,7 +33,9 @@ module.exports = React.createClass({
               </a> and see the magic happen.
           </p>
         </div>
-      )
+      );
+
+      actionButtons = <button type="button" className="ui button" onClick={this.startOver(parsed)}>Start Over</button>;
     }
 
     return (
@@ -46,12 +50,13 @@ module.exports = React.createClass({
             <div className="ui form segment">
               <div className="field">
                 <label>Paste your markdown file content below</label>
-                <textarea className="markdown-entry" ref="input"/>
+                <textarea className="markdown-entry" ref="input" disabled={!!parsed}/>
               </div>
+
               {parsed}
             </div>
 
-            <button className="ui green button" type="submit">Give me the fancydocs</button>
+            {actionButtons}
           </form>
         </div>
       </div>
@@ -80,6 +85,14 @@ module.exports = React.createClass({
       if (org) {
         projectManager.viewTempProject(org, data);
       }
+    }
+  },
+
+  startOver: function(data) {
+    var self = this;
+    return function(event) {
+      event.preventDefault();
+      self.setState({parsed: false});
     }
   }
 });
