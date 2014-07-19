@@ -96,7 +96,9 @@ var Router = Backbone.Router.extend({
 
   // show the home page
   home: function() {
-    this.showProject('jhudson8', 'fancydocs');
+    this._withProject('jhudson8', 'fancydocs', function(project) {
+      this._showProject(project);
+    });
   },
 
   create: function() {
