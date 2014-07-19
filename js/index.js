@@ -27,25 +27,72 @@ Backbone.async.on('async', function(eventName, model, events, options) {
   options.timeout = 3000;
 });
 
+
+// use the meta route definitions and handlers to DRY things up because therw will be multiple variations of routes
+// that follow the same general pattern
+var projectRoutes = {
+  '': function(project) {
+    return function() {
+      this._showProject(project, {top: true}, 'default');
+    };
+  },
+  'overview': function(project) {
+    return function() {
+      this._showProject(project, {overview: true});
+    };
+  },
+  'section/:section': function(project) {
+    return function(section) {
+      this._showProject(project, {section: section});
+    };
+  },
+  'package/:package': function(project) {
+    return function(pkg) {
+      this._showProject(project, {'package': pkg});
+    };
+  },
+  'method/:method': function(project) {
+    return function(method) {
+      this._showProject(project, {'method': method});
+    };
+  }
+};
+
+projectRoutes = _.map(projectRoutes, function(func, route) {
+  var rtn = {};
+  var routeSuffix = route && '/' + route || '';
+
+  rtn['project/:repo/:project' + routeSuffix] = function(org, repo) {
+    var self = this;
+    var rootArgs = _.toArray(arguments);
+    this._withProject(org, repo, function(project) {
+      func = func(project);
+      func.apply(self, rootArgs.slice(2));
+    });
+  };
+
+  rtn['project/:repo/:project/bundle/:childRepo/:childProject' + routeSuffix] = function(org, repo, childOrg, childRepo) {
+    var self = this;
+    var rootArgs = _.toArray(arguments);
+    this._withBundle(org, repo, childOrg, childRepo, function(project) {
+      func = func(project);
+      func.apply(self, rootArgs.slice(4));
+    });
+  };
+
+  return rtn;
+});
+projectRoutes.splice(0, 0, {});
+projectRoutes = _.extend.apply(_, projectRoutes);
+
+
 // initialze the Backbone router
 var Router = Backbone.Router.extend({
-  routes: {
+  routes: _.defaults({
     '': 'home',
     'home': 'home',
-    'create': 'create',
-
-    'project/:repo/:project': 'showProject',
-    'project/:repo/:project/overview': 'showProjectOverview',
-    'project/:repo/:project/section/:section': 'showProjectSection',
-    'project/:repo/:project/package/:package': 'showProjectPackage',
-    'project/:repo/:project/method/:method': 'showProjectMethod',
-
-    'project/:repo/:project/bundle/:childRepo/:childProject': 'showBundleProject',
-    'project/:repo/:project/bundle/:childRepo/:childProject/overview': 'showBundleProjectOverview',
-    'project/:repo/:project/bundle/:childRepo/:childProject/section/:section': 'showBundleProjectSection',
-    'project/:repo/:project/bundle/:childRepo/:childProject/package/:package': 'showBundleProjectPackage',
-    'project/:repo/:project/bundle/:childRepo/:childProject/method/:method': 'showBundleProjectMethod'
-  },
+    'create': 'create'
+  }, projectRoutes),
 
   // show the home page
   home: function() {
@@ -55,68 +102,6 @@ var Router = Backbone.Router.extend({
   create: function() {
     showView(new CreateView());
   },
-
-  showBundleProject: function(org, repo, childOrg, childRepo) {
-    this.withBundle(org, repo, childOrg, childRepo, function(project) {
-      this._showProject(project, {top: true}, 'default');
-    });
-  },
-
-  showBundleProjectOverview: function(org, repo, childOrg, childRepo) {
-    this.withBundle(org, repo, childOrg, childRepo, function(project) {
-      this._showProject(project, {overview: true});
-    });
-  },
-
-  showBundleProjectSection: function(org, repo, childOrg, childRepo, section) {
-    this.withBundle(org, repo, childOrg, childRepo, function(project) {
-      this._showProject(project, {section: section});
-    });
-  },
-
-  showBundleProjectPackage: function(org, repo, childOrg, childRepo, package) {
-    this.withBundle(org, repo, childOrg, childRepo, function(project) {
-      this._showProject(project, {package: package});
-    });
-  },
-
-  showBundleProjectMethod: function(org, repo, childOrg, childRepo, method) {
-    this.withBundle(org, repo, childOrg, childRepo, function(project) {
-      this._showProject(project, {method: method});
-    });
-  },
-
-
-  showProjectOverview: function(org, repo) {
-    this.withProject(org, repo, function(project) {
-      this._showProject(project, {overview: true});
-    });
-  },
-
-  showProjectSection: function(org, repo, section) {
-    this.withProject(org, repo, function(project) {
-      this._showProject(project, {section: section});
-    });
-  },
-
-  showProjectPackage: function(org, repo, package) {
-    this.withProject(org, repo, function(project) {
-      this._showProject(project, {package: package});
-    });
-  },
-
-  showProjectMethod: function(org, repo, method) {
-    this.withProject(org, repo, function(project) {
-      this._showProject(project, {method: method});
-    });
-  },
-
-  showProject: function(org, repo) {
-    this.withProject(org, repo, function(project) {
-      this._showProject(project, {top: true}, 'default');
-    });
-  },
-
 
   _showProject: function(project, hilight, focus) {
     if (focus === 'default') {
@@ -132,18 +117,18 @@ var Router = Backbone.Router.extend({
     showView(view);
   },
 
-  withProject: function(org, repo, callback) {
+  _withProject: function(org, repo, callback) {
     var self = this;
     projectManager.get(org, repo, function(project) {
       if (project) {
         callback.call(self, project);
       } else {
-        self.projectNotFound(org, repo);
+        self._projectNotFound(org, repo);
       }
     });
   },
 
-  withBundle: function(org, repo, childOrg, childRepo, callback) {
+  _withBundle: function(org, repo, childOrg, childRepo, callback) {
     var self = this;
     projectManager.get(org, repo, function(project) {
       if (project && project.bundledProjects) {
@@ -152,13 +137,13 @@ var Router = Backbone.Router.extend({
         if (childProject) {
           callback.call(self, childProject);
         } else {
-          self.projectNotFound(org, repo);
+          self._projectNotFound(org, repo);
         }
       }
     });
   },
 
-  projectNotFound: function(org, repo) {
+  _projectNotFound: function(org, repo) {
     showView(new ProjectNotFoundView({org: org, repo: repo}));
   }
 });
