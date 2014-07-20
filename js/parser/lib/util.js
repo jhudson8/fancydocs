@@ -36,7 +36,7 @@ var exports = module.exports = {
           rtnData = {};
 
       packageSections.sections.forEach(function(section) {
-        var headerFooter = exports.firstTitle(section.content);
+        var headerFooter = exports.firstTitle(section.content, h4Pattern);
         rtnData[section.name] = {
           overview: exports.trimAndJoin(headerFooter.header),
           methods: exports.contentHandlers.methods(headerFooter.footer)
@@ -102,11 +102,15 @@ var exports = module.exports = {
     }
   },
 
-  firstTitle: function(content) {
+  firstTitle: function(content, pattern) {
     var header = [], footer = [], isHeader = true, line;
     for (var i=0; i<content.length; i++) {
       line = content[i].trim();
-      if (line.indexOf('#') === 0) {
+      if (pattern) {
+        if (line.match(pattern)) {
+          isHeader = false;
+        }
+      } else if (line.indexOf('#') === 0) {
         isHeader = false;
       }
       (isHeader?header:footer).push(content[i]);
