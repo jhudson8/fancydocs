@@ -27,7 +27,7 @@ module.exports = React.createClass({
         <div className="main-section">
           <h3 className="ui header">{name}</h3>
           <div className="ui divider"/>
-          {api.description}
+          <Markdown body={api.description}/>
           {packages}
         </div>
       );

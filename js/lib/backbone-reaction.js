@@ -1,6 +1,6 @@
 /*!
- * reactive-backbone v0.6.0
- * https://github.com/jhudson8/reactive-backbone
+ * backbone-reaction v0.8.0
+ * https://github.com/jhudson8/backbone-reaction
  * 
  * Copyright (c) 2014 Joe Hudson<joehud_AT_gmail.com>
  * 
@@ -42,8 +42,13 @@
   }
 })(function(React, Backbone, _) {
 
-//// BACKBONE-ASYNC-EVENT
+
 (function() {
+/*******************
+ * backbone-async-event v0.4.0
+ * https://github.com/jhudson8/backbone-async-event
+********************/
+
   // allow backbone to send async events on models
   var _sync = Backbone.sync;
   Backbone.async = _.extend({}, Backbone.Events);
@@ -132,11 +137,19 @@
       model.hadFetchError = true;
     });
   });
-})();
-//// END OF BACKBONE-ASYNC-EVENT
 
-//// REACT-MIXIN-MANAGER
+/*******************
+ * end of backbone-async-event
+********************/
+})();
+
+
 (function() {
+/*******************
+ * react-mixin-manager v0.6.1
+ * https://github.com/jhudson8/react-mixin-manager
+********************/
+
   /**
    * return the normalized mixin list
    * @param values {Array} list of mixin entries
@@ -150,18 +163,30 @@
      * @param the mixin name
      */
     function addTo(name) {
-      if (!index[name]) {
+      var indexName = name,
+          match = name.match(/^([^\(]*)\s*\(([^\)]*)\)\s*/),
+          params = match && match[2];
+      name = match && match[1] || name;
+
+      if (!index[indexName]) {
+        if (params) {
+          // there can be no function calls here because of the regex match
+          params = eval('[' + params + ']');
+        }
         var mixin = React.mixins._mixins[name],
             checkAgain = false;
+
         if (mixin) {
           if (typeof mixin === 'function') {
-            mixin = mixin();
+            mixin = mixin.apply(this, params || []);
             checkAgain = true;
+          } else if (params) {
+            throw new Error('the mixin "' + name + '" does not support parameters');
           }
           get(React.mixins._dependsOn[name], index, rtn);
           get(React.mixins._dependsInjected[name], index, rtn);
 
-          index[name] = true;
+          index[indexName] = true;
           if (checkAgain) {
             get([mixin], index, rtn);
           } else {
@@ -304,11 +329,20 @@
       }
     }
   });
-})();
-// END OF REACT-MIXIN-MANAGER
 
-//// REACT-EVENTS
+/*******************
+ * end of react-mixin-manager
+********************/
+})();
+
+
+
 (function() {
+/*******************
+ * react-events v0.4.2
+ * https://github.com/jhudson8/react-events
+********************/
+
   var handlers = {},
       patternHandlers = [],
       splitter = /^([^:]+):?(.*)/,
@@ -612,11 +646,19 @@
       };
     }
   });
-})();
-//// END OF REACT-EVENTS
 
-//// REACT-BACKBONE
+/*******************
+ * end of react-events
+********************/
+})();
+
+
 (function() {
+/*******************
+ * react-backbone v0.9.0
+ * https://github.com/jhudson8/react-backbone
+********************/
+
   function getModelByPropkey(key, context, useGetModel) {
     var model;
     if (key) {
@@ -645,7 +687,7 @@
   }
 
   function modelEventHandler(identifier, context, eventFormat, callback) {
-    var keys = eventParser(context.props[identifier]),
+    var keys = Array.isArray(identifier) ? identifier : eventParser(context.props[identifier]),
         key, eventName;
     if (keys) {
       // register the event handlers to watch for these events
@@ -721,20 +763,23 @@
    * This allows model value oriented components to work with models without setting the updated
    * values directly on the models until the user performs some specific action (like clicking a save button).
    */  
-  React.mixins.add('modelValueAware', {
-    getModelValue: function() {
-      var key = getKey(this),
-          model = this.getModel();
-      if (model && key) {
-        return model.get(key);
-      }
-    },
+  React.mixins.add('modelValueAware', function(key) {
+    return {
+      getModelValue: function() {
+        key = key || getKey(this);
+        var model = this.getModel();
+        if (model && key) {
+          return model.get(key);
+        }
+      },
 
-    setModelValue: function(value, options) {
-      var key = getKey(this),
-          model = this.getModel();
-      if (model && key) {
-        return model.set(key, value, options);
+      setModelValue: function(value, options) {
+        key = key || getKey(this);
+        var model = this.getModel();
+            model = this.getModel();
+        if (model && key) {
+          return model.set(key, value, options);
+        }
       }
     }
   }, 'modelAware');
@@ -759,10 +804,10 @@
         components = _.map(this.refs, function(value) {return value;});
       }
       _.each(components, function(component) {
-        // the component *must* implement getUIValue
-        if (component.getUIValue) {
+        // the component *must* implement getValue
+        if (component.getUIModelValue) {
           var key = getKey(component),
-              value = component.getUIValue();
+              value = component.getUIModelValue();
           attributes[key] = value;
         }
       });
@@ -776,7 +821,7 @@
       }
       return attributes;
     }
-  });
+  }, 'modelAware');
 
 
   /**
@@ -1009,40 +1054,43 @@
    * Gives any comonent the ability to mark the "loading" attribute in the state as true
    * when any async event of the given type (defined by the "key" property) occurs.
    */
-  React.mixins.add('modelLoadOn', {
-    getInitialState: function() {
-      var keys = modelEventHandler('loadOn', this, 'async:{key}', function(events) {
-        this.setState({loading: true});
-        events.on('complete', function() {
-          if (this.isMounted()) {
-            this.setState({loading: false});
-          }
-        }, this);
-      });
-
-      // see if we are currently loading something
-      var model = this.getModel();
-      if (model) {
-        var currentLoads = model.isLoading(),
-            key;
-        if (currentLoads) {
-          var clearLoading = function() {
+  React.mixins.add('modelLoadOn', function() {
+    var keys = arguments.length > 0 ? Array.prototype.slice.call(arguments, 0) : undefined;
+    return {
+      getInitialState: function() {
+        keys = modelEventHandler(keys || 'loadOn', this, 'async:{key}', function(events) {
+          this.setState({loading: true});
+          events.on('complete', function() {
             if (this.isMounted()) {
               this.setState({loading: false});
             }
-          }
-          for (var i=0; i<currentLoads.length; i++) {
-            var keyIndex = keys.indexOf(currentLoads[i].method);
-            if (keyIndex >= 0) {
-              // there is currently an async event for this key
-              key = keys[keyIndex];
-              currentLoads[i].on('complete', clearLoading, this);
-              return {loading: true};
+          }, this);
+        });
+
+        // see if we are currently loading something
+        var model = this.getModel();
+        if (model) {
+          var currentLoads = model.isLoading(),
+              key;
+          if (currentLoads) {
+            var clearLoading = function() {
+              if (this.isMounted()) {
+                this.setState({loading: false});
+              }
+            }
+            for (var i=0; i<currentLoads.length; i++) {
+              var keyIndex = keys.indexOf(currentLoads[i].method);
+              if (keyIndex >= 0) {
+                // there is currently an async event for this key
+                key = keys[keyIndex];
+                currentLoads[i].on('complete', clearLoading, this);
+                return {loading: true};
+              }
             }
           }
         }
+        return {};
       }
-      return {};
     }
   }, 'modelEventAware');
 
@@ -1050,21 +1098,15 @@
   /**
    * Gives any comonent the ability to force an update when an event is fired
    */
-  React.mixins.add('modelUpdateOn', {
-    getInitialState: function() {
-      var keys = modelEventHandler('updateOn', this, '{key}', function() {
-        this.deferUpdate();
-      });
-    },
-
-    updateOnModelEvent: function(/* events */) {
-      function doUpdate() {
-        this.deferUpdate();
+  React.mixins.add('modelUpdateOn', function() {
+    var keys = arguments.length > 0 ? Array.prototype.slice.call(arguments, 0) : undefined;
+    return {
+      getInitialState: function() {
+        modelEventHandler(keys || 'updateOn', this, '{key}', function() {
+          this.deferUpdate();
+        });
       }
-      _.each(arguments, function(event) {
-        this.modelOn(event, doUpdate);
-      }, this);
-    }
+    };
   }, 'modelEventAware', 'deferUpdate');
 
 
@@ -1134,8 +1176,75 @@
       });
     }
   }
+
+  // Standard input components that implement react-backbone model awareness
+  var _inputClass = function(type, attributes, isCheckable, classAttributes) {
+    return React.createClass(_.extend({
+        mixins: ['modelValueAware'],
+        render: function() {
+          var props = {};
+          var defaultValue = this.getModelValue();
+          if (isCheckable) {
+            props.defaultChecked = defaultValue;
+          } else {
+            props.defaultValue = defaultValue;
+          }
+          return React.DOM[type](_.extend(props, attributes, this.props), this.props.children);
+        },
+        getUIModelValue: function() {
+          if (this.isMounted()) {
+            if (isCheckable) {
+              var el = this.getDOMNode();
+              if (el.checked) {
+                return el.value || true;
+              }
+            } else {
+              return $(this.getDOMNode()).val();
+            }
+          }
+        }
+      }, classAttributes));
+  };
+
+  Backbone.input = Backbone.input || {};
+  _.defaults(Backbone.input, {
+    Text: _inputClass('input', {type: 'text'}),
+    TextArea: _inputClass('textarea'),
+    Select: _inputClass('select', undefined, undefined),
+    CheckBox: _inputClass('input', {type: 'checkbox'}, true),
+    RadioGroup: React.createClass({
+      mixins: ['modelValueAware'],
+      render: function() {
+        var props = this.props;
+        return React.DOM[props.tag || 'span'](props, props.children);
+      },
+      componentDidMount: function() {
+        // select the appropriate radio button
+        var value = this.getModelValue();
+        if (value) {
+          var selector = 'input[value="' + value.replace('"', '\\"') + '"]';
+          var el = $(this.getDOMNode()).find(selector);
+          el.attr('checked', 'checked');
+        }
+      },
+      getUIModelValue: function() {
+        if (this.isMounted()) {
+          var selector = 'input[type="radio"]';
+          var els = $(this.getDOMNode()).find(selector);
+          for (var i=0; i<els.length; i++) {
+            if (els[i].checked) {
+              return els[i].value;
+            }
+          }
+        }
+      }
+    })
+  });
+
+/*******************
+ * end of react-backbone
+********************/
 })();
-//// END OF REACT-BACKBONE
 
 });
 

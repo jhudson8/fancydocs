@@ -17,10 +17,10 @@ module.exports = React.createClass({
             You're actually supposed to replace <strong>{'{organization}'}</strong> and <strong>{'{repo}'}</strong> with your own settings.
           </p>
           <p>
-            It would look something like this: <a href="http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/reactbone">http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/reactbone</a>.
+            It would look something like this: <a href="http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/backbone-reaction">http://jhudson8.github.io/fancydocs/index.html#project/jhudson8/backbone-reaction</a>.
           </p>
           <p>
-            By the way, <strong>reactbone</strong> was used to build the <strong>fancydocs</strong> application.
+            By the way, <strong>backbone-reaction</strong> was used to build the <strong>fancydocs</strong> application.
           </p>
         </div>
       );

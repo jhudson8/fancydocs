@@ -18,7 +18,7 @@ gwm({
         {dev: 'semantic.js', prod: 'semantic.min.js'},
         {dev: 'react.js', prod: 'react.min.js'},
         {dev: 'script.js', prod: 'script.min.js'},
-        {dev: 'reactbone.js', prod: 'reactbone.min.js'}
+        {dev: 'backbone-reaction.js', prod: 'backbone-reaction.min.js'}
       ]
     }),
     gwmIf(uglify(), 'prod')

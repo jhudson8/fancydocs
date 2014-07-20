@@ -23,7 +23,7 @@ module.exports = Backbone.Model.extend({
       pkgCollection.name = name;
       pkgCollection.parent = this;
       api[name] = pkgCollection;
-      pkgCollection.summary = data.summary;
+      pkgCollection.description = data.description;
     }, this);
     delete data.packages;
 
