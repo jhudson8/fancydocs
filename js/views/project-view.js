@@ -130,7 +130,7 @@ var MethodView = React.createClass({
           return '(' + profile + ')';
         }).join(' or '),
         parameters = _.map(method.get('params'), function(description, name) {
-          return <tr><td>{name}:</td><td>{description}</td></tr>;
+          return <tr><td>{name}:</td><Markdown tag="td" body={description}/></tr>;
         }),
         summary = method.get('summary'),
         overview = method.get('overview');
