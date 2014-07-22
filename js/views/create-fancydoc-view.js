@@ -20,7 +20,7 @@ module.exports = React.createClass({
           <br/>
           <div className="field">
             <label>Here is your fancydoc file content</label>
-            <textarea className="markdown-entry" defaultValue={parsed}/>
+            <textarea className="markdown-entry" defaultValue={processed}/>
           </div>
 
           <button type="button" className="ui green button" onClick={this.preview(parsed)}>Preview your project</button>
