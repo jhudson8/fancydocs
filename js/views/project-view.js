@@ -17,7 +17,7 @@ module.exports = React.createClass({
       var packages = api.map(function(pkg, name) {
         return <PackageView model={pkg}/>
       }, this);
-      var apiId = 'api-' + encodeURIComponent(name);
+      var apiId = 'api-' + encodeURIComponent(name).replace('%', '_');
       children.push(
         <div className="main-section">
           <h3 className="ui header" id={apiId}>{name}</h3>
@@ -72,7 +72,7 @@ module.exports = React.createClass({
         } else {
           var id = hilight.section || hilight.package || hilight.method;
           if (!id && hilight.api) {
-            id = 'api-' + encodeURIComponent(hilight.api);
+            id = 'api-' + encodeURIComponent(hilight.api).replace('%', '_');
           }
           finder = id && ('#' + id);
         }
