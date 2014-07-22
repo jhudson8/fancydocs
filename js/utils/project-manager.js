@@ -23,6 +23,11 @@ module.exports = {
     var projectUrl = 'http://' + repo + '.github.io/' + name + '/fancydocs.js';
     if (repo === 'url') {
       projectUrl = name;
+    } else if (repo === 'tmp') {
+      // we know these won't exist
+      return _.defer(function() {
+        callback();
+      });
     }
 
     module.exports.import(id, projectUrl, function(project) {
@@ -30,13 +35,10 @@ module.exports = {
     });
   },
 
-  register: function(data) {
+  register: function(data, id) {
     data.name = data.name || data.title;
-    if (nextId === TEMP_PROJECT) {
-      data.id = 'tmp/' + data.name;
-      data.repo = tmpOrganization;
-      // in case this same temp project has already been created
-      projects.remove(projects.get(data.id));
+    if (id) {
+      data.id = id;
     } else {
       data.id = nextId;
     }
@@ -48,15 +50,13 @@ module.exports = {
     lastImport = project;
 
     App.trigger('registered', project);
+    return project;
   },
 
   viewTempProject: function(organization, data, callback) {
-    nextId = TEMP_PROJECT;
-    tmpOrganization = organization;
-    eval(data);
-    var project = lastImport;
+    data = JSON.parse(data);
+    var project = this.register(data, 'tmp/' + data.title);
     project.set('repo', organization);
-    lastImport = undefined;
     nextId = undefined;
     module.exports.importProjectBundles(project, function() {
       Backbone.history.navigate('project/' + project.id, true);

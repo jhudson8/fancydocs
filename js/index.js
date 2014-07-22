@@ -15,6 +15,7 @@ var SideNav = require('./views/nav/side-nav');
 var ProjectView = require('./views/project-view');
 var CreateView = require('./views/create-fancydoc-view');
 var ProjectNotFoundView = require('./views/project-not-found');
+var lastProject;
 
 global.App = _.extend({}, Backbone.Events);
 // alow for "app" declarative event bindings
@@ -89,7 +90,8 @@ var Router = Backbone.Router.extend({
   routes: _.defaults({
     '': 'home',
     'home': 'home',
-    'create': 'create'
+    'create': 'create',
+    'link/:url': 'link'
   }, projectRoutes),
 
   // show the home page
@@ -97,6 +99,17 @@ var Router = Backbone.Router.extend({
     this._withProject('jhudson8', 'fancydocs', function(project) {
       this._showProject(project);
     });
+  },
+
+  link: function(url) {
+    // see if the url is a project reference for any known projects
+    if (lastProject) {
+      var project = lastProject.urlMatch(url);
+      if (project) {
+        return Backbone.history.navigate(project.viewUrl(true), {trigger: true, replace: true});
+      }
+    }
+    window.location.href = url;
   },
 
   create: function() {
@@ -114,6 +127,7 @@ var Router = Backbone.Router.extend({
     var view = new ProjectView({
       model: project
     });
+    lastProject = project;
     showView(view);
   },
 
@@ -139,12 +153,18 @@ var Router = Backbone.Router.extend({
         } else {
           self._projectNotFound(org, repo);
         }
+      } else {
+        self._projectNotFound(org, repo);
       }
     });
   },
 
   _projectNotFound: function(org, repo) {
-    showView(new ProjectNotFoundView({org: org, repo: repo}));
+    if (org === 'tmp') {
+      Backbone.history.navigate('create', {replace: true, trigger: true});
+    } else {
+      showView(new ProjectNotFoundView({org: org, repo: repo}));
+    }
   }
 });
 

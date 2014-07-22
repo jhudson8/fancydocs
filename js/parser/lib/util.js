@@ -144,7 +144,7 @@ var exports = module.exports = {
   },
 
   trimAndJoin: function(arr) {
-    return module.exports.trimArr(arr).join('\n');
+    return parseMarkdown(module.exports.trimArr(arr).join('\n'));
   },
 
   trimArr: function(arr) {
@@ -183,5 +183,19 @@ var exports = module.exports = {
       params: params,
       index: index
     };
-  }
+  },
+
+  parseMarkdown: parseMarkdown
 };
+
+function parseMarkdown(s) {
+  if (!s) {
+    return s;
+  }
+
+  s = s.replace(/\[([^\]]*)\]\s*\(([^\)]*)\)/g, function(match, label, url) {
+    return '[' + label + '](#link/' + encodeURIComponent(url) + ')';
+  });
+
+  return s;
+}

@@ -11,6 +11,7 @@ module.exports = React.createClass({
     if (parsed) {
       // this sucks but jsx parser screws up on js reserved words
       var _public = 'public';
+      var processed = 'registerProject(' + parsed + ');';
       parsed = (
         <div>
           <div className="centered">
@@ -71,6 +72,7 @@ module.exports = React.createClass({
         var parsed = require('../parser/parser')(text);
         this.setState({parsed: parsed});
       } catch (e) {
+        console.error(e);
         alert('the markdown file is invalid (working on meaningful error reporting)')
       }
     } else {
@@ -81,9 +83,11 @@ module.exports = React.createClass({
   preview: function(data) {
     return function(event) {
       event.preventDefault();
-      var org = prompt('What is your github user/organization name?');
-      if (org) {
-        projectManager.viewTempProject(org, data);
+      var orgName = window.localStorage && localStorage.getItem('defaultOrgName');
+      orgName = prompt('What is your github user/organization name?', orgName || '');
+      if (orgName) {
+        localStorage && localStorage.setItem('defaultOrgName', orgName);
+        projectManager.viewTempProject(orgName, data);
       }
     }
   },

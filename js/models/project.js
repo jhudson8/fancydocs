@@ -75,10 +75,31 @@ module.exports = Backbone.Model.extend({
     }
   },
 
-  viewUrl: function() {
+  viewUrl: function(removeHash) {
     if (this.collection && this.parent) {
       return this.parent.viewUrl() + '/bundle/' + this.id;
     }
-    return '#project/' + this.id;
+    return (removeHash ? '' : '#' ) + 'project/' + this.id;
+  },
+
+  // if the url matches a known project, return that project
+  urlMatch: function(url) {
+    var match = url.match(/[\/\.]github\.io\/([^\/]*)\/(.*)/);
+    if (!match) {
+      match = url.match(/[\/\.]github\.com\/([^\/]*)\/(.*)/);
+    }
+
+    if (match) {
+      var org = match[1], repo = match[2];
+      var projects = this.getAllBundledProjects() || {parent: lastProject, bundledProjects: new Backbone.Collection()};
+      function projectMatch(project) {
+        return (project.get('repo') === org && project.get('name') === repo);
+      }
+      if (projectMatch(projects.parent)) return parent;
+      for (var i=0; i<projects.bundledProjects.models.length; i++) {
+        if (projectMatch(projects.bundledProjects.models[i])) return projects.bundledProjects.models[i];
+      }
+    }
+
   }
 });

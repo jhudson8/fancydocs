@@ -1,4 +1,7 @@
+var util = require('./lib/util');
+
 module.exports = function(contents) {
+
 
   headerPattern = /^={3,50}\s*/,
   subHeaderPattern = /^-{3,50}\s*/,
@@ -51,7 +54,7 @@ module.exports = function(contents) {
     }
   }
 
-  return 'registerProject(' + JSON.stringify(data) + ');';
+  return JSON.stringify(data);
 };
 
 function parseBody (contents) {
@@ -93,5 +96,5 @@ function parseBody (contents) {
     }
   }
   execute(true);
-  return {title: header, summary: summary, sections: sections};
+  return {title: header, summary: util.parseMarkdown(summary), sections: sections};
 }

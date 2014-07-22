@@ -12,12 +12,6 @@ module.exports = React.createClass({
     var hilight = this.props.hilight || {};
     var project = this.getModel();
     var children = [];
-    var overview = project.get('overview');
-    if (overview) {
-      children.push(
-        <Markdown tag="p" className="overview-container" body={overview}/>
-      );
-    }
 
     _.each(project.api, function(api, name) {
       var packages = api.map(function(pkg, name) {
