@@ -15202,7 +15202,7 @@ pre {
 
 
 #body-container {
-  position: relative;
+  max-width: 1007px;
 }
 
 .green {
