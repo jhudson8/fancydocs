@@ -47,6 +47,11 @@ var projectRoutes = {
       this._showProject(project, {section: section});
     };
   },
+  'api/:api': function(project) {
+    return function(api) {
+      this._showProject(project, {'api': api});
+    };
+  },
   'package/:package': function(project) {
     return function(pkg) {
       this._showProject(project, {'package': pkg});

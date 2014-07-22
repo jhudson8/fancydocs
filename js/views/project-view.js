@@ -17,9 +17,10 @@ module.exports = React.createClass({
       var packages = api.map(function(pkg, name) {
         return <PackageView model={pkg}/>
       }, this);
+      var apiId = 'api-' + encodeURIComponent(name);
       children.push(
         <div className="main-section">
-          <h3 className="ui header">{name}</h3>
+          <h3 className="ui header" id={apiId}>{name}</h3>
           <div className="ui divider"/>
           <Markdown body={api.description}/>
           {packages}
@@ -43,7 +44,7 @@ module.exports = React.createClass({
                 {'github.com/' + project.get('repo') + '/' + project.get('name')}
               </a>
             </span>
-            <Markdown tag="p" className="sub header" body={project.get('summary')}/>
+            <Markdown tag="p" className="sub header overview-container" body={project.get('summary')}/>
             <BundledProjectsSection model={project}/>
             {children}
             <ProjectSectionList model={project.sections} level={3}/>
@@ -70,6 +71,9 @@ module.exports = React.createClass({
           finder = '.overview-container';
         } else {
           var id = hilight.section || hilight.package || hilight.method;
+          if (!id && hilight.api) {
+            id = 'api-' + encodeURIComponent(hilight.api);
+          }
           finder = id && ('#' + id);
         }
       }

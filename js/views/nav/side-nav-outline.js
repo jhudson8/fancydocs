@@ -14,7 +14,7 @@ module.exports = React.createClass({
     ];
 
     _.each(project.api, function(apiModel, name) {
-      children.push(<div key={name} className="header item">{name}</div>);
+      children.push(<div key={name} className="header item"><a href={apiModel.viewUrl()}>{name}</a></div>);
       children.push.apply(children, _.flatten(apiModel.map(function(pkg) {
         var rtn = [],
             pkgName = pkg.get('name'),
@@ -36,7 +36,7 @@ module.exports = React.createClass({
           rtn.push(
             <div className={className}>
               <i className={util.icons.package}/>
-              {pkgName}
+              <a href={pkg.viewUrl()}>{pkgName}</a>
               <div className="menu">
                 {methodChildren}
               </div>
