@@ -15266,6 +15266,10 @@ strong {
   padding-bottom: 2em;
 }
 
+.sidebar a {
+  text-decoration: none;
+}
+
 .sidebar + div {
   margin-left: 275px;
 }
