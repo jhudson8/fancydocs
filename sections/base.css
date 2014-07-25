@@ -15213,6 +15213,17 @@ pre {
   margin-top: 50px;
 }
 
+.nav-header {
+  background-color: #A1CF64;
+  padding: 0.83em 0.95em;
+  color: #fff;
+  margin-top: 0;
+  margin-bottom: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .green {
   color: #A1CF64;
 }
