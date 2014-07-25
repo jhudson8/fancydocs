@@ -80,13 +80,17 @@ var exports = module.exports = {
         var profilePattern = /^\s*([^\(\s]*)\s*(.*)/,
             name = module.exports.removeStyle(section.name), profiles = [],
             profileMatch = name.match(profilePattern);
-            
+
         if (profileMatch) {
           name = profileMatch[1];
-          profiles = profileMatch[2].split(/\)\s*;?\s*\(/).map(function(part) {
-            var match = part.match(/^\s*\(?\s*([^)]*)\s*\)?\s*$/);
-            return match && match[1] || part;
-          });
+          var profileStr = profileMatch[2];
+          if (profileStr) {
+            profileStr = profileStr.replace(/^\s*\((.*)\)\s*/, '$1').trim()
+            profiles = profileStr.split(/\)\s*;?\s*\(/).map(function(part) {
+              var match = part.match(/^\s*\(?\s*([^)]*)\s*\)?\s*$/);
+              return match && match[1] || part;
+            });
+          }
         }
 
         rtnData[name] = {

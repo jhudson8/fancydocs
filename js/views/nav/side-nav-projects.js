@@ -6,17 +6,22 @@ module.exports = React.createClass({
   mixins: ['modelAware'],
 
   render: function() {
-    var activeProject = this.getModel();
-    var activeProjectId = activeProject && activeProject.id;
-    var projects = activeProject.getAllBundledProjects();
-    var parent = projects.parent;
-    var children = projects.bundledProjects.map(function(project) {
-      return {label: project.get('name'), url: project.viewUrl(), icon: util.icons.project, active: project.id === activeProjectId};
-    }, this);
-    if (parent.id !== activeProjectId) {
-      children.splice(0, 0, {label: parent.get('name'), url: parent.viewUrl(),
-          icon: util.icons.project, header: true});
-    }
-    return util.menu(undefined, util.reactifyMenuItems(children));
+    var project = this.getModel();
+    project = project.parent || project;
+
+    var navItems = [this.convertProject(project)];
+    navItems[0].children = project.bundledProjects && project.bundledProjects.map(this.convertProject, this);
+
+    return util.projectNavMenu(navItems, this, this.props.viewState, {allowHilight: true, model: project});
+  },
+
+  convertProject: function(project) {
+    return {
+      key: project.id,
+      label: project.get('title'),
+      model: project,
+      hilight: true,
+      viewState: this.props.viewState
+    };
   }
 });

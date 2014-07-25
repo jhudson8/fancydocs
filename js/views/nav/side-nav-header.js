@@ -5,10 +5,7 @@ var util = require('./nav-util');
 var data = {
   outline: {
     title: 'Outline',
-    icon: 'list alt icon',
-    applies: function(project) {
-      return !project.bundledProjects;
-    }
+    icon: 'list alt icon'
   },
   packages: {
     title: function(project) {
@@ -20,7 +17,7 @@ var data = {
     },
     icon: util.icons.package,
     applies: function(project) {
-      return !_.isEmpty(project.api);
+      return !project.packages.isEmpty();
     }
   },
   methods: {
@@ -38,50 +35,51 @@ var data = {
     }
   }
 };
+var defaultFocusOrder = ['outline', 'projects', 'packages', 'methods'];
 
 module.exports = React.createClass({
-  mixins: ['events', 'modelChangeAware'],
+  mixins: ['modelChangeAware', 'events', 'triggerWith'],
 
   render: function() {
     var self = this;
     var project = this.getModel();
-    var focus = project.get('focus');
+    var viewState = this.props.viewState;
+    var focus = viewState.focus;
 
     var children = _.map(data, function(data, key) {
-      function onFocusSelect() {
-        self.setState({focus: key});
-        self.props.onFocus(key);
-      }
-
       var active = focus === key;
       var className = active ? 'active green item' : 'item';
       var enabled = !data.applies || data.applies(project);
       if (enabled) {
         return (
-          <a key={key} className={className} onClick={onFocusSelect}>
+          <a key={key} className={className} onClick={this.triggerWith('focus', key)}>
             <i className={data.icon}></i>
           </a>
         );
       }
-    });
+    }, this);
 
     var focusData = data[focus];
     var title = _.isFunction(focusData.title) ? focusData.title(project) : focusData.title;
     return (
       <div>
-        <div className="ui attached message">
-          <div className="header">
-            {title}
-          </div>
-        </div>
         <div className="ui pointing menu project-nav-selector">
+          <div>
+            <h6>{title}</h6>
+          </div>
           {children}
         </div>
       </div>
     );
   },
-
-  focus: function(focus) {
-    this.setState({focus: focus});
-  }
 });
+
+module.exports.defaultFocus = function(project) {
+  var _data;
+  for (var i=0; i<defaultFocusOrder.length; i++) {
+    _data = data[defaultFocusOrder[i]];
+    if (!_data.applies || _data.applies(project)) {
+      return defaultFocusOrder[i];
+    }
+  }
+}

@@ -10,25 +10,44 @@ var FOCUS_MAP = {
 };
 
 module.exports = React.createClass({
-  mixins: ['modelChangeAware'],
+  mixins: ['modelChangeAware', 'events'],
+
+  events: {
+    'ref:header:focus': 'onFocus'
+  },
+
+  getInitialState: function() {
+    return {
+      viewState: this.props.viewState
+    };
+  },
 
   render: function() {
     var project = this.getModel();
-    var focus = project.get('focus');
+    var viewState = this.state.viewState;
+    var focus = viewState.focus || SideNavHeader.defaultFocus(project);
+    viewState.focus = focus;
     var content = new FOCUS_MAP[focus]({
+      ref: 'body',
       model: project,
-      hilight: this.props.hilight
+      viewState: viewState,
+      onJumpTo: this.props.onJumpTo,
+      onSnippetTo: this.props.onSnippetTo
     });
 
     return (
       <div className="sidebar">
-        <SideNavHeader ref="header" focus={focus} onFocus={this.onFocus} model={project}/>
+        <SideNavHeader ref="header" viewState={this.state.viewState} model={project}/>
         {content}
       </div>
     );
   },
 
   onFocus: function(focus) {
-    this.getModel().set('focus', focus);
+    var viewState = this.state.viewState;
+    if (focus != viewState.focus) {
+      viewState.updateFocus(focus);
+    }
+    this.forceUpdate();
   }
 });

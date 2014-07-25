@@ -1,105 +1,110 @@
 /** @jsx React.DOM */
-var util = require('./nav-util');
+var navUtil = require('./nav-util');
+var util = require('../../utils/util');
 
 module.exports = React.createClass({
-  mixins: ['modelChangeAware', 'state'],
+  mixins: ['modelChangeAware', 'events'],
 
   render: function() {
     var self = this,
         project = this.getModel(),
-        hilight = project.get('hilight');
+        viewState = this.props.viewState,
+        navItems = [];
 
-    var children = [
-      <a key="overview" className="header item" href={project.viewUrl() + '/overview'} onClick={util.hilight(project, {overview: true})}>Overview</a>
-    ];
+    this.addProject(project, navItems, 1, {showOverview: true, maxLevel: 3, summary: true});
 
-    _.each(project.api, function(apiModel, name) {
-      children.push(<div key={name} className="header item"><a href={apiModel.viewUrl()}>{name}</a></div>);
-      children.push.apply(children, _.flatten(apiModel.map(function(pkg) {
-        var rtn = [],
-            pkgName = pkg.get('name'),
-            className = "item mixin-nav-item " + ((!hilight.package === pkg.id) ? ' active green' : '');
+    var jumpTo = true;
+    var snippet = false;
+    var hasChildren = project.hasChildren();
+    if (hasChildren) {
+      // parent projects won't jump to content that isn't there so use snippets since content might be in child projects
+      jumpTo = false;
+      snippet = true;
+    }
+    return navUtil.projectNavMenu(navItems, this, viewState, {jumpTo: jumpTo, snippet: snippet});
+  },
 
-
-        var methodChildren = pkg.methods.map(function(method) {
-          var methodName = method.get('name'),
-            className = "item method-nav-item " + ((hilight.method === method.id) ? ' active green' : '');
-
-          return (
-            <a className={className} href={method.viewUrl()} onClick={util.hilight(project, {method: method.id})}>
-              <i className={util.icons.method}/>
-              {methodName}
-            </a>
-          );
-        })
-        if (methodChildren.length) {
-          rtn.push(
-            <div className={className}>
-              <i className={util.icons.package}/>
-              <a href={pkg.viewUrl()}>{pkgName}</a>
-              <div className="menu">
-                {methodChildren}
-              </div>
-            </div>
-          );
-        } else {
-          rtn.push(
-            <a className={className} href={pkg.viewUrl()}>
-              <i className={util.icons.package}/>
-              {pkgName}
-            </a>
-          );
-        }
-
-        return rtn;
-      })));
-    });
-
-    var sections = project.sections;
-    if (sections) {
-      sections.each(function(section) {
-        addSection(section, children, project, 1, hilight);
+  addProject: function(project, children, level, options) {
+    if (options.summary) {
+      children.push({
+        key: 'project-summary',
+        label: 'Summary',
+        url: project.viewUrl() + '/summary'
       });
     }
+ 
+    _.each(project.api, function(apiModel, name) {
+      this.addAPI(name, apiModel, project, children, options);
+    }, this);
 
-    return new util.menu(undefined, children);
+    this.addSection(project, children, level, options);
+
+    if (project.bundledProjects) {
+      project.bundledProjects.each(function(project) {
+        var _children = [];
+        this.addProject(project, _children, level+1, _.defaults({hidePackages: true, summary: false, snippet: true}, options));
+        children.push({
+          key: project.id,
+          label: project.get('title'),
+          model: project,
+          type: 'project',
+          options: options,
+          children: _children
+        });
+      }, this);
+    }
+  },
+
+  addAPI: function(name, apiModel, project, children, options) {
+    var self = this;
+    var apiChildren = [];
+    children.push({
+      key: project.id + '-api-' + name,
+      model: apiModel,
+      label: name,
+      type: 'api',
+      options: options,
+      children: !options.hidePackages && apiModel.map(function(pkg) {
+        return {
+          model: pkg,
+          key: pkg.id,
+          label: pkg.get('name'),
+          type: 'package',
+          icon: navUtil.icons.package,
+          options: options,
+          children: !options.hideMethods && pkg.methods.map(function(method) {
+            return {
+              key: method.id,
+              model: method,
+              label: method.get('name'),
+              type: 'method',
+              icon: navUtil.icons.method,
+              options: options
+            };
+          })
+        };
+    })});
+  },
+
+  addSection: function(section, children, level, options) {
+    if (level > (options.maxLevel || 3)) {
+      return;
+    }
+    if (section) {
+      section.sections.each(function(section) {
+        var _children = [];
+        this.addSection(section, _children, level + 1, options);
+
+        children.push({
+          key: section.id,
+          label: section.get('title'),
+          model: section,
+          type: 'section',
+          options: options,
+          children: _children
+        });
+      }, this);
+    }
   }
 });
 
-function addSection(section, children, project, level, hilight) {
-  if (level > 3) {
-    return;
-  }
-
-  var _children = [];
-  if (section.sections && section.sections.length) {
-    section.sections.each(function(section) {
-      addSection(section, _children, project, level+1, hilight);
-    });
-  }
-  var href = section.viewUrl(),
-      title = section.get('title');
-  if (level === 1) {
-    // single header elements
-    var className = "header item " + ((hilight.section === section.id) ? ' active green' : '');
-    children.push(<a key={section.id} className={className} href={href} onClick={util.hilight(project, {section: section.id})}>{title}</a>);
-    if (_children.length > 0) {
-      children.push.apply(children, _children);
-    }
-  } else if (level === 2 && _children.length > 0) {
-    children.push(
-      <div key={section.id} className="item">
-        {title}
-        <div className="menu">
-          {_children}
-        </div>
-      </div>
-    );
-  } else {
-    var className = "item " + ((hilight.section === section.id) ? ' active green' : '');
-    // non-nested children
-    children.push(
-      <a key={section.id} className={className} href={href} onClick={util.hilight(project, {section: section.id})}>{title}</a>
-    );
-  }
-}

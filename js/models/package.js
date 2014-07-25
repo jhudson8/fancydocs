@@ -1,5 +1,6 @@
 var PackageCollection = require('./package-collection');
 var MethodCollection = require('./method-collection');
+var util = require('../utils/util');
 
 module.exports = Backbone.Model.extend({
   initialize: function(options) {
@@ -25,7 +26,23 @@ module.exports = Backbone.Model.extend({
     this.methods = this.methods || new MethodCollection();
   },
 
-  viewUrl: function() {
-    return (this.project || this.collection.project).viewUrl() + '/package/' + this.id;
+  viewUrl: function(removeHash, removeSnippet) {
+    var rtn = (this.project || this.collection.project).viewUrl(true);
+    if (!removeSnippet) {
+      rtn += '/snippet';
+    }
+    rtn += ('/package/' + encodeURIComponent(this.get('name')));
+    if (!removeHash) {
+      rtn = '#' + rtn;
+    }
+    return rtn;
+  },
+
+  isEqual: function(obj) {
+    return this.checkEquality(this, obj, 'name', 'project.id');
+  },
+
+  domId: function() {
+    return util.domIdify(this.get('name'));
   }
 });

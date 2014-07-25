@@ -19,6 +19,10 @@ pre {
   max-width: 1007px;
 }
 
+.page-body {
+  margin-top: 50px;
+}
+
 .green {
   color: #A1CF64;
 }
@@ -31,12 +35,19 @@ a {
   margin-left: 8px;
 }
 
+#logo-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-opacity: 1;
+  z-index: 1;
+}
+
 .github-label {
   display: inline-block;
   float: right;
-  padding-top: 1em;
   padding-left: 1em;
-  padding-bottom: 1em;
+  margin-top: -10px;
 }
 
 h5 {
@@ -83,7 +94,7 @@ strong {
 
 .sidebar {
   position: fixed;
-  top: 0;
+  top: 59px;
   overflow-y: auto;
   width: 275px;
   height: 100%;
@@ -135,4 +146,13 @@ h2 {
 .method-return {
   font-weight: 80%;
   margin-top: 1rem;
+}
+
+@media (max-width: 680px) {
+  .sidebar {
+    display: none;
+  }
+  .sidebar + div {
+    margin-left: 0;
+  }
 }

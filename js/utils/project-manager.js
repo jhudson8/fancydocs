@@ -98,6 +98,7 @@ module.exports = {
         }
         if (projects.length === 0) {
           project.bundledProjects = new ProjectCollection(childProjects, {parent: project});
+          project.onBundlesLoaded(childProjects);
           complete();
         } else {
           var projectInfo = projects.splice(0, 1)[0];

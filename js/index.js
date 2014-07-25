@@ -9,12 +9,14 @@ React.mixins.add('state', {
     return {};
   }
 });
+Backbone.Router.namedParameters = true;
 
 var projectManager = require('./utils/project-manager');
 var SideNav = require('./views/nav/side-nav');
 var ProjectView = require('./views/project-view');
 var CreateView = require('./views/create-fancydoc-view');
 var ProjectNotFoundView = require('./views/project-not-found');
+var util = require('./utils/util');
 var lastProject;
 
 global.App = _.extend({}, Backbone.Events);
@@ -32,34 +34,91 @@ Backbone.async.on('async', function(eventName, model, events, options) {
 // use the meta route definitions and handlers to DRY things up because therw will be multiple variations of routes
 // that follow the same general pattern
 var projectRoutes = {
-  '': function(project) {
-    return function() {
-      this._showProject(project, {top: true}, 'default');
+  '': function(project, args) {
+    return function(args) {
+      args.jumpTo = 'top';
+      this._showProject(project, args);
     };
   },
-  'overview': function(project) {
-    return function() {
-      this._showProject(project, {overview: true});
+  'summary': function(project) {
+    return function(args) {
+      args.jumpTo = 'summary';
+      this._showProject(project, args);
     };
   },
-  'section/:section': function(project) {
-    return function(section) {
-      this._showProject(project, {section: section});
+  'section/*section': function(project) {
+    return function(args) {
+      var section = project.findSection(args.section.split('/'));
+      if (section) {
+        args.jumpTo = section.domId();
+      }
+      this._showProject(project, args);
     };
   },
   'api/:api': function(project) {
-    return function(api) {
-      this._showProject(project, {'api': api});
+    return function(args) {
+      var api = project.api[args.api];
+      if (api) {
+        args.jumpTo = api.domId();
+      }
+      this._showProject(project, args);
     };
   },
   'package/:package': function(project) {
-    return function(pkg) {
-      this._showProject(project, {'package': pkg});
+    return function(args) {
+      var pkg = project.findPackage(args.package);
+      if (pkg) {
+        args.jumpTo = pkg.domId();
+      }
+      this._showProject(project, args);
     };
   },
-  'method/:method': function(project) {
-    return function(method) {
-      this._showProject(project, {'method': method});
+  'method/:package/:method': function(project) {
+    return function(args) {
+      var method = project.findMethod(args.package, args.method);
+      if (method) {
+        args.jumpTo = method.domId();
+      }
+      this._showProject(project, args);
+    };
+  },
+  'snippet/package/:package': function(project) {
+    return function(args) {
+      var pkg = project.findPackage(args.package);
+      args.snippet = {
+        type: 'package',
+        model: pkg
+      };
+      this._showProject(project, args);
+    };
+  },
+  'snippet/method/:package/:method': function(project) {
+    return function(args) {
+      var method = project.findMethod(args.package, args.method);
+      args.snippet = {
+        type: 'method',
+        model: method
+      };
+      this._showProject(project, args);
+    };    
+  },
+  'snippet/api/:api': function(project) {
+    return function(args) {
+      var api = project.api[args.api];
+      args.snippet = {
+        type: 'api',
+        model: api
+      };
+      this._showProject(project, args);
+    };    
+  },
+  'snippet/summary': function(project) {
+    return function(args) {
+      args.snippet = {
+        type: 'summary',
+        model: project
+      };
+      this._showProject(project, args);
     };
   }
 };
@@ -68,19 +127,17 @@ projectRoutes = _.map(projectRoutes, function(func, route) {
   var rtn = {};
   var routeSuffix = route && '/' + route || '';
 
-  rtn['project/:repo/:project' + routeSuffix] = function(org, repo) {
+  rtn['project/:org/:repo' + routeSuffix] = function(args) {
     var self = this;
-    var rootArgs = _.toArray(arguments);
-    this._withProject(org, repo, function(project) {
-      func(project).apply(self, rootArgs.slice(2));
+    this._withProject(args.org, args.repo, function(project) {
+      func(project).call(self, args);
     });
   };
 
-  rtn['project/:repo/:project/bundle/:childRepo/:childProject' + routeSuffix] = function(org, repo, childOrg, childRepo) {
+  rtn['project/:org/:repo/bundle/:childOrg/:childRepo' + routeSuffix] = function(args) {
     var self = this;
-    var rootArgs = _.toArray(arguments);
-    this._withBundle(org, repo, childOrg, childRepo, function(project) {
-      func(project).apply(self, rootArgs.slice(4));
+    this._withBundle(args.org, args.repo, args.childOrg, args.childRepo, function(project) {
+      func(project).call(self, args);
     });
   };
 
@@ -88,7 +145,6 @@ projectRoutes = _.map(projectRoutes, function(func, route) {
 });
 projectRoutes.splice(0, 0, {});
 projectRoutes = _.extend.apply(_, projectRoutes);
-
 
 // initialze the Backbone router
 var Router = Backbone.Router.extend({
@@ -121,16 +177,11 @@ var Router = Backbone.Router.extend({
     showView(new CreateView());
   },
 
-  _showProject: function(project, hilight, focus) {
-    if (focus === 'default') {
-      focus = project.getDefaultFocus();
-    }
-    project.set({
-      hilight: hilight || {},
-      focus: focus || hilight && project.get('focus') || project.getDefaultFocus()
-    });
+  _showProject: function(project, viewState) {
+    viewState = new ViewState(viewState, project);
     var view = new ProjectView({
-      model: project
+      model: project,
+      viewState: viewState
     });
     lastProject = project;
     showView(view);
@@ -222,9 +273,53 @@ App.utils = {
   }
 };
 
+var ViewState = function(params, project) {
+  _.extend(this, params);
+
+  this.toUrl = function(url, focus) {
+    return url + '?focus=' + this.focus;
+  };
+
+  this.updateFocus = function(focus) {
+    this.focus = focus;
+    var fragment = Backbone.history.getFragment();
+    var focusPart = 'focus=' + (focus || '');
+    var match = fragment.match('focus=');
+    if (match) {
+      fragment = fragment.replace(/focus=[a-zA-Z]+/, focusPart);
+    } else if (fragment.indexOf('?') > 0) {
+      fragment += focusPart;
+    } else {
+      fragment += ('?' + focusPart);
+    }
+    Backbone.history.navigate(fragment, {trigger: false, replace: true});
+  };
+};
+
 
 if (!String.prototype.trim) {
   String.prototype.trim = function () {
     return this.replace(/^\s+|\s+$/g, '');
   };
 }
+
+Backbone.Model.prototype.checkEquality = function(a, b) {
+  function getValue(obj, key) {
+    var parts = key.split('.'), parent = obj;
+    while (parent && parts.length > 1) {
+      parent = parent[parts[0]];
+      parts.splice(0, 1);
+    }
+    return parent && parent.get(parts[0]);
+  }
+  var attr = Array.prototype.slice.call(arguments, 2), aVal, bVal;
+  if (attr.length === 0) {
+    return false;
+  }
+  for (var i=0; i<attr.length; i++) {
+    aVal = getValue(a, attr[i]);
+    bVal = getValue(b, attr[i]);
+    if (aVal !== bVal) return false;
+  }
+  return true;
+};

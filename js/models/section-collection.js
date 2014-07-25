@@ -6,7 +6,7 @@ module.exports = Backbone.Collection.extend({
     Backbone.Collection.prototype.initialize.apply(this, arguments);
     this.id = _.uniqueId('s');
   },
-  viewUrl: function() {
-    return (this.project || this.collection.project).viewUrl() + '/section/' + this.id;
+  viewUrl: function(removeHash) {
+    return (this.project || this.collection.project).viewUrl(removeHash) + '/section/' + this.id;
   },
 });
