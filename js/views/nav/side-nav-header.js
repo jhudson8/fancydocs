@@ -8,13 +8,7 @@ var data = {
     icon: 'list alt icon'
   },
   packages: {
-    title: function(project) {
-      var apiNames = _.map(project.api, function(value, name) {
-        return (name === 'API') ? 'Packages' : name;
-      });
-      return apiNames.join(' and ');
-
-    },
+    title: 'Packages',
     icon: util.icons.package,
     applies: function(project) {
       return !project.packages.isEmpty();
@@ -64,10 +58,10 @@ module.exports = React.createClass({
     return (
       <div>
         <div className="ui pointing menu project-nav-selector">
-          <div>
-            <h6>{title}</h6>
-          </div>
           {children}
+        </div>
+        <div>
+          <h4 className="nav-header">{title}</h4>
         </div>
       </div>
     );

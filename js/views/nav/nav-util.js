@@ -31,14 +31,30 @@ function addMenuChildren (navItems, level, children, self, viewState, options) {
     return;
   }
 
+  var hilightModel = options.model || viewState.snippet && viewState.snippet.model || viewState.model;
+  var toggleState = self.state && self.state.toggleState || {};
+
   _.each(navItems, function(navItem) {
-    var model = navItem.model;
-    var hilightModel = options.model || viewState.snippet && viewState.snippet.model || viewState.model;
-    var hilighted = options.allowHilight && hilightModel && hilightModel.isEqual(model);
+    var model = navItem.model;  
+    var hilighted = options.allowHilight && hilightModel && ((hilightModel.isEqual && hilightModel.isEqual(model)) || hilightModel === model);
     var className = hilighted ? ' active green' : '';
     var url = navItem.url || model && model.viewUrl(false, !options.snippet);
     var onClick = model && (options.snippet ? util.snippetTo(navItem.type, navItem.model, self) : options.jumpTo && util.jumpTo(model, self));
     var icon = navItem.icon && <i className={navItem.icon + ' icon'}/>;
+    var navItemChildren = navItem.children;
+
+    if (level === 1 && navItemChildren && navItemChildren.length > 0 && model) {
+      var toggleId = model.id || model.name;
+      if (toggleState[toggleId]) {
+        // closed
+        icon = <i className={'fa-caret-square-o-up' + ' icon'}/>;
+        navItemChildren = undefined;
+      } else {
+        // open
+        icon = <i className={'fa-caret-square-o-down' + ' icon'}/>;
+      }
+      onClick = toggle(toggleId, model, self);
+    }
     var label = navItem.label;
     var key = navItem.key;
     var clazz = url ? React.DOM.a : React.DOM.div;
@@ -47,13 +63,13 @@ function addMenuChildren (navItems, level, children, self, viewState, options) {
     if (level === 1) {
       props.className = 'item header' + className;
       children.push(clazz(props, icon, label));
-      addMenuChildren(navItem.children, level+1, children, self, viewState, options);
+      addMenuChildren(navItemChildren, level+1, children, self, viewState, options);
 
     } else if (level === 2) {
       var _children;
       if (navItem.children && navItem.children.length) {
         _children = [];
-        addMenuChildren(navItem.children, level+1, _children, self, viewState, options);
+        addMenuChildren(navItemChildren, level+1, _children, self, viewState, options);
         _children = (
           <div className="menu">
             {_children}
@@ -84,4 +100,17 @@ function addMenuChildren (navItems, level, children, self, viewState, options) {
     }
 
   });
+}
+
+function toggle(toggleId, model, self) {
+  return function(e) {
+    e.preventDefault();
+    var state = self.state;
+    var toggleState = state.toggleState;
+    if (!toggleState) {
+      state.toggleState = {};
+    }
+    state.toggleState[toggleId] = !state.toggleState[toggleId];
+    self.forceUpdate();
+  }
 }

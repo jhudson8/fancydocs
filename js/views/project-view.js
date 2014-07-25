@@ -8,6 +8,7 @@ var APIView = require('./api-view');
 var SectionView = require('./section-view');
 var ProjectPage = require('./project-page-view');
 var util = require('../utils/util');
+var SideNavHeadr = require('./nav/side-nav-header');
 
 module.exports = React.createClass({
   mixins: ['modelChangeAware'],
@@ -32,7 +33,7 @@ module.exports = React.createClass({
 
     if (snippet) {
       var factory = function() {
-        return util.snippets[snippet.type](snippet.model);
+        return util.snippets[snippet.type](snippet.model, project);
       };
       children = new SnippetView({ref: 'snippet', model: snippet.model, project: project, factory: factory,
         snippet: snippet, onJumpTo: this.jumpToModel});

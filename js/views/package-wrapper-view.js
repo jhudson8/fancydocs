@@ -8,10 +8,18 @@ module.exports = React.createClass({
 
   render: function() {
     var pkg = this.getModel();
-    var children = [
+    var children = [];
+
+    if (!this.props.project.isEqual(pkg.project)) {
+      // it's a parent project - show the child project name
+      children.push(<h2 key="project-title" className="ui header">{pkg.project.get('title')}</h2>);
+    }
+
+    children.push.apply(children, [
       <h3 key="api" className="ui header">{pkg.get('api')}</h3>,
       <div key="divider" className="ui divider"/>
-    ];
+    ]);
+
     if (this.props.showPackageDetails) {
       children.push(
         <h4 key="package">
