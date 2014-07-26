@@ -41,10 +41,14 @@ function addMenuChildren (navItems, level, children, self, viewState, options) {
     var url = navItem.url || model && model.viewUrl(false, !options.snippet);
     var onClick = model && (options.snippet ? util.snippetTo(navItem.type, navItem.model, self) : options.jumpTo && util.jumpTo(model, self));
     var icon = navItem.icon && <i className={navItem.icon + ' icon'}/>;
+    var label = navItem.label;
+    var key = navItem.key;
+    var clazz = url ? React.DOM.a : React.DOM.div;
+    var props = {key: key, className: 'item' + className, href: url, onClick: onClick}
     var navItemChildren = navItem.children;
 
     if (level === 1 && navItemChildren && navItemChildren.length > 0 && navItems.length > 1) {
-      var toggleId = model.id || model.name;
+      var toggleId = model && (model.id || model.name) || url || (level + '-' + label);
       if (toggleState[toggleId]) {
         // closed
         icon = <i className={'fa-caret-square-o-up' + ' icon'} onClick={toggle(toggleId, model, self)}/>;
@@ -54,10 +58,6 @@ function addMenuChildren (navItems, level, children, self, viewState, options) {
         icon = <i className={'fa-caret-square-o-down' + ' icon'} onClick={toggle(toggleId, model, self)}/>;
       }
     }
-    var label = navItem.label;
-    var key = navItem.key;
-    var clazz = url ? React.DOM.a : React.DOM.div;
-    var props = {key: key, className: 'item' + className, href: url, onClick: onClick}
 
     if (level === 1) {
       props.className = 'item header' + className;
