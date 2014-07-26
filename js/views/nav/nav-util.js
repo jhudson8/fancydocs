@@ -43,17 +43,16 @@ function addMenuChildren (navItems, level, children, self, viewState, options) {
     var icon = navItem.icon && <i className={navItem.icon + ' icon'}/>;
     var navItemChildren = navItem.children;
 
-    if (level === 1 && navItemChildren && navItemChildren.length > 0 && model) {
+    if (level === 1 && navItemChildren && navItemChildren.length > 0 && navItems.length > 1) {
       var toggleId = model.id || model.name;
       if (toggleState[toggleId]) {
         // closed
-        icon = <i className={'fa-caret-square-o-up' + ' icon'}/>;
+        icon = <i className={'fa-caret-square-o-up' + ' icon'} onClick={toggle(toggleId, model, self)}/>;
         navItemChildren = undefined;
       } else {
         // open
-        icon = <i className={'fa-caret-square-o-down' + ' icon'}/>;
+        icon = <i className={'fa-caret-square-o-down' + ' icon'} onClick={toggle(toggleId, model, self)}/>;
       }
-      onClick = toggle(toggleId, model, self);
     }
     var label = navItem.label;
     var key = navItem.key;
@@ -105,6 +104,7 @@ function addMenuChildren (navItems, level, children, self, viewState, options) {
 function toggle(toggleId, model, self) {
   return function(e) {
     e.preventDefault();
+    e.stopPropagation();
     var state = self.state;
     var toggleState = state.toggleState;
     if (!toggleState) {
