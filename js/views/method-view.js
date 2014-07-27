@@ -24,7 +24,7 @@ module.exports = React.createClass({
     }
     if (parameters.length) {
       parameters = (
-        <table className="ui table">
+        <table key="parameters" className="ui table">
           <thead><tr><th colSpan="2">Parameters</th></tr></thead>
           <tbody>
             {parameters}
