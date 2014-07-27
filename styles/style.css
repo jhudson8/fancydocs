@@ -34,6 +34,14 @@ pre {
   text-overflow: ellipsis;
 }
 
+.ui.form.nav-search > .field {
+  margin-bottom: 0;
+}
+
+.ui.form.nav-search > .field input {
+  border-radius: 0;
+}
+
 .green {
   color: #A1CF64;
 }
