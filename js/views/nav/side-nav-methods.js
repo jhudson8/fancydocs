@@ -18,7 +18,7 @@ module.exports = React.createClass({
       apis[apiName] = apis[apiName] || [];
       apis[apiName].push(method);
     });
-    var children = util.filteredNavChildren(apis, 'methods', 'method', this);
+    var children = util.filteredNavChildren(apis, 'method', 'methods', this);
 
     var startingLevel = 1;
     if (children.length === 1) {
