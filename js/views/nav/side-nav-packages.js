@@ -35,7 +35,7 @@ module.exports = React.createClass({
         <div className="ui nav-search form">
           <div className="field">
             <div className="ui icon input">
-              <input type="text" ref="search" placeholder="Search..." onChange={filter} onKeyUp={filter}/>
+              <input type="text" ref="search" placeholder="Search..." onChange={filter} onKeyDown={filter}/>
               <i className="fa-search icon"></i>
             </div>
           </div>
