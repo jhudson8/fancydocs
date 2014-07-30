@@ -18,7 +18,7 @@ module.exports = React.createClass({
       apis[apiName] = apis[apiName] || [];
       apis[apiName].push(pkg);
     });
-    var children = util.filteredNavChildren(apis, 'packages', 'package', this);
+    var children = util.filteredNavChildren(apis, 'package', 'packages', this);
 
     var startingLevel = 1;
     if (children.length === 1) {
