@@ -15342,6 +15342,15 @@ h2 {
   margin-top: 0;
 }
 
+.keycode-hilight {
+  background-color: #A1CF64 !important;
+  color: #fff !important;
+}
+
+.keycode-hilight > span {
+  color: #fff !important;
+}
+
 .project-nav {
   margin-top: 0 !important;
   width: 100% !important;
