@@ -3,6 +3,7 @@ var PackageCollection = require('./package-collection');
 var SectionCollection = require('./section-collection');
 var Method = require('./method');
 var Package = require('./package');
+var util = require('../utils/util');
 
 module.exports = Backbone.Model.extend({
   initialize: function(options) {
@@ -21,7 +22,7 @@ module.exports = Backbone.Model.extend({
     var api = this.api = {};
     _.each(data.api, function(data, name) {
       var pkgCollection = new PackageCollection();
-      App.utils.collectify(data.packages, pkgCollection, pkgCollection, this);
+      util.collectify(data.packages, pkgCollection, pkgCollection, this);
       pkgCollection.each(function(pkg) {
         pkg.set('api', name);
       });
@@ -33,7 +34,7 @@ module.exports = Backbone.Model.extend({
     }, this);
     delete data.packages;
 
-    App.utils.collectify(data.sections, this.sections, this, this);
+    util.collectify(data.sections, this.sections, this, this);
     delete data.sections;
 
     this.findAllMethodsAndPackages();

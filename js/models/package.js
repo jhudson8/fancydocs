@@ -13,7 +13,7 @@ module.exports = Backbone.Model.extend({
     this._initCollections();
 
     if (!_.isArray(data.methods)) {
-      App.utils.collectify(data.methods, this.methods, this);
+      util.collectify(data.methods, this.methods, this);
     } else {
       this.methods.reset(data.methods);
     }

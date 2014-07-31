@@ -35,6 +35,7 @@ module.exports = {
         new ProjectView({model: project}));
     },
   },
+
   jumpTo: function(model, self) {
     return function(e) {
       e.preventDefault();
@@ -48,6 +49,7 @@ module.exports = {
       self.props.onJumpTo(model);
     };
   },
+
   snippetTo: function(type, model, self) {
     return function(e) {
       e.preventDefault();
@@ -62,5 +64,29 @@ module.exports = {
   },
   domIdify: function(id) {
     return encodeURIComponent(id).replace(/[%\.\{\}]/g, '_');
+  },
+
+  collectify: function(data, collection, parent, project) {
+    project = project || parent.project;
+    var Model = collection.model || Backbone.Model;
+    var models = _.map(data, function(value, name) {
+      var data = _.defaults({
+        name: name
+      }, value);
+      var model = new Model();
+      model.parent = parent;
+      model.project = project;
+      model.set(model.parse(data));
+      return model;
+    });
+    collection.reset(models);
+    collection.project = project;
+  },
+
+  getParameter: function(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   }
 };

@@ -33,18 +33,27 @@ var defaultFocusOrder = ['outline', 'projects', 'packages', 'methods'];
 
 module.exports = React.createClass({
   mixins: ['modelChangeAware', 'events', 'triggerWith'],
+  events: {
+    'app:special-key': 'onSpecialKey'
+  },
+
+  getInitialState: function() {
+    return {};
+  },
 
   render: function() {
     var self = this;
     var project = this.getModel();
     var viewState = this.props.viewState;
     var focus = viewState.focus;
+    var activeData = [];
 
     var children = _.map(data, function(data, key) {
       var active = focus === key;
       var className = active ? 'active green item' : 'item';
       var enabled = !data.applies || data.applies(project);
       if (enabled) {
+        activeData.push({key: key, active: active});
         return (
           <a key={key} className={className} onClick={this.triggerWith('focus', key)}>
             <i className={data.icon}></i>
@@ -52,6 +61,7 @@ module.exports = React.createClass({
         );
       }
     }, this);
+    this.state.active = activeData;
 
     var focusData = data[focus];
     var title = _.isFunction(focusData.title) ? focusData.title(project) : focusData.title;
@@ -66,6 +76,31 @@ module.exports = React.createClass({
       </div>
     );
   },
+
+  onSpecialKey: function(key) {
+    var modifier;
+    if (key === 'left') {
+      modifier = -1;
+    } else if (key === 'right') {
+      modifier = 1;
+    }
+    if (modifier) {
+      var current = -1;
+      var activeData = this.state.active;
+      for (var i=0; i<activeData.length; i++) {
+        if (activeData[i].active) {
+          current = i;
+          break;
+        }
+      }
+      if (current > -1) {
+        current = activeData[current + modifier];
+        if (current) {
+          this.trigger('focus', current.key);
+        }
+      }
+    }
+  }
 });
 
 module.exports.defaultFocus = function(project) {

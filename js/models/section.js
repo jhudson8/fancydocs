@@ -16,7 +16,7 @@ module.exports = Backbone.Model.extend({
   },
   parse: function(data) {
     this._initCollections();
-    App.utils.collectify(data.sections, this.sections, this);
+    util.collectify(data.sections, this.sections, this);
     delete data.sections;
     return data;
   },
