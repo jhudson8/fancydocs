@@ -48,7 +48,7 @@ module.exports = React.createClass({
     var focus = viewState.focus;
     var activeData = [];
 
-    var children = _.map(data, function(data, key) {
+    var children = _.compact(_.map(data, function(data, key) {
       var active = focus === key;
       var className = active ? 'active green item' : 'item';
       var enabled = !data.applies || data.applies(project);
@@ -60,16 +60,24 @@ module.exports = React.createClass({
           </a>
         );
       }
-    }, this);
+    }, this));
+    if (children.length > 1) {
+      children = (
+        <div className="ui pointing menu project-nav-selector">
+          {children}
+        </div>
+      );
+    } else {
+      children = undefined;
+    }
+
     this.state.active = activeData;
 
     var focusData = data[focus];
     var title = _.isFunction(focusData.title) ? focusData.title(project) : focusData.title;
     return (
-      <div>
-        <div className="ui pointing menu project-nav-selector">
-          {children}
-        </div>
+      <div key="header">
+        {children}
         <div>
           <h4 className="nav-header">{title}</h4>
         </div>

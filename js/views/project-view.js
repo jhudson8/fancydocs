@@ -35,7 +35,7 @@ module.exports = React.createClass({
       var factory = function() {
         return util.snippets[snippet.type](snippet.model, project);
       };
-      children = new SnippetView({ref: 'snippet', model: snippet.model, project: project, factory: factory,
+      children = new SnippetView({ref: 'snippet', key: snippet.model.id, model: snippet.model, project: project, factory: factory,
         snippet: snippet, onJumpTo: this.jumpToModel});
     }
     else {
@@ -43,7 +43,7 @@ module.exports = React.createClass({
     }
 
     return (
-      <div>
+      <div key={'project-' + project.id}>
         <div id="logo-header" key="header" className="ui attached message">
           <span className="github-label">
             <a href={'https://github.com/' + project.get('repo') + '/' + project.get('name')} className="ui purple label">
@@ -55,7 +55,8 @@ module.exports = React.createClass({
           </div>
         </div>
         <div>
-          <SideNav ref="nav" model={project} viewState={viewState} onJumpTo={this.jumpToModel} onSnippetTo={this.snippetTo}/>
+          <SideNav ref="nav" key={focus} model={project} viewState={viewState} onJumpTo={this.jumpToModel}
+              onSnippetTo={this.snippetTo} onFocusChange={this.onFocusChange}/>
           <div className="page-body">
             {children}
           </div>
@@ -127,6 +128,14 @@ module.exports = React.createClass({
           window.scrollTo(0, Math.floor(pos.top - 60));
         }
       }
+    }
+  },
+
+  onFocusChange: function(focus) {
+    var viewState = this.state.viewState;
+    if (focus != viewState.focus) {
+      viewState.updateFocus(focus);
+      this.forceUpdate();
     }
   }
 });

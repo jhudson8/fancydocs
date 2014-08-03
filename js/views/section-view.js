@@ -16,7 +16,7 @@ module.exports = React.createClass({
     });
 
     return (
-      <div id={section.domId()}>
+      <div id={section.domId()} key={'section-' + section.id}>
         {title}
         {divider}
         <Markdown className="content" body={section.get('body')}/>

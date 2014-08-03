@@ -38,7 +38,7 @@ module.exports = React.createClass({
     }
 
     return (
-      <div id={id} className={'ui segment'}>
+      <div id={id} className={'ui segment'} key={'method-' + method.id}>
         <h4>
           <i className={navUtil.icons.method}/>
           {name}

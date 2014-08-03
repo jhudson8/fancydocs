@@ -210,12 +210,9 @@ function showView(view) {
 
 var ViewState = function(params, project) {
   _.extend(this, params);
-
-  this.toUrl = function(url, focus) {
-    return url + '?focus=' + this.focus;
-  };
-
-  this.updateFocus = function(focus) {
+};
+_.extend(ViewState.prototype, {
+  updateFocus: function(focus) {
     this.focus = focus;
     var fragment = Backbone.history.getFragment();
     var focusPart = 'focus=' + (focus || '');
@@ -228,7 +225,11 @@ var ViewState = function(params, project) {
       fragment += ('?' + focusPart);
     }
     Backbone.history.navigate(fragment, {trigger: false, replace: true});
-  };
-};
+  },
+
+  toUrl: function(url, focus) {
+    return url + '?focus=' + this.focus;
+  }
+});
 
 module.exports = Router;

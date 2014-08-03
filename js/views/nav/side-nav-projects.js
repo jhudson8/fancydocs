@@ -12,7 +12,7 @@ module.exports = React.createClass({
     var navItems = [this.convertProject(project)];
     navItems[0].children = project.bundledProjects && project.bundledProjects.map(this.convertProject, this);
 
-    return util.projectNavMenu(navItems, this, this.props.viewState, {allowHilight: true, model: this.getModel()});
+    return util.projectNavMenu(navItems, this, this.props.viewState, {allowHilight: true, model: this.getModel(), key: 'projects'});
   },
 
   convertProject: function(project) {

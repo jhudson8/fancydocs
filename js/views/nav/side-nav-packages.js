@@ -35,8 +35,8 @@ module.exports = React.createClass({
         <div className="ui nav-search form">
           <div className="field">
             <div className="ui icon input">
-              <input type="text" ref="search" placeholder="Search..." onChange={filter} onKeyDown={filter}/>
-              <i className="fa-search icon"></i>
+              <input type="text" ref="filter" placeholder="Filter..." onChange={filter} onKeyDown={filter}/>
+              <i className="fa-filter icon"></i>
             </div>
           </div>
         </div>
@@ -46,6 +46,6 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function() {
-    $(this.refs.search.getDOMNode()).focus();
+    $(this.refs.filter.getDOMNode()).focus();
   }
 });

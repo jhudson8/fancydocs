@@ -22,7 +22,7 @@ module.exports =  React.createClass({
     var id = pkg.domId();
 
     return (
-      <div id={id}>
+      <div id={id} key={'package-' + pkg.id}>
         <h4>
           <i className={navUtil.icons.package}/>
           {pkg.get('name')}

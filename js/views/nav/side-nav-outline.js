@@ -21,7 +21,7 @@ module.exports = React.createClass({
       jumpTo = false;
       snippet = true;
     }
-    return navUtil.projectNavMenu(navItems, this, viewState, {jumpTo: jumpTo, snippet: snippet});
+    return navUtil.projectNavMenu(navItems, this, viewState, {jumpTo: jumpTo, snippet: snippet, key: 'outline'});
   },
 
   addProject: function(project, children, level, options) {

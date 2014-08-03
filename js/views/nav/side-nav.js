@@ -25,8 +25,12 @@ module.exports = React.createClass({
   render: function() {
     var project = this.getModel();
     var viewState = this.state.viewState;
-    var focus = viewState.focus || SideNavHeader.defaultFocus(project);
-    viewState.focus = focus;
+    var focus = viewState.focus;
+    if (!focus) {
+      focus = SideNavHeader.defaultFocus(project);
+      viewState.updateFocus(focus);
+    }
+
     var content = new FOCUS_MAP[focus]({
       ref: 'body',
       model: project,
@@ -36,18 +40,14 @@ module.exports = React.createClass({
     });
 
     return (
-      <div className="sidebar">
-        <SideNavHeader ref="header" viewState={this.state.viewState} model={project}/>
+      <div className="sidebar" key="nav">
+        <SideNavHeader key={focus} ref="header" viewState={this.state.viewState} model={project}/>
         {content}
       </div>
     );
   },
 
   onFocus: function(focus) {
-    var viewState = this.state.viewState;
-    if (focus != viewState.focus) {
-      viewState.updateFocus(focus);
-    }
-    this.forceUpdate();
+    this.props.onFocusChange(focus);
   }
 });

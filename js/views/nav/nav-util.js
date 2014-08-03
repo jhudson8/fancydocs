@@ -23,7 +23,7 @@ module.exports = {
     addMenuChildren(navItems, options.startingLevel || 1, children, self, viewState, options);
 
     return (
-      <div className="vertical ui menu project-nav">
+      <div className="vertical ui menu project-nav" key={options.key}>
         {children}
       </div>
     );
