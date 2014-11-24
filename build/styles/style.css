@@ -116,9 +116,8 @@ strong {
   top: 59px;
   overflow-y: auto;
   width: 275px;
-  height: 100%;
+  height: calc(100% - 59px);
   float: left;
-  padding-bottom: 2em;
 }
 
 .sidebar a {
@@ -164,6 +163,7 @@ h2 {
 .project-nav {
   margin-top: 0 !important;
   width: 100% !important;
+  padding-bottom: 20px !important;
 }
 
 .project-nav-selector {

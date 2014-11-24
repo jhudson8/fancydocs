@@ -32,7 +32,7 @@ var data = {
 var defaultFocusOrder = ['outline', 'projects', 'packages', 'methods'];
 
 module.exports = React.createClass({
-  mixins: ['modelChangeAware', 'events', 'triggerWith'],
+  mixins: ['modelChangeAware', 'events'],
   events: {
     'app:special-key': 'onSpecialKey'
   },

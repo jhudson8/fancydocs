@@ -7,8 +7,8 @@ module.exports = function() {
   });
 
   // set a global timeout for all ajax activity
-  Backbone.async.on('async', function(eventName, model, events, options) {
-    options.timeout = 3000;
+  Backbone.xhrEvents.on('xhr', function(method, model, context) {
+    context.options.timeout = 3000;
   });
 
   if (!String.prototype.trim) {
@@ -46,7 +46,7 @@ var SPECIAL_KEYS = {
   39: 'right',
   13: 'enter'
 };
-document.onkeyup = function(event) {
+document.onkeydown = function(event) {
   // if it's an input field with a value, disregard
   var val = $(event.target).val();
   if (!val) {
