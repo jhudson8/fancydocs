@@ -8,7 +8,30 @@ var data = {
     icon: 'list alt icon'
   },
   packages: {
-    title: 'Packages',
+    title: function(project) {
+      var index = {}, apiNames = [];
+      function checkProject(project) {
+        _.each(project.api, function(value, key) {
+          if (key === 'API') {
+            key = 'Packages';
+          }
+          if (!index[key]) {
+            index[key] = true;
+            apiNames.push(key);
+          }
+        });
+      }
+      checkProject(project);
+      if (project.bundledProjects) {
+        project.bundledProjects.each(checkProject);
+      }
+
+      if (!apiNames.length) {
+        return 'Packages';
+      } else {
+        return apiNames.join(', ');
+      }
+    },
     icon: util.icons.package,
     applies: function(project) {
       return !project.packages.isEmpty();
@@ -22,7 +45,7 @@ var data = {
     }
   },
   projects: {
-    title: 'Bundled Projects',
+    title: 'Projects',
     icon: util.icons.project,
     applies: function(project) {
       return !!project.getAllBundledProjects();
@@ -52,10 +75,11 @@ module.exports = React.createClass({
       var active = focus === key;
       var className = active ? 'active green item' : 'item';
       var enabled = !data.applies || data.applies(project);
+      var title = _.isFunction(data.title) ? data.title(project) : data.title;
       if (enabled) {
         activeData.push({key: key, active: active});
         return (
-          <a key={key} className={className} onClick={this.triggerWith('focus', key)}>
+          <a key={key} className={className} onClick={this.triggerWith('focus', key)} title={title}>
             <i className={data.icon}></i>
           </a>
         );
