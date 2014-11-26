@@ -23,6 +23,12 @@ var projectRoutes = {
       this._showProject(project, args);
     };
   },
+  'installation': function(project) {
+    return function(args) {
+      args.jumpTo = 'installation';
+      this._showProject(project, args);
+    };
+  },
   'section/*section': function(project) {
     return function(args) {
       var section = project.findSection(args.section.split('/'));

@@ -17,6 +17,17 @@ module.exports = React.createClass({
     var children = [];
     var viewState = this.props.viewState;
 
+    var installationView;
+    if (project.get('installation')) {
+      installationView = (
+        <div className="main-section">
+          <h3 className="ui header" id="installation">Installation</h3>
+          <div className="ui divider"/>
+          <Markdown body={project.get('installation')}/>
+        </div>
+      );
+    }
+
     _.each(project.api, function(api, name) {
       children.push(new APIView({model: api}));
     }, this);
@@ -24,6 +35,7 @@ module.exports = React.createClass({
     return (
       <div>
         <SummaryView model={project}/>
+        {installationView}
         {children}
         <ProjectSectionList model={project}/>
       </div>

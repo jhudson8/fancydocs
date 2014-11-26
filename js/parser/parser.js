@@ -26,6 +26,9 @@ module.exports = function(contents) {
     'depends on': function(section, data) {
       data.dependantProjects = require('./lib/depends-parser')(section);
     },
+    'install': function(section, data) {
+      data.installation = section.content.join('\n');
+    },
     'api(: .+)?': function(section, data) {
       var api = require('./lib/api-parser')(section);
       if (!data.api) data.api = {};

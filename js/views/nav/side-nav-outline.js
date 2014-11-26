@@ -11,7 +11,7 @@ module.exports = React.createClass({
         viewState = this.props.viewState,
         navItems = [];
 
-    this.addProject(project, navItems, 1, {showOverview: true, maxLevel: 3, summary: true});
+    this.addProject(project, navItems, 1, {maxLevel: 3});
 
     var jumpTo = true;
     var snippet = false;
@@ -25,14 +25,19 @@ module.exports = React.createClass({
   },
 
   addProject: function(project, children, level, options) {
-    if (options.summary) {
+    children.push({
+      key: 'project-summary',
+      label: 'Summary',
+      url: project.viewUrl() + '/summary'
+    });
+    if (project.get('installation')) {
       children.push({
-        key: 'project-summary',
-        label: 'Summary',
-        url: project.viewUrl() + '/summary'
+        key: 'project-installation',
+        label: 'Installation',
+        url: project.viewUrl() + '/installation'
       });
     }
- 
+
     _.each(project.api, function(apiModel, name) {
       this.addAPI(name, apiModel, project, children, options);
     }, this);
