@@ -7,6 +7,7 @@ var tmpOrganization;
 var index = {};
 
 var TEMP_PROJECT = '_tmp';
+var loadedProjects = false;
 
 module.exports = {
   all: projects,
@@ -89,15 +90,22 @@ module.exports = {
     }
 
     var projects = _.clone(project.get('bundledProjects'));
-    if (projects) {
+    var isDependencies = false;
+    if (!projects || !projects.length) {
+      isDependencies = true;
+      projects = _.clone(project.get('dependantProjects'));
+    }
+    if (projects && !loadedProjects) {
+      loadedProjects = true;
       var childProjects = [];
       function loadFirstProject(childProject) {
-        if (childProject) {
+        if (childProject && childProject !== project) {
           childProject.parent = project;
           childProjects.push(childProject);
         }
         if (projects.length === 0) {
           project.bundledProjects = new ProjectCollection(childProjects, {parent: project});
+          project.bundledProjects.isDependencies = isDependencies;
           project.onBundlesLoaded(childProjects);
           complete();
         } else {
@@ -110,7 +118,7 @@ module.exports = {
           }
         }
       }
-      loadFirstProject();
+      loadFirstProject(false);
     } else {
       complete();
     }

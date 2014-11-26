@@ -123,7 +123,7 @@ module.exports = Backbone.Model.extend({
   },
 
   viewUrl: function(removeHash) {
-    if (this.collection && this.parent) {
+    if (this.collection && this.parent && this.parent !== this) {
       return this.parent.viewUrl(removeHash) + '/bundle/' + this.id;
     }
     return (removeHash ? '' : '#' ) + 'project/' + this.id;

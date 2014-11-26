@@ -18,7 +18,13 @@ module.exports = function(contents) {
       data.sections = require('./lib/section-parser')(section, 3);
     },
     'bundled projects': function(section, data) {
-      data.bundledProjects = require('./lib/bundle-parser')(section);
+      data.bundledProjects = require('./lib/depends-parser')(section);
+    },
+    'dependencies': function(section, data) {
+      data.dependantProjects = require('./lib/depends-parser')(section);
+    },
+    'depends on': function(section, data) {
+      data.dependantProjects = require('./lib/depends-parser')(section);
     },
     'api(: .+)?': function(section, data) {
       var api = require('./lib/api-parser')(section);
@@ -96,5 +102,7 @@ function parseBody (contents) {
     }
   }
   execute(true);
-  return {title: header, summary: util.parseMarkdown(summary), sections: sections};
+  var summary = util.parseMarkdown(summary);
+  summary = summary.replace(/^.*[Ff]ancydocs?\].*$/mg, "");
+  return {title: header, summary: summary, sections: sections};
 }
