@@ -15,12 +15,10 @@ module.exports = React.createClass({
     var url = model.viewUrl(false, true);
 
     return (
-      <div>
-        <div className="pad-all">
-          {sub}
-          <br/>
-          <a href={url} onClick={util.jumpTo(model, this)}>View all {modelProject.get('name')} details</a>
-        </div>
+      <div className="pad-all">
+        {sub}
+        <br/>
+        <a href={url} onClick={util.jumpTo(model, this)}>View all {modelProject.get('name')} details</a>
       </div>
     );
   }

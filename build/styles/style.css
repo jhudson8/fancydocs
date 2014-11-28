@@ -20,11 +20,11 @@ pre {
 }
 
 .page-body {
-  margin-top: 50px;
+  margin-top: 0;
 }
 
 .nav-header {
-  background-color: #A1CF64;
+  background-color: #564F8A;
   padding: 0.83em 0.95em;
   color: #fff;
   margin-top: 0;
@@ -46,6 +46,15 @@ pre {
   color: #A1CF64;
 }
 
+h2 > a.ui.label {
+  float: right;
+}
+
+h2 > a.ui.label > i {
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
+
 a {
   color: #564F8A; 
 }
@@ -54,29 +63,11 @@ a {
   margin-left: 8px;
 }
 
-#logo-header {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background-opacity: 1;
-  z-index: 1;
-}
-
-.github-label {
-  display: inline-block;
-  float: right;
-  padding-left: 1em;
-  margin-top: -10px;
-}
-
 h5 {
   border-bottom: solid 1px rgba(0, 0, 0, 0.1);
   font-size: 110%;
 }
 
-.github-label > a.ui.label {
-  text-transform: none;
-}
 
 .centered {
   text-align: center;
@@ -107,17 +98,11 @@ strong {
   background-color: #EFEFEF !important;
 }
 
-.ui.section.segment.level-5:last-child {
-  margin-bottom: 2em;
-}
-
 .sidebar {
   position: fixed;
-  top: 59px;
-  overflow-y: auto;
+  top: 0;
   width: 275px;
-  height: calc(100% - 59px);
-  float: left;
+  bottom: 0;
 }
 
 .sidebar a {
@@ -162,8 +147,12 @@ h2 {
 
 .project-nav {
   margin-top: 0 !important;
-  width: 100% !important;
-  padding-bottom: 20px !important;
+  padding-bottom: 10px !important;
+  position: fixed;
+  top: 90px;
+  bottom: 0;
+  width: 275px !important;
+  overflow-y: auto;
 }
 
 .project-nav-selector {

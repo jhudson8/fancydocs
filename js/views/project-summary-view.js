@@ -10,6 +10,13 @@ module.exports = React.createClass({
 
     return (
       <div className="sub header project-summary">
+        <h2 key="project-title" className="ui header">
+          <a href={'https://github.com/' + project.get('repo') + '/' + project.get('name')} className="ui label">
+            <i className="large github alternate icon"></i>
+          </a>
+          {project.get('repo') + '/' + project.get('title')}
+        </h2>
+
         <Markdown tag="p" body={project.get('summary')}/>
         <BundledProjectsList model={project}/>
       </div>

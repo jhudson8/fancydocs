@@ -44,16 +44,6 @@ module.exports = React.createClass({
 
     return (
       <div key={'project-' + project.id}>
-        <div id="logo-header" key="header" className="ui attached message">
-          <span className="github-label">
-            <a href={'https://github.com/' + project.get('repo') + '/' + project.get('name')} className="ui purple label">
-              {'github.com/' + project.get('repo') + '/' + project.get('name')}
-            </a>
-          </span>
-          <div className="header">
-            {project.get('name')}
-          </div>
-        </div>
         <div>
           <SideNav ref="nav" key={focus} model={project} viewState={viewState} onJumpTo={this.jumpToModel}
               onSnippetTo={this.snippetTo} onFocusChange={this.onFocusChange}/>
@@ -125,7 +115,7 @@ module.exports = React.createClass({
         if (el) {
           var pos = $(el).offset();
           // add to because of the fixed header
-          window.scrollTo(0, Math.floor(pos.top - 60));
+          window.scrollTo(0, Math.floor(pos.top - 8));
         }
       }
     }

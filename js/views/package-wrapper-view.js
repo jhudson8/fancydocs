@@ -10,10 +10,14 @@ module.exports = React.createClass({
     var pkg = this.getModel();
     var children = [];
 
-    if (!this.props.project.isEqual(pkg.project)) {
-      // it's a parent project - show the child project name
-      children.push(<h2 key="project-title" className="ui header">{pkg.project.get('title')}</h2>);
-    }
+      children.push(
+        <h2 key="project-title" className="ui header">
+          <a href={'https://github.com/' + pkg.project.get('repo') + '/' + pkg.project.get('name')} className="ui label">
+            <i className="large github alternate icon"></i>
+          </a>
+          {pkg.project.get('repo') + '/' + pkg.project.get('title')}
+        </h2>
+      );
 
     children.push.apply(children, [
       <h3 key="api" className="ui header">{pkg.get('api')}</h3>,

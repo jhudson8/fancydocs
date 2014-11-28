@@ -28,7 +28,10 @@ var data = {
 
       if (!apiNames.length) {
         return 'Packages';
+      } else if (apiNames.length === 1) {
+        return apiNames[0];
       } else {
+        apiNames.splice(apiNames.length-2, 2, apiNames[apiNames.length-2] + ' & ' + apiNames[apiNames.length-1]);
         return apiNames.join(', ');
       }
     },
@@ -73,7 +76,7 @@ module.exports = React.createClass({
 
     var children = _.compact(_.map(data, function(data, key) {
       var active = focus === key;
-      var className = active ? 'active green item' : 'item';
+      var className = active ? 'active purple item' : 'item';
       var enabled = !data.applies || data.applies(project);
       var title = _.isFunction(data.title) ? data.title(project) : data.title;
       if (enabled) {
