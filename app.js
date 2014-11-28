@@ -52,19 +52,19 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/** @jsx React.DOM */$ = __webpack_require__(12);
-	React = __webpack_require__(8);
-	_ = __webpack_require__(9);
-	Backbone = __webpack_require__(10);
+	React = __webpack_require__(11);
+	_ = __webpack_require__(7);
+	Backbone = __webpack_require__(8);
 	$script = __webpack_require__(13);
 
 	Backbone.$ = $;
-	__webpack_require__(11);
+	__webpack_require__(9);
 
 	var libs = [
 	  [__webpack_require__(4), Backbone],
 	  [__webpack_require__(5), React],
 	  [__webpack_require__(6), React],
-	  [__webpack_require__(7), React, Backbone],
+	  [__webpack_require__(10), React, Backbone],
 	];
 	_.each(libs, function(data) {
 	  var lib = data[0];
@@ -426,19 +426,6 @@
 
 /***/ },
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */module.exports = __webpack_require__(23);
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */module.exports = __webpack_require__(30);
-
-
-/***/ },
-/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *///     Underscore.js 1.7.0
@@ -1859,7 +1846,7 @@
 
 
 /***/ },
-/* 10 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *///     Backbone.js 1.1.2
@@ -3473,13 +3460,13 @@
 
 
 /***/ },
-/* 11 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM */(function (root, factory) {
 	   if (true) {
 	      // AMD. Register as an anonymous module.
-	      !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(9),__webpack_require__(10)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, Backbone) {
+	      !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(7),__webpack_require__(8)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, Backbone) {
 	        // Use global variables if the locals are undefined.
 	        return factory(_ || root._, Backbone || root.Backbone);
 	      }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -3775,6 +3762,19 @@
 	}
 
 	}));
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */module.exports = __webpack_require__(23);
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */module.exports = __webpack_require__(43);
 
 
 /***/ },
@@ -13301,12 +13301,12 @@
 	      return new PackageWrapperView({model: method.parent, project: project, showPackageDetails: true}, new MethodView({model: method}));
 	    },
 	    api: function(api, project) {
-	      var APIView = __webpack_require__(24);
+	      var APIView = __webpack_require__(26);
 	      var ProjectWrapperView = __webpack_require__(34);
 	      return new ProjectWrapperView({model: api, title: api.project.get('title'), project: project}, new APIView({model: api}));
 	    },
 	    section: function(section, project) {
-	      var SectionView = __webpack_require__(25);
+	      var SectionView = __webpack_require__(27);
 	      var ProjectWrapperView = __webpack_require__(34);
 	      return new ProjectWrapperView({model: section, title: section.project.get('title'), project: project},
 	        new SectionView({model: section, topLevel: true}));
@@ -13318,7 +13318,7 @@
 	        new SummaryView({model: project}));
 	    },
 	    project: function(project, parentProject) {
-	      var ProjectView = __webpack_require__(26);
+	      var ProjectView = __webpack_require__(28);
 	      var ProjectWrapperView = __webpack_require__(34);
 	      return new ProjectWrapperView({model: project, title: project.get('title'), project: parentProject},
 	        new ProjectView({model: project}));
@@ -13387,13 +13387,13 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(38);
+	var Markdown = __webpack_require__(30);
 	var SideNav = __webpack_require__(19);
-	var navUtil = __webpack_require__(27);
-	var SnippetView = __webpack_require__(28);
-	var APIView = __webpack_require__(24);
-	var SectionView = __webpack_require__(25);
-	var ProjectPage = __webpack_require__(26);
+	var navUtil = __webpack_require__(24);
+	var SnippetView = __webpack_require__(25);
+	var APIView = __webpack_require__(26);
+	var SectionView = __webpack_require__(27);
+	var ProjectPage = __webpack_require__(28);
 	var util = __webpack_require__(15);
 	var SideNavHeadr = __webpack_require__(29);
 
@@ -13431,16 +13431,6 @@
 
 	    return (
 	      React.DOM.div({key: 'project-' + project.id}, 
-	        React.DOM.div({id: "logo-header", key: "header", className: "ui attached message"}, 
-	          React.DOM.span({className: "github-label"}, 
-	            React.DOM.a({href: 'https://github.com/' + project.get('repo') + '/' + project.get('name'), className: "ui purple label"}, 
-	              'github.com/' + project.get('repo') + '/' + project.get('name')
-	            )
-	          ), 
-	          React.DOM.div({className: "header"}, 
-	            project.get('name')
-	          )
-	        ), 
 	        React.DOM.div(null, 
 	          SideNav({ref: "nav", key: focus, model: project, viewState: viewState, onJumpTo: this.jumpToModel, 
 	              onSnippetTo: this.snippetTo, onFocusChange: this.onFocusChange}), 
@@ -13512,7 +13502,7 @@
 	        if (el) {
 	          var pos = $(el).offset();
 	          // add to because of the fixed header
-	          window.scrollTo(0, Math.floor(pos.top - 60));
+	          window.scrollTo(0, Math.floor(pos.top - 8));
 	        }
 	      }
 	    }
@@ -13603,7 +13593,7 @@
 	    var text = this.refs.input.getDOMNode().value.trim();
 	    if (text) {
 	      try {
-	        var parsed = __webpack_require__(43)(text);
+	        var parsed = __webpack_require__(42)(text);
 	        this.setState({parsed: parsed});
 	      } catch (e) {
 	        console.error(e);
@@ -13702,10 +13692,10 @@
 	var SideNavHeader = __webpack_require__(29);
 
 	var FOCUS_MAP = {
-	  outline: __webpack_require__(39),
-	  packages: __webpack_require__(40),
-	  methods: __webpack_require__(41),
-	  projects: __webpack_require__(42),
+	  outline: __webpack_require__(38),
+	  packages: __webpack_require__(39),
+	  methods: __webpack_require__(40),
+	  projects: __webpack_require__(41),
 	};
 
 	module.exports = React.createClass({displayName: 'exports',
@@ -13782,7 +13772,7 @@
 	 */
 	(function (main) {
 	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(10), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_RESULT__ = function (Backbone, _) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(8), __webpack_require__(7)], __WEBPACK_AMD_DEFINE_RESULT__ = function (Backbone, _) {
 	      main(Backbone, _);
 	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (typeof exports !== 'undefined' && typeof require !== 'undefined') {
@@ -14692,7 +14682,7 @@
 	 */
 	 (function(main) {
 	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(44), __webpack_require__(10), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_FACTORY__ = (main), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(44), __webpack_require__(8), __webpack_require__(7)], __WEBPACK_AMD_DEFINE_FACTORY__ = (main), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (typeof exports !== 'undefined' && typeof require !== 'undefined') {
 	    module.exports = function(React, Backbone) {
 	      main(React, Backbone, require('underscore'));
@@ -15417,131 +15407,6 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(38);
-	var PackageView = __webpack_require__(32);
-
-	module.exports = React.createClass({displayName: 'exports',
-	  mixins: ['modelAware'],
-
-	  render: function() {
-	    var api = this.getModel();
-	    var apiId = api.domId();
-
-	    var packages = api.map(function(pkg, name) {
-	      return PackageView({model: pkg})
-	    }, this);
-
-	    return (
-	      React.DOM.div({className: "main-section"}, 
-	        React.DOM.h3({className: "ui header", id: apiId}, api.name), 
-	        React.DOM.div({className: "ui divider"}), 
-	        Markdown({body: api.description}), 
-	        packages
-	      )
-	    );
-	  }
-	});
-
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//** @jsx React.DOM */
-
-	var Markdown = __webpack_require__(38);
-
-	module.exports = React.createClass({displayName: 'exports',
-	  mixins: ['modelAware'],
-
-	  render: function() {
-	    var section = this.getModel();
-	    var level = (this.props.level || 3);
-	    var title = React.DOM['h' + (level)]({className: 'ui header'}, section.get('title'));
-	    var divider = (this.props.topLevel) ? (React.DOM.div({className: "ui divider"})) : undefined;
-
-	    var children = section.sections && section.sections.map(function(section) {
-	      return new module.exports({model: section, topLevel: false, level: level + 1});
-	    });
-
-	    return (
-	      React.DOM.div({id: section.domId(), key: 'section-' + section.id}, 
-	        title, 
-	        divider, 
-	        Markdown({className: "content", body: section.get('body')}), 
-	        children
-	      )
-	    );
-	  }
-	});
-
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//** @jsx React.DOM */
-
-	var Markdown = __webpack_require__(38);
-	var navUtil = __webpack_require__(27);
-	var SnippetView = __webpack_require__(28);
-	var APIView = __webpack_require__(24);
-	var SectionView = __webpack_require__(25);
-	var SummaryView = __webpack_require__(35);
-	var util = __webpack_require__(15);
-
-	module.exports = React.createClass({displayName: 'exports',
-	  mixins: ['modelAware'],
-
-	  render: function() {
-
-	    var project = this.getModel();
-	    var children = [];
-	    var viewState = this.props.viewState;
-
-	    var installationView;
-	    if (project.get('installation')) {
-	      installationView = (
-	        React.DOM.div({className: "main-section"}, 
-	          React.DOM.h3({className: "ui header", id: "installation"}, "Installation"), 
-	          React.DOM.div({className: "ui divider"}), 
-	          Markdown({body: project.get('installation')})
-	        )
-	      );
-	    }
-
-	    _.each(project.api, function(api, name) {
-	      children.push(new APIView({model: api}));
-	    }, this);
-
-	    return (
-	      React.DOM.div(null, 
-	        SummaryView({model: project}), 
-	        installationView, 
-	        children, 
-	        ProjectSectionList({model: project})
-	      )
-	    );
-	  }
-	});
-
-	var ProjectSectionList = React.createClass({displayName: 'ProjectSectionList',
-	  mixins: ['modelAware'],
-	  render: function() {
-	    var project = this.getModel();
-	    var children = project.sections && project.sections.map(function(section) {
-	      return new SectionView({model: section, topLevel: true, level: 3, key: section.id});
-	    });
-	    return React.DOM.div({className: "main-section"}, children)
-	  }
-	});
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//** @jsx React.DOM */
-
 	var util = __webpack_require__(15);
 
 	var KEY_UP = 38;
@@ -15622,7 +15487,7 @@
 	  _.each(navItems, function(navItem) {
 	    var model = navItem.model;  
 	    var hilighted = options.allowHilight && hilightModel && ((hilightModel.isEqual && hilightModel.isEqual(model)) || hilightModel === model);
-	    var className = (hilighted ? ' active green ' : '') + (navItem.className || '');
+	    var className = (hilighted ? ' active purple ' : '') + (navItem.className || '');
 	    var url = navItem.url || model && model.viewUrl && model.viewUrl(false, !options.snippet);
 	    var onClick = model && (options.snippet ? util.snippetTo(navItem.type, navItem.model, self) : options.jumpTo && util.jumpTo(model, self));
 	    var icon = navItem.icon && React.DOM.i({className: navItem.icon + ' icon'});
@@ -15776,7 +15641,7 @@
 
 
 /***/ },
-/* 28 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
@@ -15796,12 +15661,10 @@
 	    var url = model.viewUrl(false, true);
 
 	    return (
-	      React.DOM.div(null, 
-	        React.DOM.div({className: "pad-all"}, 
-	          sub, 
-	          React.DOM.br(null), 
-	          React.DOM.a({href: url, onClick: util.jumpTo(model, this)}, "View all ", modelProject.get('name'), " details")
-	        )
+	      React.DOM.div({className: "pad-all"}, 
+	        sub, 
+	        React.DOM.br(null), 
+	        React.DOM.a({href: url, onClick: util.jumpTo(model, this)}, "View all ", modelProject.get('name'), " details")
 	      )
 	    );
 	  }
@@ -15809,12 +15672,137 @@
 
 
 /***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//** @jsx React.DOM */
+
+	var Markdown = __webpack_require__(30);
+	var PackageView = __webpack_require__(32);
+
+	module.exports = React.createClass({displayName: 'exports',
+	  mixins: ['modelAware'],
+
+	  render: function() {
+	    var api = this.getModel();
+	    var apiId = api.domId();
+
+	    var packages = api.map(function(pkg, name) {
+	      return PackageView({model: pkg})
+	    }, this);
+
+	    return (
+	      React.DOM.div({className: "main-section"}, 
+	        React.DOM.h3({className: "ui header", id: apiId}, api.name), 
+	        React.DOM.div({className: "ui divider"}), 
+	        Markdown({body: api.description}), 
+	        packages
+	      )
+	    );
+	  }
+	});
+
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//** @jsx React.DOM */
+
+	var Markdown = __webpack_require__(30);
+
+	module.exports = React.createClass({displayName: 'exports',
+	  mixins: ['modelAware'],
+
+	  render: function() {
+	    var section = this.getModel();
+	    var level = (this.props.level || 3);
+	    var title = React.DOM['h' + (level)]({className: 'ui header'}, section.get('title'));
+	    var divider = (this.props.topLevel) ? (React.DOM.div({className: "ui divider"})) : undefined;
+
+	    var children = section.sections && section.sections.map(function(section) {
+	      return new module.exports({model: section, topLevel: false, level: level + 1});
+	    });
+
+	    return (
+	      React.DOM.div({id: section.domId(), key: 'section-' + section.id}, 
+	        title, 
+	        divider, 
+	        Markdown({className: "content", body: section.get('body')}), 
+	        children
+	      )
+	    );
+	  }
+	});
+
+
+/***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//** @jsx React.DOM */
+
+	var Markdown = __webpack_require__(30);
+	var navUtil = __webpack_require__(24);
+	var SnippetView = __webpack_require__(25);
+	var APIView = __webpack_require__(26);
+	var SectionView = __webpack_require__(27);
+	var SummaryView = __webpack_require__(35);
+	var util = __webpack_require__(15);
+
+	module.exports = React.createClass({displayName: 'exports',
+	  mixins: ['modelAware'],
+
+	  render: function() {
+
+	    var project = this.getModel();
+	    var children = [];
+	    var viewState = this.props.viewState;
+
+	    var installationView;
+	    if (project.get('installation')) {
+	      installationView = (
+	        React.DOM.div({className: "main-section"}, 
+	          React.DOM.h3({className: "ui header", id: "installation"}, "Installation"), 
+	          React.DOM.div({className: "ui divider"}), 
+	          Markdown({body: project.get('installation')})
+	        )
+	      );
+	    }
+
+	    _.each(project.api, function(api, name) {
+	      children.push(new APIView({model: api}));
+	    }, this);
+
+	    return (
+	      React.DOM.div(null, 
+	        SummaryView({model: project}), 
+	        installationView, 
+	        children, 
+	        ProjectSectionList({model: project})
+	      )
+	    );
+	  }
+	});
+
+	var ProjectSectionList = React.createClass({displayName: 'ProjectSectionList',
+	  mixins: ['modelAware'],
+	  render: function() {
+	    var project = this.getModel();
+	    var children = project.sections && project.sections.map(function(section) {
+	      return new SectionView({model: section, topLevel: true, level: 3, key: section.id});
+	    });
+	    return React.DOM.div({className: "main-section"}, children)
+	  }
+	});
+
+/***/ },
 /* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var util = __webpack_require__(27);
+	var util = __webpack_require__(24);
 
 	var data = {
 	  outline: {
@@ -15842,7 +15830,10 @@
 
 	      if (!apiNames.length) {
 	        return 'Packages';
+	      } else if (apiNames.length === 1) {
+	        return apiNames[0];
 	      } else {
+	        apiNames.splice(apiNames.length-2, 2, apiNames[apiNames.length-2] + ' & ' + apiNames[apiNames.length-1]);
 	        return apiNames.join(', ');
 	      }
 	    },
@@ -15887,7 +15878,7 @@
 
 	    var children = _.compact(_.map(data, function(data, key) {
 	      var active = focus === key;
-	      var className = active ? 'active green item' : 'item';
+	      var className = active ? 'active purple item' : 'item';
 	      var enabled = !data.applies || data.applies(project);
 	      var title = _.isFunction(data.title) ? data.title(project) : data.title;
 	      if (enabled) {
@@ -15964,64 +15955,31 @@
 /* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule ReactWithAddons
-	 */
+	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	/**
-	 * This module exists purely in the open source project, and is meant as a way
-	 * to create a separate standalone build of React. This build has "addons", or
-	 * functionality we've built and think might be useful but doesn't have a good
-	 * place to live inside React core.
-	 */
+	var converter = new Showdown.converter();
 
-	"use strict";
+	module.exports = React.createClass({displayName: 'exports',
+	  getInitialState: function() {
+	    return {
+	      id: this.props.id || _.uniqueId('md-')
+	    };
+	  },
+	  render: function() {
+	    var Container = React.DOM[this.props.tag || 'div'];
+	    var html = converter.makeHtml(
+	      this.props.body || (this.props.children && this.props.children.toString()) || '').replace(/id=\"[^"]*"/g, '');
+	    
+	    return (
+	      Container({key: this.state.id, id: this.props.id}, 
+	        React.DOM.div({className: this.props.className, dangerouslySetInnerHTML: {__html: html}})
+	      )
+	    );
+	  },
 
-	var LinkedStateMixin = __webpack_require__(51);
-	var React = __webpack_require__(52);
-	var ReactComponentWithPureRenderMixin =
-	  __webpack_require__(53);
-	var ReactCSSTransitionGroup = __webpack_require__(54);
-	var ReactTransitionGroup = __webpack_require__(55);
 
-	var cx = __webpack_require__(56);
-	var cloneWithProps = __webpack_require__(57);
-	var update = __webpack_require__(58);
+	});
 
-	React.addons = {
-	  CSSTransitionGroup: ReactCSSTransitionGroup,
-	  LinkedStateMixin: LinkedStateMixin,
-	  PureRenderMixin: ReactComponentWithPureRenderMixin,
-	  TransitionGroup: ReactTransitionGroup,
-
-	  classSet: cx,
-	  cloneWithProps: cloneWithProps,
-	  update: update
-	};
-
-	if ("production" !== process.env.NODE_ENV) {
-	  React.addons.Perf = __webpack_require__(59);
-	  React.addons.TestUtils = __webpack_require__(60);
-	}
-
-	module.exports = React;
-
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 31 */
@@ -16029,8 +15987,8 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var navUtil = __webpack_require__(27);
-	var Markdown = __webpack_require__(38);
+	var navUtil = __webpack_require__(24);
+	var Markdown = __webpack_require__(30);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelAware'],
@@ -16039,10 +15997,14 @@
 	    var pkg = this.getModel();
 	    var children = [];
 
-	    if (!this.props.project.isEqual(pkg.project)) {
-	      // it's a parent project - show the child project name
-	      children.push(React.DOM.h2({key: "project-title", className: "ui header"}, pkg.project.get('title')));
-	    }
+	      children.push(
+	        React.DOM.h2({key: "project-title", className: "ui header"}, 
+	          React.DOM.a({href: 'https://github.com/' + pkg.project.get('repo') + '/' + pkg.project.get('name'), className: "ui label"}, 
+	            React.DOM.i({className: "large github alternate icon"})
+	          ), 
+	          pkg.project.get('repo') + '/' + pkg.project.get('title')
+	        )
+	      );
 
 	    children.push.apply(children, [
 	      React.DOM.h3({key: "api", className: "ui header"}, pkg.get('api')),
@@ -16073,9 +16035,9 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var navUtil = __webpack_require__(27);
+	var navUtil = __webpack_require__(24);
 	var MethodView = __webpack_require__(33);
-	var Markdown = __webpack_require__(38);
+	var Markdown = __webpack_require__(30);
 
 
 	module.exports =  React.createClass({displayName: 'exports',
@@ -16113,8 +16075,8 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var navUtil = __webpack_require__(27);
-	var Markdown = __webpack_require__(38);
+	var navUtil = __webpack_require__(24);
+	var Markdown = __webpack_require__(30);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelAware'],
@@ -16170,9 +16132,9 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var navUtil = __webpack_require__(27);
-	var Markdown = __webpack_require__(38);
-	var APIView = __webpack_require__(24);
+	var navUtil = __webpack_require__(24);
+	var Markdown = __webpack_require__(30);
+	var APIView = __webpack_require__(26);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelAware'],
@@ -16195,7 +16157,7 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(38);
+	var Markdown = __webpack_require__(30);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelAware'],
@@ -16205,6 +16167,13 @@
 
 	    return (
 	      React.DOM.div({className: "sub header project-summary"}, 
+	        React.DOM.h2({key: "project-title", className: "ui header"}, 
+	          React.DOM.a({href: 'https://github.com/' + project.get('repo') + '/' + project.get('name'), className: "ui label"}, 
+	            React.DOM.i({className: "large github alternate icon"})
+	          ), 
+	          project.get('repo') + '/' + project.get('title')
+	        ), 
+
 	        Markdown({tag: "p", body: project.get('summary')}), 
 	        BundledProjectsList({model: project})
 	      )
@@ -16452,37 +16421,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
-
-	var converter = new Showdown.converter();
-
-	module.exports = React.createClass({displayName: 'exports',
-	  getInitialState: function() {
-	    return {
-	      id: this.props.id || _.uniqueId('md-')
-	    };
-	  },
-	  render: function() {
-	    var Container = React.DOM[this.props.tag || 'div'];
-	    var html = converter.makeHtml(
-	      this.props.body || (this.props.children && this.props.children.toString()) || '').replace(/id=\"[^"]*"/g, '');
-	    
-	    return (
-	      Container({key: this.state.id, id: this.props.id}, 
-	        React.DOM.div({className: this.props.className, dangerouslySetInnerHTML: {__html: html}})
-	      )
-	    );
-	  },
-
-
-	});
-
-
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//** @jsx React.DOM */
-	var navUtil = __webpack_require__(27);
+	var navUtil = __webpack_require__(24);
 	var util = __webpack_require__(15);
 
 	module.exports = React.createClass({displayName: 'exports',
@@ -16599,11 +16538,11 @@
 
 
 /***/ },
-/* 40 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
-	var util = __webpack_require__(27);
+	var util = __webpack_require__(24);
 
 	// FIXME use util to DRY up with side-nav-methods
 	module.exports = React.createClass({displayName: 'exports',
@@ -16656,11 +16595,11 @@
 
 
 /***/ },
-/* 41 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
-	var util = __webpack_require__(27);
+	var util = __webpack_require__(24);
 
 	// FIXME use util to DRY up with side-nav-packages
 	module.exports = React.createClass({displayName: 'exports',
@@ -16713,11 +16652,11 @@
 
 
 /***/ },
-/* 42 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
-	var util = __webpack_require__(27);
+	var util = __webpack_require__(24);
 	var projectManager = __webpack_require__(14);
 
 	module.exports = React.createClass({displayName: 'exports',
@@ -16746,7 +16685,7 @@
 
 
 /***/ },
-/* 43 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var util = __webpack_require__(61);
@@ -16863,10 +16802,73 @@
 
 
 /***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule ReactWithAddons
+	 */
+
+	/**
+	 * This module exists purely in the open source project, and is meant as a way
+	 * to create a separate standalone build of React. This build has "addons", or
+	 * functionality we've built and think might be useful but doesn't have a good
+	 * place to live inside React core.
+	 */
+
+	"use strict";
+
+	var LinkedStateMixin = __webpack_require__(52);
+	var React = __webpack_require__(51);
+	var ReactComponentWithPureRenderMixin =
+	  __webpack_require__(53);
+	var ReactCSSTransitionGroup = __webpack_require__(54);
+	var ReactTransitionGroup = __webpack_require__(55);
+
+	var cx = __webpack_require__(56);
+	var cloneWithProps = __webpack_require__(57);
+	var update = __webpack_require__(58);
+
+	React.addons = {
+	  CSSTransitionGroup: ReactCSSTransitionGroup,
+	  LinkedStateMixin: LinkedStateMixin,
+	  PureRenderMixin: ReactComponentWithPureRenderMixin,
+	  TransitionGroup: ReactTransitionGroup,
+
+	  classSet: cx,
+	  cloneWithProps: cloneWithProps,
+	  update: update
+	};
+
+	if ("production" !== process.env.NODE_ENV) {
+	  React.addons.Perf = __webpack_require__(59);
+	  React.addons.TestUtils = __webpack_require__(60);
+	}
+
+	module.exports = React;
+
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
+
+/***/ },
 /* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM */module.exports = __webpack_require__(52);
+	/** @jsx React.DOM */module.exports = __webpack_require__(51);
 
 
 /***/ },
@@ -18327,7 +18329,7 @@
 /* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM */var Section = __webpack_require__(66);
+	/** @jsx React.DOM */var Section = __webpack_require__(65);
 
 	module.exports = Backbone.Collection.extend({
 	  model: Section,
@@ -18445,58 +18447,6 @@
 /* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule LinkedStateMixin
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	var ReactLink = __webpack_require__(67);
-	var ReactStateSetters = __webpack_require__(68);
-
-	/**
-	 * A simple mixin around ReactLink.forState().
-	 */
-	var LinkedStateMixin = {
-	  /**
-	   * Create a ReactLink that's linked to part of this component's state. The
-	   * ReactLink will have the current value of this.state[key] and will call
-	   * setState() when a change is requested.
-	   *
-	   * @param {string} key state key to update. Note: you may want to use keyOf()
-	   * if you're using Google Closure Compiler advanced mode.
-	   * @return {ReactLink} ReactLink instance linking to the state.
-	   */
-	  linkState: function(key) {
-	    return new ReactLink(
-	      this.state[key],
-	      ReactStateSetters.createStateKeySetter(this, key)
-	    );
-	  }
-	};
-
-	module.exports = LinkedStateMixin;
-
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
 	 * Copyright 2013-2014 Facebook, Inc.
 	 *
@@ -18517,27 +18467,27 @@
 
 	"use strict";
 
-	var DOMPropertyOperations = __webpack_require__(69);
-	var EventPluginUtils = __webpack_require__(70);
-	var ReactChildren = __webpack_require__(71);
-	var ReactComponent = __webpack_require__(72);
-	var ReactCompositeComponent = __webpack_require__(73);
-	var ReactContext = __webpack_require__(74);
-	var ReactCurrentOwner = __webpack_require__(75);
-	var ReactDescriptor = __webpack_require__(76);
-	var ReactDOM = __webpack_require__(77);
-	var ReactDOMComponent = __webpack_require__(78);
-	var ReactDefaultInjection = __webpack_require__(79);
-	var ReactInstanceHandles = __webpack_require__(80);
-	var ReactMount = __webpack_require__(81);
-	var ReactMultiChild = __webpack_require__(82);
-	var ReactPerf = __webpack_require__(83);
-	var ReactPropTypes = __webpack_require__(84);
-	var ReactServerRendering = __webpack_require__(85);
-	var ReactTextComponent = __webpack_require__(86);
+	var DOMPropertyOperations = __webpack_require__(66);
+	var EventPluginUtils = __webpack_require__(67);
+	var ReactChildren = __webpack_require__(68);
+	var ReactComponent = __webpack_require__(69);
+	var ReactCompositeComponent = __webpack_require__(70);
+	var ReactContext = __webpack_require__(71);
+	var ReactCurrentOwner = __webpack_require__(72);
+	var ReactDescriptor = __webpack_require__(73);
+	var ReactDOM = __webpack_require__(74);
+	var ReactDOMComponent = __webpack_require__(75);
+	var ReactDefaultInjection = __webpack_require__(76);
+	var ReactInstanceHandles = __webpack_require__(77);
+	var ReactMount = __webpack_require__(78);
+	var ReactMultiChild = __webpack_require__(79);
+	var ReactPerf = __webpack_require__(80);
+	var ReactPropTypes = __webpack_require__(81);
+	var ReactServerRendering = __webpack_require__(82);
+	var ReactTextComponent = __webpack_require__(83);
 
-	var onlyChild = __webpack_require__(87);
-	var warning = __webpack_require__(88);
+	var onlyChild = __webpack_require__(84);
+	var warning = __webpack_require__(85);
 
 	ReactDefaultInjection.inject();
 
@@ -18604,7 +18554,7 @@
 	};
 
 	if ("production" !== process.env.NODE_ENV) {
-	  var ExecutionEnvironment = __webpack_require__(89);
+	  var ExecutionEnvironment = __webpack_require__(86);
 	  if (ExecutionEnvironment.canUseDOM &&
 	      window.top === window.self &&
 	      navigator.userAgent.indexOf('Chrome') > -1) {
@@ -18649,7 +18599,59 @@
 
 	module.exports = React;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule LinkedStateMixin
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	var ReactLink = __webpack_require__(88);
+	var ReactStateSetters = __webpack_require__(89);
+
+	/**
+	 * A simple mixin around ReactLink.forState().
+	 */
+	var LinkedStateMixin = {
+	  /**
+	   * Create a ReactLink that's linked to part of this component's state. The
+	   * ReactLink will have the current value of this.state[key] and will call
+	   * setState() when a change is requested.
+	   *
+	   * @param {string} key state key to update. Note: you may want to use keyOf()
+	   * if you're using Google Closure Compiler advanced mode.
+	   * @return {ReactLink} ReactLink instance linking to the state.
+	   */
+	  linkState: function(key) {
+	    return new ReactLink(
+	      this.state[key],
+	      ReactStateSetters.createStateKeySetter(this, key)
+	    );
+	  }
+	};
+
+	module.exports = LinkedStateMixin;
+
 
 /***/ },
 /* 53 */
@@ -18736,7 +18738,7 @@
 
 	"use strict";
 
-	var React = __webpack_require__(52);
+	var React = __webpack_require__(51);
 
 	var ReactTransitionGroup = __webpack_require__(55);
 	var ReactCSSTransitionGroupChild = __webpack_require__(91);
@@ -18808,7 +18810,7 @@
 
 	"use strict";
 
-	var React = __webpack_require__(52);
+	var React = __webpack_require__(51);
 	var ReactTransitionChildMapping = __webpack_require__(92);
 
 	var cloneWithProps = __webpack_require__(57);
@@ -19058,7 +19060,7 @@
 	var ReactPropTransferer = __webpack_require__(95);
 
 	var keyOf = __webpack_require__(96);
-	var warning = __webpack_require__(88);
+	var warning = __webpack_require__(85);
 
 	var CHILDREN_PROP = keyOf({children: null});
 
@@ -19096,7 +19098,7 @@
 
 	module.exports = cloneWithProps;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 58 */
@@ -19274,7 +19276,7 @@
 
 	module.exports = update;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 59 */
@@ -19303,8 +19305,8 @@
 
 	var DOMProperty = __webpack_require__(99);
 	var ReactDefaultPerfAnalysis = __webpack_require__(100);
-	var ReactMount = __webpack_require__(81);
-	var ReactPerf = __webpack_require__(83);
+	var ReactMount = __webpack_require__(78);
+	var ReactPerf = __webpack_require__(80);
 
 	var performanceNow = __webpack_require__(101);
 
@@ -19570,12 +19572,12 @@
 	var EventConstants = __webpack_require__(102);
 	var EventPluginHub = __webpack_require__(103);
 	var EventPropagators = __webpack_require__(104);
-	var React = __webpack_require__(52);
-	var ReactDescriptor = __webpack_require__(76);
-	var ReactDOM = __webpack_require__(77);
+	var React = __webpack_require__(51);
+	var ReactDescriptor = __webpack_require__(73);
+	var ReactDOM = __webpack_require__(74);
 	var ReactBrowserEventEmitter = __webpack_require__(105);
-	var ReactMount = __webpack_require__(81);
-	var ReactTextComponent = __webpack_require__(86);
+	var ReactMount = __webpack_require__(78);
+	var ReactTextComponent = __webpack_require__(83);
 	var ReactUpdates = __webpack_require__(106);
 	var SyntheticEvent = __webpack_require__(107);
 
@@ -20275,98 +20277,6 @@
 /* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM */// shim for using process in browser
-
-	var process = module.exports = {};
-
-	process.nextTick = (function () {
-	    var canSetImmediate = typeof window !== 'undefined'
-	    && window.setImmediate;
-	    var canMutationObserver = typeof window !== 'undefined'
-	    && window.MutationObserver;
-	    var canPost = typeof window !== 'undefined'
-	    && window.postMessage && window.addEventListener
-	    ;
-
-	    if (canSetImmediate) {
-	        return function (f) { return window.setImmediate(f) };
-	    }
-
-	    var queue = [];
-
-	    if (canMutationObserver) {
-	        var hiddenDiv = document.createElement("div");
-	        var observer = new MutationObserver(function () {
-	            var queueList = queue.slice();
-	            queue.length = 0;
-	            queueList.forEach(function (fn) {
-	                fn();
-	            });
-	        });
-
-	        observer.observe(hiddenDiv, { attributes: true });
-
-	        return function nextTick(fn) {
-	            if (!queue.length) {
-	                hiddenDiv.setAttribute('yes', 'no');
-	            }
-	            queue.push(fn);
-	        };
-	    }
-
-	    if (canPost) {
-	        window.addEventListener('message', function (ev) {
-	            var source = ev.source;
-	            if ((source === window || source === null) && ev.data === 'process-tick') {
-	                ev.stopPropagation();
-	                if (queue.length > 0) {
-	                    var fn = queue.shift();
-	                    fn();
-	                }
-	            }
-	        }, true);
-
-	        return function nextTick(fn) {
-	            queue.push(fn);
-	            window.postMessage('process-tick', '*');
-	        };
-	    }
-
-	    return function nextTick(fn) {
-	        setTimeout(fn, 0);
-	    };
-	})();
-
-	process.title = 'browser';
-	process.browser = true;
-	process.env = {};
-	process.argv = [];
-
-	function noop() {}
-
-	process.on = noop;
-	process.addListener = noop;
-	process.once = noop;
-	process.off = noop;
-	process.removeListener = noop;
-	process.removeAllListeners = noop;
-	process.emit = noop;
-
-	process.binding = function (name) {
-	    throw new Error('process.binding is not supported');
-	};
-
-	// TODO(shtylman)
-	process.cwd = function () { return '/' };
-	process.chdir = function (dir) {
-	    throw new Error('process.chdir is not supported');
-	};
-
-
-/***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/** @jsx React.DOM */var util = __webpack_require__(15);
 
 	module.exports = Backbone.Model.extend({
@@ -20409,208 +20319,7 @@
 
 
 /***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule ReactLink
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	/**
-	 * ReactLink encapsulates a common pattern in which a component wants to modify
-	 * a prop received from its parent. ReactLink allows the parent to pass down a
-	 * value coupled with a callback that, when invoked, expresses an intent to
-	 * modify that value. For example:
-	 *
-	 * React.createClass({
-	 *   getInitialState: function() {
-	 *     return {value: ''};
-	 *   },
-	 *   render: function() {
-	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
-	 *     return <input valueLink={valueLink} />;
-	 *   },
-	 *   this._handleValueChange: function(newValue) {
-	 *     this.setState({value: newValue});
-	 *   }
-	 * });
-	 *
-	 * We have provided some sugary mixins to make the creation and
-	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
-	 */
-
-	var React = __webpack_require__(52);
-
-	/**
-	 * @param {*} value current value of the link
-	 * @param {function} requestChange callback to request a change
-	 */
-	function ReactLink(value, requestChange) {
-	  this.value = value;
-	  this.requestChange = requestChange;
-	}
-
-	/**
-	 * Creates a PropType that enforces the ReactLink API and optionally checks the
-	 * type of the value being passed inside the link. Example:
-	 *
-	 * MyComponent.propTypes = {
-	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
-	 * }
-	 */
-	function createLinkTypeChecker(linkType) {
-	  var shapes = {
-	    value: typeof linkType === 'undefined' ?
-	      React.PropTypes.any.isRequired :
-	      linkType.isRequired,
-	    requestChange: React.PropTypes.func.isRequired
-	  };
-	  return React.PropTypes.shape(shapes);
-	}
-
-	ReactLink.PropTypes = {
-	  link: createLinkTypeChecker
-	};
-
-	module.exports = ReactLink;
-
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule ReactStateSetters
-	 */
-
-	"use strict";
-
-	var ReactStateSetters = {
-	  /**
-	   * Returns a function that calls the provided function, and uses the result
-	   * of that to set the component's state.
-	   *
-	   * @param {ReactCompositeComponent} component
-	   * @param {function} funcReturningState Returned callback uses this to
-	   *                                      determine how to update state.
-	   * @return {function} callback that when invoked uses funcReturningState to
-	   *                    determined the object literal to setState.
-	   */
-	  createStateSetter: function(component, funcReturningState) {
-	    return function(a, b, c, d, e, f) {
-	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
-	      if (partialState) {
-	        component.setState(partialState);
-	      }
-	    };
-	  },
-
-	  /**
-	   * Returns a single-argument callback that can be used to update a single
-	   * key in the component's state.
-	   *
-	   * Note: this is memoized function, which makes it inexpensive to call.
-	   *
-	   * @param {ReactCompositeComponent} component
-	   * @param {string} key The key in the state that you should update.
-	   * @return {function} callback of 1 argument which calls setState() with
-	   *                    the provided keyName and callback argument.
-	   */
-	  createStateKeySetter: function(component, key) {
-	    // Memoize the setters.
-	    var cache = component.__keySetters || (component.__keySetters = {});
-	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
-	  }
-	};
-
-	function createStateKeySetter(component, key) {
-	  // Partial state is allocated outside of the function closure so it can be
-	  // reused with every call, avoiding memory allocation when this function
-	  // is called.
-	  var partialState = {};
-	  return function stateKeySetter(value) {
-	    partialState[key] = value;
-	    component.setState(partialState);
-	  };
-	}
-
-	ReactStateSetters.Mixin = {
-	  /**
-	   * Returns a function that calls the provided function, and uses the result
-	   * of that to set the component's state.
-	   *
-	   * For example, these statements are equivalent:
-	   *
-	   *   this.setState({x: 1});
-	   *   this.createStateSetter(function(xValue) {
-	   *     return {x: xValue};
-	   *   })(1);
-	   *
-	   * @param {function} funcReturningState Returned callback uses this to
-	   *                                      determine how to update state.
-	   * @return {function} callback that when invoked uses funcReturningState to
-	   *                    determined the object literal to setState.
-	   */
-	  createStateSetter: function(funcReturningState) {
-	    return ReactStateSetters.createStateSetter(this, funcReturningState);
-	  },
-
-	  /**
-	   * Returns a single-argument callback that can be used to update a single
-	   * key in the component's state.
-	   *
-	   * For example, these statements are equivalent:
-	   *
-	   *   this.setState({x: 1});
-	   *   this.createStateKeySetter('x')(1);
-	   *
-	   * Note: this is memoized function, which makes it inexpensive to call.
-	   *
-	   * @param {string} key The key in the state that you should update.
-	   * @return {function} callback of 1 argument which calls setState() with
-	   *                    the provided keyName and callback argument.
-	   */
-	  createStateKeySetter: function(key) {
-	    return ReactStateSetters.createStateKeySetter(this, key);
-	  }
-	};
-
-	module.exports = ReactStateSetters;
-
-
-/***/ },
-/* 69 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -20638,7 +20347,7 @@
 
 	var escapeTextForBrowser = __webpack_require__(109);
 	var memoizeStringOnly = __webpack_require__(110);
-	var warning = __webpack_require__(88);
+	var warning = __webpack_require__(85);
 
 	function shouldIgnoreValue(name, value) {
 	  return value == null ||
@@ -20807,10 +20516,10 @@
 
 	module.exports = DOMPropertyOperations;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 70 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -21038,10 +20747,10 @@
 
 	module.exports = EventPluginUtils;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 71 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -21067,7 +20776,7 @@
 	var PooledClass = __webpack_require__(111);
 
 	var traverseAllChildren = __webpack_require__(112);
-	var warning = __webpack_require__(88);
+	var warning = __webpack_require__(85);
 
 	var twoArgumentPooler = PooledClass.twoArgumentPooler;
 	var threeArgumentPooler = PooledClass.threeArgumentPooler;
@@ -21198,10 +20907,10 @@
 
 	module.exports = ReactChildren;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 72 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -21224,7 +20933,7 @@
 
 	"use strict";
 
-	var ReactDescriptor = __webpack_require__(76);
+	var ReactDescriptor = __webpack_require__(73);
 	var ReactOwner = __webpack_require__(113);
 	var ReactUpdates = __webpack_require__(106);
 
@@ -21651,10 +21360,10 @@
 
 	module.exports = ReactComponent;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 73 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -21677,15 +21386,15 @@
 
 	"use strict";
 
-	var ReactComponent = __webpack_require__(72);
-	var ReactContext = __webpack_require__(74);
-	var ReactCurrentOwner = __webpack_require__(75);
-	var ReactDescriptor = __webpack_require__(76);
+	var ReactComponent = __webpack_require__(69);
+	var ReactContext = __webpack_require__(71);
+	var ReactCurrentOwner = __webpack_require__(72);
+	var ReactDescriptor = __webpack_require__(73);
 	var ReactDescriptorValidator = __webpack_require__(115);
 	var ReactEmptyComponent = __webpack_require__(116);
 	var ReactErrorUtils = __webpack_require__(117);
 	var ReactOwner = __webpack_require__(113);
-	var ReactPerf = __webpack_require__(83);
+	var ReactPerf = __webpack_require__(80);
 	var ReactPropTransferer = __webpack_require__(95);
 	var ReactPropTypeLocations = __webpack_require__(118);
 	var ReactPropTypeLocationNames = __webpack_require__(119);
@@ -21699,7 +21408,7 @@
 	var monitorCodeUse = __webpack_require__(122);
 	var mapObject = __webpack_require__(123);
 	var shouldUpdateReactComponent = __webpack_require__(124);
-	var warning = __webpack_require__(88);
+	var warning = __webpack_require__(85);
 
 	/**
 	 * Policies that describe methods in `ReactCompositeComponentInterface`.
@@ -23083,10 +22792,10 @@
 
 	module.exports = ReactCompositeComponent;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 74 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -23159,7 +22868,7 @@
 
 
 /***/ },
-/* 75 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -23204,7 +22913,7 @@
 
 
 /***/ },
-/* 76 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -23227,11 +22936,11 @@
 
 	"use strict";
 
-	var ReactContext = __webpack_require__(74);
-	var ReactCurrentOwner = __webpack_require__(75);
+	var ReactContext = __webpack_require__(71);
+	var ReactCurrentOwner = __webpack_require__(72);
 
 	var merge = __webpack_require__(94);
-	var warning = __webpack_require__(88);
+	var warning = __webpack_require__(85);
 
 	/**
 	 * Warn for mutations.
@@ -23459,10 +23168,10 @@
 
 	module.exports = ReactDescriptor;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 77 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -23486,9 +23195,9 @@
 
 	"use strict";
 
-	var ReactDescriptor = __webpack_require__(76);
+	var ReactDescriptor = __webpack_require__(73);
 	var ReactDescriptorValidator = __webpack_require__(115);
-	var ReactDOMComponent = __webpack_require__(78);
+	var ReactDOMComponent = __webpack_require__(75);
 
 	var mergeInto = __webpack_require__(108);
 	var mapObject = __webpack_require__(123);
@@ -23677,10 +23386,10 @@
 
 	module.exports = ReactDOM;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 78 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -23706,13 +23415,13 @@
 
 	var CSSPropertyOperations = __webpack_require__(125);
 	var DOMProperty = __webpack_require__(99);
-	var DOMPropertyOperations = __webpack_require__(69);
+	var DOMPropertyOperations = __webpack_require__(66);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactComponent = __webpack_require__(72);
+	var ReactComponent = __webpack_require__(69);
 	var ReactBrowserEventEmitter = __webpack_require__(105);
-	var ReactMount = __webpack_require__(81);
-	var ReactMultiChild = __webpack_require__(82);
-	var ReactPerf = __webpack_require__(83);
+	var ReactMount = __webpack_require__(78);
+	var ReactMultiChild = __webpack_require__(79);
+	var ReactPerf = __webpack_require__(80);
 
 	var escapeTextForBrowser = __webpack_require__(109);
 	var invariant = __webpack_require__(98);
@@ -24102,10 +23811,10 @@
 
 	module.exports = ReactDOMComponent;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 79 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -24134,14 +23843,14 @@
 	var CompositionEventPlugin = __webpack_require__(130);
 	var DefaultEventPluginOrder = __webpack_require__(131);
 	var EnterLeaveEventPlugin = __webpack_require__(132);
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(86);
 	var HTMLDOMPropertyConfig = __webpack_require__(133);
 	var MobileSafariClickEventPlugin = __webpack_require__(134);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
 	var ReactComponentBrowserEnvironment =
 	  __webpack_require__(135);
 	var ReactDefaultBatchingStrategy = __webpack_require__(136);
-	var ReactDOM = __webpack_require__(77);
+	var ReactDOM = __webpack_require__(74);
 	var ReactDOMButton = __webpack_require__(137);
 	var ReactDOMForm = __webpack_require__(138);
 	var ReactDOMImg = __webpack_require__(139);
@@ -24151,8 +23860,8 @@
 	var ReactDOMTextarea = __webpack_require__(143);
 	var ReactEventListener = __webpack_require__(144);
 	var ReactInjection = __webpack_require__(145);
-	var ReactInstanceHandles = __webpack_require__(80);
-	var ReactMount = __webpack_require__(81);
+	var ReactInstanceHandles = __webpack_require__(77);
+	var ReactMount = __webpack_require__(78);
 	var SelectEventPlugin = __webpack_require__(146);
 	var ServerReactRootIndex = __webpack_require__(147);
 	var SimpleEventPlugin = __webpack_require__(148);
@@ -24237,10 +23946,10 @@
 	  inject: inject
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 80 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -24582,10 +24291,10 @@
 
 	module.exports = ReactInstanceHandles;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 81 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -24610,17 +24319,17 @@
 
 	var DOMProperty = __webpack_require__(99);
 	var ReactBrowserEventEmitter = __webpack_require__(105);
-	var ReactCurrentOwner = __webpack_require__(75);
-	var ReactDescriptor = __webpack_require__(76);
-	var ReactInstanceHandles = __webpack_require__(80);
-	var ReactPerf = __webpack_require__(83);
+	var ReactCurrentOwner = __webpack_require__(72);
+	var ReactDescriptor = __webpack_require__(73);
+	var ReactInstanceHandles = __webpack_require__(77);
+	var ReactPerf = __webpack_require__(80);
 
 	var containsNode = __webpack_require__(152);
 	var getReactRootElementInContainer = __webpack_require__(153);
 	var instantiateReactComponent = __webpack_require__(120);
 	var invariant = __webpack_require__(98);
 	var shouldUpdateReactComponent = __webpack_require__(124);
-	var warning = __webpack_require__(88);
+	var warning = __webpack_require__(85);
 
 	var SEPARATOR = ReactInstanceHandles.SEPARATOR;
 
@@ -25270,10 +24979,10 @@
 
 	module.exports = ReactMount;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 82 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -25297,7 +25006,7 @@
 
 	"use strict";
 
-	var ReactComponent = __webpack_require__(72);
+	var ReactComponent = __webpack_require__(69);
 	var ReactMultiChildUpdateTypes = __webpack_require__(154);
 
 	var flattenChildren = __webpack_require__(155);
@@ -25709,7 +25418,7 @@
 
 
 /***/ },
-/* 83 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -25798,10 +25507,10 @@
 
 	module.exports = ReactPerf;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 84 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -25824,7 +25533,7 @@
 
 	"use strict";
 
-	var ReactDescriptor = __webpack_require__(76);
+	var ReactDescriptor = __webpack_require__(73);
 	var ReactPropTypeLocationNames = __webpack_require__(119);
 
 	var emptyFunction = __webpack_require__(93);
@@ -26150,7 +25859,7 @@
 
 
 /***/ },
-/* 85 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -26173,8 +25882,8 @@
 	 */
 	"use strict";
 
-	var ReactDescriptor = __webpack_require__(76);
-	var ReactInstanceHandles = __webpack_require__(80);
+	var ReactDescriptor = __webpack_require__(73);
+	var ReactInstanceHandles = __webpack_require__(77);
 	var ReactMarkupChecksum = __webpack_require__(156);
 	var ReactServerRenderingTransaction =
 	  __webpack_require__(157);
@@ -26243,10 +25952,10 @@
 	  renderComponentToStaticMarkup: renderComponentToStaticMarkup
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 86 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -26270,10 +25979,10 @@
 
 	"use strict";
 
-	var DOMPropertyOperations = __webpack_require__(69);
+	var DOMPropertyOperations = __webpack_require__(66);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactComponent = __webpack_require__(72);
-	var ReactDescriptor = __webpack_require__(76);
+	var ReactComponent = __webpack_require__(69);
+	var ReactDescriptor = __webpack_require__(73);
 
 	var escapeTextForBrowser = __webpack_require__(109);
 	var mixInto = __webpack_require__(121);
@@ -26359,7 +26068,7 @@
 
 
 /***/ },
-/* 87 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -26381,7 +26090,7 @@
 	 */
 	"use strict";
 
-	var ReactDescriptor = __webpack_require__(76);
+	var ReactDescriptor = __webpack_require__(73);
 
 	var invariant = __webpack_require__(98);
 
@@ -26406,10 +26115,10 @@
 
 	module.exports = onlyChild;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 88 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -26461,10 +26170,10 @@
 
 	module.exports = warning;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 89 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -26517,6 +26226,299 @@
 	};
 
 	module.exports = ExecutionEnvironment;
+
+
+/***/ },
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */// shim for using process in browser
+
+	var process = module.exports = {};
+
+	process.nextTick = (function () {
+	    var canSetImmediate = typeof window !== 'undefined'
+	    && window.setImmediate;
+	    var canMutationObserver = typeof window !== 'undefined'
+	    && window.MutationObserver;
+	    var canPost = typeof window !== 'undefined'
+	    && window.postMessage && window.addEventListener
+	    ;
+
+	    if (canSetImmediate) {
+	        return function (f) { return window.setImmediate(f) };
+	    }
+
+	    var queue = [];
+
+	    if (canMutationObserver) {
+	        var hiddenDiv = document.createElement("div");
+	        var observer = new MutationObserver(function () {
+	            var queueList = queue.slice();
+	            queue.length = 0;
+	            queueList.forEach(function (fn) {
+	                fn();
+	            });
+	        });
+
+	        observer.observe(hiddenDiv, { attributes: true });
+
+	        return function nextTick(fn) {
+	            if (!queue.length) {
+	                hiddenDiv.setAttribute('yes', 'no');
+	            }
+	            queue.push(fn);
+	        };
+	    }
+
+	    if (canPost) {
+	        window.addEventListener('message', function (ev) {
+	            var source = ev.source;
+	            if ((source === window || source === null) && ev.data === 'process-tick') {
+	                ev.stopPropagation();
+	                if (queue.length > 0) {
+	                    var fn = queue.shift();
+	                    fn();
+	                }
+	            }
+	        }, true);
+
+	        return function nextTick(fn) {
+	            queue.push(fn);
+	            window.postMessage('process-tick', '*');
+	        };
+	    }
+
+	    return function nextTick(fn) {
+	        setTimeout(fn, 0);
+	    };
+	})();
+
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+
+	function noop() {}
+
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	};
+
+	// TODO(shtylman)
+	process.cwd = function () { return '/' };
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+
+
+/***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule ReactLink
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	/**
+	 * ReactLink encapsulates a common pattern in which a component wants to modify
+	 * a prop received from its parent. ReactLink allows the parent to pass down a
+	 * value coupled with a callback that, when invoked, expresses an intent to
+	 * modify that value. For example:
+	 *
+	 * React.createClass({
+	 *   getInitialState: function() {
+	 *     return {value: ''};
+	 *   },
+	 *   render: function() {
+	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
+	 *     return <input valueLink={valueLink} />;
+	 *   },
+	 *   this._handleValueChange: function(newValue) {
+	 *     this.setState({value: newValue});
+	 *   }
+	 * });
+	 *
+	 * We have provided some sugary mixins to make the creation and
+	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
+	 */
+
+	var React = __webpack_require__(51);
+
+	/**
+	 * @param {*} value current value of the link
+	 * @param {function} requestChange callback to request a change
+	 */
+	function ReactLink(value, requestChange) {
+	  this.value = value;
+	  this.requestChange = requestChange;
+	}
+
+	/**
+	 * Creates a PropType that enforces the ReactLink API and optionally checks the
+	 * type of the value being passed inside the link. Example:
+	 *
+	 * MyComponent.propTypes = {
+	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
+	 * }
+	 */
+	function createLinkTypeChecker(linkType) {
+	  var shapes = {
+	    value: typeof linkType === 'undefined' ?
+	      React.PropTypes.any.isRequired :
+	      linkType.isRequired,
+	    requestChange: React.PropTypes.func.isRequired
+	  };
+	  return React.PropTypes.shape(shapes);
+	}
+
+	ReactLink.PropTypes = {
+	  link: createLinkTypeChecker
+	};
+
+	module.exports = ReactLink;
+
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule ReactStateSetters
+	 */
+
+	"use strict";
+
+	var ReactStateSetters = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function(component, funcReturningState) {
+	    return function(a, b, c, d, e, f) {
+	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
+	      if (partialState) {
+	        component.setState(partialState);
+	      }
+	    };
+	  },
+
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function(component, key) {
+	    // Memoize the setters.
+	    var cache = component.__keySetters || (component.__keySetters = {});
+	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
+	  }
+	};
+
+	function createStateKeySetter(component, key) {
+	  // Partial state is allocated outside of the function closure so it can be
+	  // reused with every call, avoiding memory allocation when this function
+	  // is called.
+	  var partialState = {};
+	  return function stateKeySetter(value) {
+	    partialState[key] = value;
+	    component.setState(partialState);
+	  };
+	}
+
+	ReactStateSetters.Mixin = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateSetter(function(xValue) {
+	   *     return {x: xValue};
+	   *   })(1);
+	   *
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function(funcReturningState) {
+	    return ReactStateSetters.createStateSetter(this, funcReturningState);
+	  },
+
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateKeySetter('x')(1);
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function(key) {
+	    return ReactStateSetters.createStateKeySetter(this, key);
+	  }
+	};
+
+	module.exports = ReactStateSetters;
 
 
 /***/ },
@@ -26599,12 +26601,12 @@
 
 	"use strict";
 
-	var React = __webpack_require__(52);
+	var React = __webpack_require__(51);
 
 	var CSSCore = __webpack_require__(158);
 	var ReactTransitionEvents = __webpack_require__(159);
 
-	var onlyChild = __webpack_require__(87);
+	var onlyChild = __webpack_require__(84);
 
 	// We don't remove the element from the DOM until we receive an animationend or
 	// transitionend event. If the user screws up and forgets to add an animation
@@ -26714,7 +26716,7 @@
 
 	module.exports = ReactCSSTransitionGroupChild;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 92 */
@@ -26741,7 +26743,7 @@
 
 	"use strict";
 
-	var ReactChildren = __webpack_require__(71);
+	var ReactChildren = __webpack_require__(68);
 
 	var ReactTransitionChildMapping = {
 	  /**
@@ -27087,7 +27089,7 @@
 
 	module.exports = ReactPropTransferer;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 96 */
@@ -27195,7 +27197,7 @@
 
 	module.exports = copyProperties;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 98 */
@@ -27262,7 +27264,7 @@
 
 	module.exports = invariant;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 99 */
@@ -27567,7 +27569,7 @@
 
 	module.exports = DOMProperty;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 100 */
@@ -27925,7 +27927,7 @@
 	"use strict";
 
 	var EventPluginRegistry = __webpack_require__(162);
-	var EventPluginUtils = __webpack_require__(70);
+	var EventPluginUtils = __webpack_require__(67);
 
 	var accumulate = __webpack_require__(163);
 	var forEachAccumulated = __webpack_require__(164);
@@ -28195,7 +28197,7 @@
 
 	module.exports = EventPluginHub;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 104 */
@@ -28345,7 +28347,7 @@
 
 	module.exports = EventPropagators;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 105 */
@@ -28375,8 +28377,8 @@
 	var EventConstants = __webpack_require__(102);
 	var EventPluginHub = __webpack_require__(103);
 	var EventPluginRegistry = __webpack_require__(162);
-	var ReactEventEmitterMixin = __webpack_require__(166);
-	var ViewportMetrics = __webpack_require__(167);
+	var ReactEventEmitterMixin = __webpack_require__(169);
+	var ViewportMetrics = __webpack_require__(170);
 
 	var isEventSupported = __webpack_require__(165);
 	var merge = __webpack_require__(94);
@@ -28737,15 +28739,15 @@
 
 	"use strict";
 
-	var CallbackQueue = __webpack_require__(168);
+	var CallbackQueue = __webpack_require__(166);
 	var PooledClass = __webpack_require__(111);
-	var ReactCurrentOwner = __webpack_require__(75);
-	var ReactPerf = __webpack_require__(83);
-	var Transaction = __webpack_require__(169);
+	var ReactCurrentOwner = __webpack_require__(72);
+	var ReactPerf = __webpack_require__(80);
+	var Transaction = __webpack_require__(167);
 
 	var invariant = __webpack_require__(98);
 	var mixInto = __webpack_require__(121);
-	var warning = __webpack_require__(88);
+	var warning = __webpack_require__(85);
 
 	var dirtyComponents = [];
 
@@ -28983,7 +28985,7 @@
 
 	module.exports = ReactUpdates;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 107 */
@@ -29013,7 +29015,7 @@
 	var PooledClass = __webpack_require__(111);
 
 	var emptyFunction = __webpack_require__(93);
-	var getEventTarget = __webpack_require__(170);
+	var getEventTarget = __webpack_require__(168);
 	var merge = __webpack_require__(94);
 	var mergeInto = __webpack_require__(108);
 
@@ -29428,7 +29430,7 @@
 
 	module.exports = PooledClass;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 112 */
@@ -29454,8 +29456,8 @@
 
 	"use strict";
 
-	var ReactInstanceHandles = __webpack_require__(80);
-	var ReactTextComponent = __webpack_require__(86);
+	var ReactInstanceHandles = __webpack_require__(77);
+	var ReactTextComponent = __webpack_require__(83);
 
 	var invariant = __webpack_require__(98);
 
@@ -29628,7 +29630,7 @@
 
 	module.exports = traverseAllChildren;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 113 */
@@ -29794,7 +29796,7 @@
 
 	module.exports = ReactOwner;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 114 */
@@ -29859,7 +29861,7 @@
 
 	module.exports = keyMirror;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 115 */
@@ -29892,9 +29894,9 @@
 
 	"use strict";
 
-	var ReactDescriptor = __webpack_require__(76);
+	var ReactDescriptor = __webpack_require__(73);
 	var ReactPropTypeLocations = __webpack_require__(118);
-	var ReactCurrentOwner = __webpack_require__(75);
+	var ReactCurrentOwner = __webpack_require__(72);
 
 	var monitorCodeUse = __webpack_require__(122);
 
@@ -30233,7 +30235,7 @@
 
 	module.exports = ReactEmptyComponent;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 117 */
@@ -30349,7 +30351,7 @@
 
 	module.exports = ReactPropTypeLocationNames;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 120 */
@@ -30418,7 +30420,7 @@
 
 	module.exports = instantiateReactComponent;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 121 */
@@ -30502,7 +30504,7 @@
 
 	module.exports = monitorCodeUse;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 123 */
@@ -30740,7 +30742,7 @@
 	"use strict";
 
 	var ReactEmptyComponent = __webpack_require__(116);
-	var ReactMount = __webpack_require__(81);
+	var ReactMount = __webpack_require__(78);
 
 	var invariant = __webpack_require__(98);
 
@@ -30766,7 +30768,7 @@
 
 	module.exports = ReactBrowserComponentMixin;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 127 */
@@ -30795,7 +30797,7 @@
 
 	var EventConstants = __webpack_require__(102);
 	var EventPropagators = __webpack_require__(104);
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(86);
 	var SyntheticInputEvent = __webpack_require__(176);
 
 	var keyOf = __webpack_require__(96);
@@ -31023,7 +31025,7 @@
 	var EventConstants = __webpack_require__(102);
 	var EventPluginHub = __webpack_require__(103);
 	var EventPropagators = __webpack_require__(104);
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(86);
 	var ReactUpdates = __webpack_require__(106);
 	var SyntheticEvent = __webpack_require__(107);
 
@@ -31452,7 +31454,7 @@
 
 	var EventConstants = __webpack_require__(102);
 	var EventPropagators = __webpack_require__(104);
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(86);
 	var ReactInputSelection = __webpack_require__(178);
 	var SyntheticCompositionEvent = __webpack_require__(179);
 
@@ -31775,7 +31777,7 @@
 	var EventPropagators = __webpack_require__(104);
 	var SyntheticMouseEvent = __webpack_require__(181);
 
-	var ReactMount = __webpack_require__(81);
+	var ReactMount = __webpack_require__(78);
 	var keyOf = __webpack_require__(96);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
@@ -31924,7 +31926,7 @@
 	"use strict";
 
 	var DOMProperty = __webpack_require__(99);
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	var MUST_USE_ATTRIBUTE = DOMProperty.injection.MUST_USE_ATTRIBUTE;
 	var MUST_USE_PROPERTY = DOMProperty.injection.MUST_USE_PROPERTY;
@@ -32189,8 +32191,8 @@
 
 	var ReactDOMIDOperations = __webpack_require__(182);
 	var ReactMarkupChecksum = __webpack_require__(156);
-	var ReactMount = __webpack_require__(81);
-	var ReactPerf = __webpack_require__(83);
+	var ReactMount = __webpack_require__(78);
+	var ReactPerf = __webpack_require__(80);
 	var ReactReconcileTransaction = __webpack_require__(183);
 
 	var getReactRootElementInContainer = __webpack_require__(153);
@@ -32291,7 +32293,7 @@
 
 	module.exports = ReactComponentBrowserEnvironment;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 136 */
@@ -32318,7 +32320,7 @@
 	"use strict";
 
 	var ReactUpdates = __webpack_require__(106);
-	var Transaction = __webpack_require__(169);
+	var Transaction = __webpack_require__(167);
 
 	var emptyFunction = __webpack_require__(93);
 	var mixInto = __webpack_require__(121);
@@ -32400,8 +32402,8 @@
 
 	var AutoFocusMixin = __webpack_require__(185);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactCompositeComponent = __webpack_require__(73);
-	var ReactDOM = __webpack_require__(77);
+	var ReactCompositeComponent = __webpack_require__(70);
+	var ReactDOM = __webpack_require__(74);
 
 	var keyMirror = __webpack_require__(114);
 
@@ -32476,8 +32478,8 @@
 	var EventConstants = __webpack_require__(102);
 	var LocalEventTrapMixin = __webpack_require__(186);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactCompositeComponent = __webpack_require__(73);
-	var ReactDOM = __webpack_require__(77);
+	var ReactCompositeComponent = __webpack_require__(70);
+	var ReactDOM = __webpack_require__(74);
 
 	// Store a reference to the <form> `ReactDOMComponent`.
 	var form = ReactDOM.form;
@@ -32536,8 +32538,8 @@
 	var EventConstants = __webpack_require__(102);
 	var LocalEventTrapMixin = __webpack_require__(186);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactCompositeComponent = __webpack_require__(73);
-	var ReactDOM = __webpack_require__(77);
+	var ReactCompositeComponent = __webpack_require__(70);
+	var ReactDOM = __webpack_require__(74);
 
 	// Store a reference to the <img> `ReactDOMComponent`.
 	var img = ReactDOM.img;
@@ -32592,12 +32594,12 @@
 	"use strict";
 
 	var AutoFocusMixin = __webpack_require__(185);
-	var DOMPropertyOperations = __webpack_require__(69);
+	var DOMPropertyOperations = __webpack_require__(66);
 	var LinkedValueUtils = __webpack_require__(187);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactCompositeComponent = __webpack_require__(73);
-	var ReactDOM = __webpack_require__(77);
-	var ReactMount = __webpack_require__(81);
+	var ReactCompositeComponent = __webpack_require__(70);
+	var ReactDOM = __webpack_require__(74);
+	var ReactMount = __webpack_require__(78);
 
 	var invariant = __webpack_require__(98);
 	var merge = __webpack_require__(94);
@@ -32754,7 +32756,7 @@
 
 	module.exports = ReactDOMInput;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 141 */
@@ -32781,10 +32783,10 @@
 	"use strict";
 
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactCompositeComponent = __webpack_require__(73);
-	var ReactDOM = __webpack_require__(77);
+	var ReactCompositeComponent = __webpack_require__(70);
+	var ReactDOM = __webpack_require__(74);
 
-	var warning = __webpack_require__(88);
+	var warning = __webpack_require__(85);
 
 	// Store a reference to the <option> `ReactDOMComponent`.
 	var option = ReactDOM.option;
@@ -32816,7 +32818,7 @@
 
 	module.exports = ReactDOMOption;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 142 */
@@ -32845,8 +32847,8 @@
 	var AutoFocusMixin = __webpack_require__(185);
 	var LinkedValueUtils = __webpack_require__(187);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactCompositeComponent = __webpack_require__(73);
-	var ReactDOM = __webpack_require__(77);
+	var ReactCompositeComponent = __webpack_require__(70);
+	var ReactDOM = __webpack_require__(74);
 
 	var merge = __webpack_require__(94);
 
@@ -33030,16 +33032,16 @@
 	"use strict";
 
 	var AutoFocusMixin = __webpack_require__(185);
-	var DOMPropertyOperations = __webpack_require__(69);
+	var DOMPropertyOperations = __webpack_require__(66);
 	var LinkedValueUtils = __webpack_require__(187);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactCompositeComponent = __webpack_require__(73);
-	var ReactDOM = __webpack_require__(77);
+	var ReactCompositeComponent = __webpack_require__(70);
+	var ReactDOM = __webpack_require__(74);
 
 	var invariant = __webpack_require__(98);
 	var merge = __webpack_require__(94);
 
-	var warning = __webpack_require__(88);
+	var warning = __webpack_require__(85);
 
 	// Store a reference to the <textarea> `ReactDOMComponent`.
 	var textarea = ReactDOM.textarea;
@@ -33152,7 +33154,7 @@
 
 	module.exports = ReactDOMTextarea;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 144 */
@@ -33180,13 +33182,13 @@
 	"use strict";
 
 	var EventListener = __webpack_require__(188);
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(86);
 	var PooledClass = __webpack_require__(111);
-	var ReactInstanceHandles = __webpack_require__(80);
-	var ReactMount = __webpack_require__(81);
+	var ReactInstanceHandles = __webpack_require__(77);
+	var ReactMount = __webpack_require__(78);
 	var ReactUpdates = __webpack_require__(106);
 
-	var getEventTarget = __webpack_require__(170);
+	var getEventTarget = __webpack_require__(168);
 	var getUnboundedScrollPosition = __webpack_require__(189);
 	var mixInto = __webpack_require__(121);
 
@@ -33375,12 +33377,12 @@
 
 	var DOMProperty = __webpack_require__(99);
 	var EventPluginHub = __webpack_require__(103);
-	var ReactComponent = __webpack_require__(72);
-	var ReactCompositeComponent = __webpack_require__(73);
-	var ReactDOM = __webpack_require__(77);
+	var ReactComponent = __webpack_require__(69);
+	var ReactCompositeComponent = __webpack_require__(70);
+	var ReactDOM = __webpack_require__(74);
 	var ReactEmptyComponent = __webpack_require__(116);
 	var ReactBrowserEventEmitter = __webpack_require__(105);
-	var ReactPerf = __webpack_require__(83);
+	var ReactPerf = __webpack_require__(80);
 	var ReactRootIndex = __webpack_require__(151);
 	var ReactUpdates = __webpack_require__(106);
 
@@ -33673,7 +33675,7 @@
 	"use strict";
 
 	var EventConstants = __webpack_require__(102);
-	var EventPluginUtils = __webpack_require__(70);
+	var EventPluginUtils = __webpack_require__(67);
 	var EventPropagators = __webpack_require__(104);
 	var SyntheticClipboardEvent = __webpack_require__(191);
 	var SyntheticEvent = __webpack_require__(107);
@@ -34072,7 +34074,7 @@
 
 	module.exports = SimpleEventPlugin;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 149 */
@@ -34203,7 +34205,7 @@
 	"use strict";
 
 	// Defeat circular references by requiring this directly.
-	var ReactCompositeComponent = __webpack_require__(73);
+	var ReactCompositeComponent = __webpack_require__(70);
 
 	var invariant = __webpack_require__(98);
 
@@ -34245,7 +34247,7 @@
 
 	module.exports = createFullPageComponent;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 151 */
@@ -34459,7 +34461,7 @@
 	"use strict";
 
 	var traverseAllChildren = __webpack_require__(112);
-	var warning = __webpack_require__(88);
+	var warning = __webpack_require__(85);
 
 	/**
 	 * @param {function} traverseContext Context passed through traversal.
@@ -34498,7 +34500,7 @@
 
 	module.exports = flattenChildren;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 156 */
@@ -34585,9 +34587,9 @@
 	"use strict";
 
 	var PooledClass = __webpack_require__(111);
-	var CallbackQueue = __webpack_require__(168);
+	var CallbackQueue = __webpack_require__(166);
 	var ReactPutListenerQueue = __webpack_require__(200);
-	var Transaction = __webpack_require__(169);
+	var Transaction = __webpack_require__(167);
 
 	var emptyFunction = __webpack_require__(93);
 	var mixInto = __webpack_require__(121);
@@ -34800,7 +34802,7 @@
 
 	module.exports = CSSCore;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 159 */
@@ -34826,7 +34828,7 @@
 
 	"use strict";
 
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	/**
 	 * EVENT_NAME_MAP is used to determine which event fired when a
@@ -34999,7 +35001,7 @@
 
 	"use strict";
 
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	var performance;
 
@@ -35301,7 +35303,7 @@
 
 	module.exports = EventPluginRegistry;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 163 */
@@ -35362,7 +35364,7 @@
 
 	module.exports = accumulate;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 164 */
@@ -35430,7 +35432,7 @@
 
 	"use strict";
 
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	var useHasFeature;
 	if (ExecutionEnvironment.canUseDOM) {
@@ -35484,110 +35486,6 @@
 
 /***/ },
 /* 166 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule ReactEventEmitterMixin
-	 */
-
-	"use strict";
-
-	var EventPluginHub = __webpack_require__(103);
-
-	function runEventQueueInBatch(events) {
-	  EventPluginHub.enqueueEvents(events);
-	  EventPluginHub.processEventQueue();
-	}
-
-	var ReactEventEmitterMixin = {
-
-	  /**
-	   * Streams a fired top-level event to `EventPluginHub` where plugins have the
-	   * opportunity to create `ReactEvent`s to be dispatched.
-	   *
-	   * @param {string} topLevelType Record from `EventConstants`.
-	   * @param {object} topLevelTarget The listening component root node.
-	   * @param {string} topLevelTargetID ID of `topLevelTarget`.
-	   * @param {object} nativeEvent Native environment event.
-	   */
-	  handleTopLevel: function(
-	      topLevelType,
-	      topLevelTarget,
-	      topLevelTargetID,
-	      nativeEvent) {
-	    var events = EventPluginHub.extractEvents(
-	      topLevelType,
-	      topLevelTarget,
-	      topLevelTargetID,
-	      nativeEvent
-	    );
-
-	    runEventQueueInBatch(events);
-	  }
-	};
-
-	module.exports = ReactEventEmitterMixin;
-
-
-/***/ },
-/* 167 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule ViewportMetrics
-	 */
-
-	"use strict";
-
-	var getUnboundedScrollPosition = __webpack_require__(189);
-
-	var ViewportMetrics = {
-
-	  currentScrollLeft: 0,
-
-	  currentScrollTop: 0,
-
-	  refreshScrollValues: function() {
-	    var scrollPosition = getUnboundedScrollPosition(window);
-	    ViewportMetrics.currentScrollLeft = scrollPosition.x;
-	    ViewportMetrics.currentScrollTop = scrollPosition.y;
-	  }
-
-	};
-
-	module.exports = ViewportMetrics;
-
-
-/***/ },
-/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -35694,10 +35592,10 @@
 
 	module.exports = CallbackQueue;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 169 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -35945,10 +35843,10 @@
 
 	module.exports = Transaction;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
-/* 170 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -35987,6 +35885,110 @@
 	}
 
 	module.exports = getEventTarget;
+
+
+/***/ },
+/* 169 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule ReactEventEmitterMixin
+	 */
+
+	"use strict";
+
+	var EventPluginHub = __webpack_require__(103);
+
+	function runEventQueueInBatch(events) {
+	  EventPluginHub.enqueueEvents(events);
+	  EventPluginHub.processEventQueue();
+	}
+
+	var ReactEventEmitterMixin = {
+
+	  /**
+	   * Streams a fired top-level event to `EventPluginHub` where plugins have the
+	   * opportunity to create `ReactEvent`s to be dispatched.
+	   *
+	   * @param {string} topLevelType Record from `EventConstants`.
+	   * @param {object} topLevelTarget The listening component root node.
+	   * @param {string} topLevelTargetID ID of `topLevelTarget`.
+	   * @param {object} nativeEvent Native environment event.
+	   */
+	  handleTopLevel: function(
+	      topLevelType,
+	      topLevelTarget,
+	      topLevelTargetID,
+	      nativeEvent) {
+	    var events = EventPluginHub.extractEvents(
+	      topLevelType,
+	      topLevelTarget,
+	      topLevelTargetID,
+	      nativeEvent
+	    );
+
+	    runEventQueueInBatch(events);
+	  }
+	};
+
+	module.exports = ReactEventEmitterMixin;
+
+
+/***/ },
+/* 170 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule ViewportMetrics
+	 */
+
+	"use strict";
+
+	var getUnboundedScrollPosition = __webpack_require__(189);
+
+	var ViewportMetrics = {
+
+	  currentScrollLeft: 0,
+
+	  currentScrollTop: 0,
+
+	  refreshScrollValues: function() {
+	    var scrollPosition = getUnboundedScrollPosition(window);
+	    ViewportMetrics.currentScrollLeft = scrollPosition.x;
+	    ViewportMetrics.currentScrollTop = scrollPosition.y;
+	  }
+
+	};
+
+	module.exports = ViewportMetrics;
 
 
 /***/ },
@@ -36141,7 +36143,7 @@
 
 	module.exports = mergeHelpers;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 172 */
@@ -36175,7 +36177,7 @@
 
 	module.exports = emptyObject;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 173 */
@@ -36766,7 +36768,7 @@
 
 	"use strict";
 
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	var contentKey = null;
 
@@ -36816,7 +36818,7 @@
 	"use strict";
 
 	var SyntheticUIEvent = __webpack_require__(196);
-	var ViewportMetrics = __webpack_require__(167);
+	var ViewportMetrics = __webpack_require__(170);
 
 	var getEventModifierState = __webpack_require__(204);
 
@@ -36913,9 +36915,9 @@
 
 	var CSSPropertyOperations = __webpack_require__(125);
 	var DOMChildrenOperations = __webpack_require__(205);
-	var DOMPropertyOperations = __webpack_require__(69);
-	var ReactMount = __webpack_require__(81);
-	var ReactPerf = __webpack_require__(83);
+	var DOMPropertyOperations = __webpack_require__(66);
+	var ReactMount = __webpack_require__(78);
+	var ReactPerf = __webpack_require__(80);
 
 	var invariant = __webpack_require__(98);
 	var setInnerHTML = __webpack_require__(184);
@@ -37078,7 +37080,7 @@
 
 	module.exports = ReactDOMIDOperations;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 183 */
@@ -37105,12 +37107,12 @@
 
 	"use strict";
 
-	var CallbackQueue = __webpack_require__(168);
+	var CallbackQueue = __webpack_require__(166);
 	var PooledClass = __webpack_require__(111);
 	var ReactBrowserEventEmitter = __webpack_require__(105);
 	var ReactInputSelection = __webpack_require__(178);
 	var ReactPutListenerQueue = __webpack_require__(200);
-	var Transaction = __webpack_require__(169);
+	var Transaction = __webpack_require__(167);
 
 	var mixInto = __webpack_require__(121);
 
@@ -37292,7 +37294,7 @@
 
 	"use strict";
 
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	/**
 	 * Set the innerHTML property of a node, ensuring that whitespace is preserved
@@ -37454,7 +37456,7 @@
 
 	module.exports = LocalEventTrapMixin;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 187 */
@@ -37481,7 +37483,7 @@
 
 	"use strict";
 
-	var ReactPropTypes = __webpack_require__(84);
+	var ReactPropTypes = __webpack_require__(81);
 
 	var invariant = __webpack_require__(98);
 
@@ -37620,7 +37622,7 @@
 
 	module.exports = LinkedValueUtils;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 188 */
@@ -37699,7 +37701,7 @@
 
 	module.exports = EventListener;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 189 */
@@ -38128,7 +38130,7 @@
 
 	var SyntheticEvent = __webpack_require__(107);
 
-	var getEventTarget = __webpack_require__(170);
+	var getEventTarget = __webpack_require__(168);
 
 	/**
 	 * @interface UIEvent
@@ -38462,7 +38464,7 @@
 
 	"use strict";
 
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	var getNodeForCharacterOffset = __webpack_require__(208);
 	var getTextContentAccessor = __webpack_require__(180);
@@ -38938,7 +38940,7 @@
 
 	module.exports = DOMChildrenOperations;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 206 */
@@ -39060,7 +39062,7 @@
 
 	module.exports = getEventKey;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 207 */
@@ -39214,7 +39216,7 @@
 
 	"use strict";
 
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	var createNodesFromMarkup = __webpack_require__(210);
 	var emptyFunction = __webpack_require__(93);
@@ -39379,7 +39381,7 @@
 
 	module.exports = Danger;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 210 */
@@ -39406,7 +39408,7 @@
 
 	/*jslint evil: true, sub: true */
 
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	var createArrayFrom = __webpack_require__(212);
 	var getMarkupWrap = __webpack_require__(211);
@@ -39479,7 +39481,7 @@
 
 	module.exports = createNodesFromMarkup;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 211 */
@@ -39503,7 +39505,7 @@
 	 * @providesModule getMarkupWrap
 	 */
 
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(86);
 
 	var invariant = __webpack_require__(98);
 
@@ -39606,7 +39608,7 @@
 
 	module.exports = getMarkupWrap;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ },
 /* 212 */
@@ -39785,7 +39787,7 @@
 
 	module.exports = toArray;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
 
 /***/ }
 /******/ ])
