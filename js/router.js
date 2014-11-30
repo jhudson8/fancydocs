@@ -8,6 +8,26 @@ var ProjectNotFoundView = require('./views/project-not-found');
 var util = require('./utils/util');
 var lastProject;
 
+$(document.body).on('click', 'a', function(ev) {
+  var el = ev.currentTarget;
+  var fragment = el.getAttribute('href');
+  var match = fragment && fragment.match('#link\/(.*)');
+  if (match) {
+    fragment = decodeURIComponent(match[1]);
+    var snippedSectionFrag = fragment.match(/^#?((section|snippet|)\/.*)/);
+    if (snippedSectionFrag) {
+      snippedSectionFrag = snippedSectionFrag[1];
+      var currentFragment = Backbone.history.getFragment();
+      // get the project path prefix
+      var projectFrag = currentFragment && currentFragment.match(/^(project\/[^\/]+\/[^\/]+(\/bundle\/[^\/]+\/[^\/]+)?).*/);
+      if (projectFrag) {
+        Backbone.history.navigate(projectFrag[1] + '/' + snippedSectionFrag, true);
+        ev.preventDefault();
+      }
+    }
+  }
+});
+
 // use the meta route definitions and handlers to DRY things up because therw will be multiple variations of routes
 // that follow the same general pattern
 var projectRoutes = {
