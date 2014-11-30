@@ -79,7 +79,8 @@ function addMenuChildren (navItems, level, children, self, viewState, options) {
 
   _.each(navItems, function(navItem) {
     var model = navItem.model;  
-    var hilighted = options.allowHilight && hilightModel && ((hilightModel.isEqual && hilightModel.isEqual(model)) || hilightModel === model);
+    var hilighted = model && options.allowHilight && hilightModel && ((hilightModel.isEqual &&
+      hilightModel.isEqual(model)) || hilightModel === model);
     var className = (hilighted ? ' active purple ' : '') + (navItem.className || '');
     var url = navItem.url || model && model.viewUrl && model.viewUrl(false, !options.snippet);
     var onClick = model && (options.snippet ? util.snippetTo(navItem.type, navItem.model, self) : options.jumpTo && util.jumpTo(model, self));
