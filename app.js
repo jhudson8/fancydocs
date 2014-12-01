@@ -13122,8 +13122,8 @@
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {/** @jsx React.DOM */var Project = __webpack_require__(37);
-	var ProjectCollection = __webpack_require__(38);
+	/* WEBPACK VAR INJECTION */(function(global) {/** @jsx React.DOM */var Project = __webpack_require__(36);
+	var ProjectCollection = __webpack_require__(37);
 	var projects = new ProjectCollection();
 	var nextId;
 	var lastImport;
@@ -13311,35 +13311,35 @@
 	module.exports = {
 	  snippets: {
 	    package: function(pkg, project) {
-	      var PackageWrapperView = __webpack_require__(32);
-	      var PackageView = __webpack_require__(33);      
+	      var PackageWrapperView = __webpack_require__(31);
+	      var PackageView = __webpack_require__(32);      
 	      return new PackageWrapperView({model: pkg, project: project}, new PackageView({model: pkg}));
 	    },
 	    method: function(method, project) {
-	      var PackageWrapperView = __webpack_require__(32);
-	      var MethodView = __webpack_require__(34);
+	      var PackageWrapperView = __webpack_require__(31);
+	      var MethodView = __webpack_require__(33);
 	      return new PackageWrapperView({model: method.parent, project: project, showPackageDetails: true}, new MethodView({model: method}));
 	    },
 	    api: function(api, project) {
 	      var APIView = __webpack_require__(24);
-	      var ProjectWrapperView = __webpack_require__(35);
+	      var ProjectWrapperView = __webpack_require__(34);
 	      return new ProjectWrapperView({model: api, title: api.project.get('title'), project: project}, new APIView({model: api}));
 	    },
 	    section: function(section, project) {
 	      var SectionView = __webpack_require__(25);
-	      var ProjectWrapperView = __webpack_require__(35);
+	      var ProjectWrapperView = __webpack_require__(34);
 	      return new ProjectWrapperView({model: section, title: section.project.get('title'), project: project},
 	        new SectionView({model: section, topLevel: true}));
 	    },
 	    summary: function(project, parentProject) {
-	      var SummaryView = __webpack_require__(36);
-	      var ProjectWrapperView = __webpack_require__(35);
+	      var SummaryView = __webpack_require__(35);
+	      var ProjectWrapperView = __webpack_require__(34);
 	      return new ProjectWrapperView({model: section, title: project.get('title'), project: parentProject},
 	        new SummaryView({model: project}));
 	    },
 	    project: function(project, parentProject) {
 	      var ProjectView = __webpack_require__(26);
-	      var ProjectWrapperView = __webpack_require__(35);
+	      var ProjectWrapperView = __webpack_require__(34);
 	      return new ProjectWrapperView({model: project, title: project.get('title'), project: parentProject},
 	        new ProjectView({model: project}));
 	    },
@@ -13407,7 +13407,7 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(39);
+	var Markdown = __webpack_require__(38);
 	var SideNav = __webpack_require__(19);
 	var navUtil = __webpack_require__(27);
 	var SnippetView = __webpack_require__(28);
@@ -13432,6 +13432,7 @@
 	    var viewState = this.state.viewState;
 	    var snippet = viewState.snippet;
 	    var focus = viewState.focus;
+	    var className = this.state.navEnabled ? 'nav-enabled' : '';
 
 	    if (focus === 'outline' && !project.hasChildren()) {
 	      // we don't do snippets in outline but the url might show that
@@ -13450,10 +13451,10 @@
 	    }
 
 	    return (
-	      React.DOM.div({key: 'project-' + project.id}, 
+	      React.DOM.div({key: 'project-' + project.id, className: className}, 
 	        React.DOM.div(null, 
 	          SideNav({ref: "nav", key: focus, model: project, viewState: viewState, onJumpTo: this.jumpToModel, 
-	              onSnippetTo: this.snippetTo, onFocusChange: this.onFocusChange}), 
+	              onSnippetTo: this.snippetTo, onFocusChange: this.onFocusChange, onNavSelection: this.onNavSelection}), 
 	          React.DOM.div({className: "page-body"}, 
 	            children
 	          )
@@ -13465,7 +13466,7 @@
 	  getProjectPage: function() {
 	    var project = this.getModel();
 	    return (
-	      React.DOM.div({className: "pad-all"}, 
+	      React.DOM.div({className: "pad-all project-container-view"}, 
 	        ProjectPage({model: project, viewState: this.state.viewState})
 	      )
 	    );
@@ -13488,6 +13489,7 @@
 	      model: model
 	    };
 	    viewState.jumpTo = 'top';
+	    this.setState({navEnabled: false, currentHeader: false});
 	    this.forceUpdate();
 	  },
 
@@ -13497,7 +13499,7 @@
 	    if (model.domId) {
 	      viewState.jumpTo = model.domId();
 	    }
-	    this.forceUpdate();
+	    this.setState({navEnabled: false, currentHeader: false});
 	    var self = this;
 	    _.defer(function() {
 	      self.jumpTo(viewState.jumpTo);
@@ -13533,6 +13535,21 @@
 	    if (focus != viewState.focus) {
 	      viewState.updateFocus(focus);
 	      this.forceUpdate();
+	    }
+	    this.onNavSelection({type: 'header', value: focus});
+	  },
+
+	  onNavSelection: function(data) {
+	    if (data.type === 'header') {
+	      var currentHeader = this.state.currentHeader;
+	      if (currentHeader === data.value) {
+	        // switch off
+	        this.setState({navEnabled: false, currentHeader: false});
+	      } else {
+	        this.setState({navEnabled: true, currentHeader: data.value});
+	      }
+	    } else {
+	      this.setState({navEnabled: false, currentHeader: false});
 	    }
 	  }
 	});
@@ -13613,7 +13630,7 @@
 	    var text = this.refs.input.getDOMNode().value.trim();
 	    if (text) {
 	      try {
-	        var parsed = __webpack_require__(31)(text);
+	        var parsed = __webpack_require__(43)(text);
 	        this.setState({parsed: parsed});
 	      } catch (e) {
 	        console.error(e);
@@ -13712,10 +13729,10 @@
 	var SideNavHeader = __webpack_require__(29);
 
 	var FOCUS_MAP = {
-	  outline: __webpack_require__(40),
-	  packages: __webpack_require__(41),
-	  methods: __webpack_require__(42),
-	  projects: __webpack_require__(43),
+	  outline: __webpack_require__(39),
+	  packages: __webpack_require__(40),
+	  methods: __webpack_require__(41),
+	  projects: __webpack_require__(42),
 	};
 
 	module.exports = React.createClass({displayName: 'exports',
@@ -13750,8 +13767,10 @@
 
 	    return (
 	      React.DOM.div({className: "sidebar", key: "nav"}, 
-	        SideNavHeader({key: focus, ref: "header", viewState: this.state.viewState, model: project}), 
-	        content
+	        SideNavHeader({key: focus, ref: "header", viewState: this.state.viewState, model: project, onNavSelection: this.props.onNavSelection}), 
+	        React.DOM.div({className: "project-nav"}, 
+	          content
+	        )
 	      )
 	    );
 	  },
@@ -15427,8 +15446,8 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(39);
-	var PackageView = __webpack_require__(33);
+	var Markdown = __webpack_require__(38);
+	var PackageView = __webpack_require__(32);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelAware'],
@@ -15459,7 +15478,7 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(39);
+	var Markdown = __webpack_require__(38);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelAware'],
@@ -15492,12 +15511,12 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(39);
+	var Markdown = __webpack_require__(38);
 	var navUtil = __webpack_require__(27);
 	var SnippetView = __webpack_require__(28);
 	var APIView = __webpack_require__(24);
 	var SectionView = __webpack_require__(25);
-	var SummaryView = __webpack_require__(36);
+	var SummaryView = __webpack_require__(35);
 	var util = __webpack_require__(15);
 
 	module.exports = React.createClass({displayName: 'exports',
@@ -15575,7 +15594,7 @@
 	    addMenuChildren(navItems, options.startingLevel || 1, children, self, viewState, options);
 
 	    return (
-	      React.DOM.div({className: "vertical ui menu project-nav", key: options.key}, 
+	      React.DOM.div({className: "vertical ui menu " + (options.className || ''), key: options.key}, 
 	        children
 	      )
 	    );
@@ -15928,8 +15947,8 @@
 	    return (
 	      React.DOM.div({key: "header"}, 
 	        children, 
-	        React.DOM.div(null, 
-	          React.DOM.h4({className: "nav-header"}, title)
+	        React.DOM.div({className: "nav-header"}, 
+	          React.DOM.h4(null, title)
 	        )
 	      )
 	    );
@@ -16039,127 +16058,10 @@
 /* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM */var util = __webpack_require__(61);
-
-	module.exports = function(contents) {
-
-
-	  headerPattern = /^={3,50}\s*/,
-	  subHeaderPattern = /^-{3,50}\s*/,
-	  h3Pattern = /^#{3}([^#]*)#*\s*$/,
-	  h4Pattern = /^#{4}([^#]*)#*\s*$/,
-	  h5Pattern = /^#{5}([^#]*)#*\s*$/,
-	  paramPattern = /^\s*\*\s*([^:]*):(.*)/;
-
-	  var handlers = {
-	    overview: function(section, data) {
-	      data.overview = section.content.join('\n');
-	    },
-	    sections: function(section, data) {
-	      data.sections = __webpack_require__(62)(section, 3);
-	    },
-	    'bundled projects': function(section, data) {
-	      data.bundledProjects = __webpack_require__(63)(section);
-	    },
-	    'dependencies': function(section, data) {
-	      data.dependantProjects = __webpack_require__(63)(section);
-	    },
-	    'depends on': function(section, data) {
-	      data.dependantProjects = __webpack_require__(63)(section);
-	    },
-	    'install': function(section, data) {
-	      data.installation = section.content.join('\n');
-	    },
-	    'api(: .+)?': function(section, data) {
-	      var api = __webpack_require__(64)(section);
-	      if (!data.api) data.api = {};
-	      data.api[section.name.match(/[Aa][Pp][Ii]:?\s*(.*)/)[1].trim() || 'API'] = api;
-	    }
-	  };
-
-	  var processedHandlers = [];
-	  for (var key in handlers) {
-	    processedHandlers.push({
-	      pattern: new RegExp(key),
-	      handler: handlers[key]
-	    });
-	  }
-
-	  var tmp = parseBody(contents);
-	  var data = {title: tmp.title, summary: tmp.summary};
-	  var handler;
-	  for (var i=0; i<tmp.sections.length; i++, handler=null) {
-	    var section = tmp.sections[i];
-	    for (var j=0; j<processedHandlers.length && !handler; j++) {
-	      if (processedHandlers[j].pattern.test(section.name.toLowerCase())) {
-	        handler = processedHandlers[j].handler;
-	        break;
-	      }
-	    }
-
-	    if (handler) {
-	      handler(section, data);
-	    } else {
-	      console.log('section "' + section.name + '" ignored');
-	    }
-	  }
-
-	  return JSON.stringify(data);
-	};
-
-	function parseBody (contents) {
-	  var lines = contents.split(/\r?\n/),
-	    buffer = [],
-	    sections = [],
-	    header,
-	    summary,
-	    currentName;
-
-	  function execute(end) {
-	    if (currentName) {
-	      var body = buffer.slice(0, buffer.length - (end?0:1));
-	        name = currentName;
-	      sections.push({name: name, content: body});
-	    } else {
-	      summary = buffer.slice(0, buffer.length-2).join('\n').trim();
-	    }
-	    if (!end) {
-	      currentName = buffer[buffer.length-1].trim();
-	      buffer = [];
-	    }
-	  }
-
-	  for (var i=0; i<lines.length; i++) {
-	    var line = lines[i];
-	    if (line.match(headerPattern)) {
-	      if (currentName) {
-	        throw "there can only be 1 title (using ==========)";
-	      }
-	      // header
-	      header = buffer.join(' ').trim();
-	      buffer = [];
-	    } else if (line.match(subHeaderPattern)) {
-	      execute();
-
-	    } else {
-	      buffer.push(line);
-	    }
-	  }
-	  execute(true);
-	  var summary = util.parseMarkdown(summary);
-	  summary = summary.replace(/^.*[Ff]ancydocs?\].*$/mg, "");
-	  return {title: header, summary: summary, sections: sections};
-	}
-
-
-/***/ },
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
 	var navUtil = __webpack_require__(27);
-	var Markdown = __webpack_require__(39);
+	var Markdown = __webpack_require__(38);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelAware'],
@@ -16201,14 +16103,14 @@
 	});
 
 /***/ },
-/* 33 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
 	var navUtil = __webpack_require__(27);
-	var MethodView = __webpack_require__(34);
-	var Markdown = __webpack_require__(39);
+	var MethodView = __webpack_require__(33);
+	var Markdown = __webpack_require__(38);
 
 
 	module.exports =  React.createClass({displayName: 'exports',
@@ -16241,13 +16143,13 @@
 	});
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
 	var navUtil = __webpack_require__(27);
-	var Markdown = __webpack_require__(39);
+	var Markdown = __webpack_require__(38);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelAware'],
@@ -16298,13 +16200,13 @@
 	});
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
 	var navUtil = __webpack_require__(27);
-	var Markdown = __webpack_require__(39);
+	var Markdown = __webpack_require__(38);
 	var APIView = __webpack_require__(24);
 
 	module.exports = React.createClass({displayName: 'exports',
@@ -16323,12 +16225,12 @@
 	});
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(39);
+	var Markdown = __webpack_require__(38);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelAware'],
@@ -16387,7 +16289,7 @@
 	});
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var MethodCollection = __webpack_require__(46);
@@ -16571,10 +16473,10 @@
 
 
 /***/ },
-/* 38 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM */var Project = __webpack_require__(37);
+	/** @jsx React.DOM */var Project = __webpack_require__(36);
 
 	module.exports = Backbone.Collection.extend({
 	  model: Project,
@@ -16588,7 +16490,7 @@
 
 
 /***/ },
-/* 39 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
@@ -16618,7 +16520,7 @@
 
 
 /***/ },
-/* 40 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
@@ -16739,7 +16641,7 @@
 
 
 /***/ },
-/* 41 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
@@ -16796,7 +16698,7 @@
 
 
 /***/ },
-/* 42 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
@@ -16853,7 +16755,7 @@
 
 
 /***/ },
-/* 43 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
@@ -16870,7 +16772,7 @@
 	    var navItems = [this.convertProject(project)];
 	    navItems[0].children = project.bundledProjects && project.bundledProjects.map(this.convertProject, this);
 
-	    return util.projectNavMenu(navItems, this, this.props.viewState, {allowHilight: true, model: this.getModel(), key: 'projects'});
+	    return util.projectNavMenu(navItems, this, this.props.viewState, {allowHilight: true, model: this.getModel(), key: 'projects', className: 'project-nav'});
 	  },
 
 	  convertProject: function(project) {
@@ -16883,6 +16785,123 @@
 	    };
 	  }
 	});
+
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */var util = __webpack_require__(61);
+
+	module.exports = function(contents) {
+
+
+	  headerPattern = /^={3,50}\s*/,
+	  subHeaderPattern = /^-{3,50}\s*/,
+	  h3Pattern = /^#{3}([^#]*)#*\s*$/,
+	  h4Pattern = /^#{4}([^#]*)#*\s*$/,
+	  h5Pattern = /^#{5}([^#]*)#*\s*$/,
+	  paramPattern = /^\s*\*\s*([^:]*):(.*)/;
+
+	  var handlers = {
+	    overview: function(section, data) {
+	      data.overview = section.content.join('\n');
+	    },
+	    sections: function(section, data) {
+	      data.sections = __webpack_require__(62)(section, 3);
+	    },
+	    'bundled projects': function(section, data) {
+	      data.bundledProjects = __webpack_require__(63)(section);
+	    },
+	    'dependencies': function(section, data) {
+	      data.dependantProjects = __webpack_require__(63)(section);
+	    },
+	    'depends on': function(section, data) {
+	      data.dependantProjects = __webpack_require__(63)(section);
+	    },
+	    'install': function(section, data) {
+	      data.installation = section.content.join('\n');
+	    },
+	    'api(: .+)?': function(section, data) {
+	      var api = __webpack_require__(64)(section);
+	      if (!data.api) data.api = {};
+	      data.api[section.name.match(/[Aa][Pp][Ii]:?\s*(.*)/)[1].trim() || 'API'] = api;
+	    }
+	  };
+
+	  var processedHandlers = [];
+	  for (var key in handlers) {
+	    processedHandlers.push({
+	      pattern: new RegExp(key),
+	      handler: handlers[key]
+	    });
+	  }
+
+	  var tmp = parseBody(contents);
+	  var data = {title: tmp.title, summary: tmp.summary};
+	  var handler;
+	  for (var i=0; i<tmp.sections.length; i++, handler=null) {
+	    var section = tmp.sections[i];
+	    for (var j=0; j<processedHandlers.length && !handler; j++) {
+	      if (processedHandlers[j].pattern.test(section.name.toLowerCase())) {
+	        handler = processedHandlers[j].handler;
+	        break;
+	      }
+	    }
+
+	    if (handler) {
+	      handler(section, data);
+	    } else {
+	      console.log('section "' + section.name + '" ignored');
+	    }
+	  }
+
+	  return JSON.stringify(data);
+	};
+
+	function parseBody (contents) {
+	  var lines = contents.split(/\r?\n/),
+	    buffer = [],
+	    sections = [],
+	    header,
+	    summary,
+	    currentName;
+
+	  function execute(end) {
+	    if (currentName) {
+	      var body = buffer.slice(0, buffer.length - (end?0:1));
+	        name = currentName;
+	      sections.push({name: name, content: body});
+	    } else {
+	      summary = buffer.slice(0, buffer.length-2).join('\n').trim();
+	    }
+	    if (!end) {
+	      currentName = buffer[buffer.length-1].trim();
+	      buffer = [];
+	    }
+	  }
+
+	  for (var i=0; i<lines.length; i++) {
+	    var line = lines[i];
+	    if (line.match(headerPattern)) {
+	      if (currentName) {
+	        throw "there can only be 1 title (using ==========)";
+	      }
+	      // header
+	      header = buffer.join(' ').trim();
+	      buffer = [];
+	    } else if (line.match(subHeaderPattern)) {
+	      execute();
+
+	    } else {
+	      buffer.push(line);
+	    }
+	  }
+	  execute(true);
+	  var summary = util.parseMarkdown(summary);
+	  summary = summary.replace(/^.*[Ff]ancydocs?\].*$/mg, "");
+	  return {title: header, summary: summary, sections: sections};
+	}
 
 
 /***/ },
@@ -30819,7 +30838,7 @@
 	var EventConstants = __webpack_require__(102);
 	var EventPropagators = __webpack_require__(104);
 	var ExecutionEnvironment = __webpack_require__(89);
-	var SyntheticInputEvent = __webpack_require__(177);
+	var SyntheticInputEvent = __webpack_require__(176);
 
 	var keyOf = __webpack_require__(96);
 
@@ -31051,7 +31070,7 @@
 	var SyntheticEvent = __webpack_require__(107);
 
 	var isEventSupported = __webpack_require__(165);
-	var isTextInputElement = __webpack_require__(176);
+	var isTextInputElement = __webpack_require__(177);
 	var keyOf = __webpack_require__(96);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
@@ -31476,10 +31495,10 @@
 	var EventConstants = __webpack_require__(102);
 	var EventPropagators = __webpack_require__(104);
 	var ExecutionEnvironment = __webpack_require__(89);
-	var ReactInputSelection = __webpack_require__(179);
-	var SyntheticCompositionEvent = __webpack_require__(180);
+	var ReactInputSelection = __webpack_require__(178);
+	var SyntheticCompositionEvent = __webpack_require__(179);
 
-	var getTextContentAccessor = __webpack_require__(181);
+	var getTextContentAccessor = __webpack_require__(180);
 	var keyOf = __webpack_require__(96);
 
 	var END_KEYCODES = [9, 13, 27, 32]; // Tab, Return, Esc, Space
@@ -31796,7 +31815,7 @@
 
 	var EventConstants = __webpack_require__(102);
 	var EventPropagators = __webpack_require__(104);
-	var SyntheticMouseEvent = __webpack_require__(178);
+	var SyntheticMouseEvent = __webpack_require__(181);
 
 	var ReactMount = __webpack_require__(81);
 	var keyOf = __webpack_require__(96);
@@ -33449,11 +33468,11 @@
 
 	var EventConstants = __webpack_require__(102);
 	var EventPropagators = __webpack_require__(104);
-	var ReactInputSelection = __webpack_require__(179);
+	var ReactInputSelection = __webpack_require__(178);
 	var SyntheticEvent = __webpack_require__(107);
 
 	var getActiveElement = __webpack_require__(190);
-	var isTextInputElement = __webpack_require__(176);
+	var isTextInputElement = __webpack_require__(177);
 	var keyOf = __webpack_require__(96);
 	var shallowEqual = __webpack_require__(90);
 
@@ -33702,7 +33721,7 @@
 	var SyntheticEvent = __webpack_require__(107);
 	var SyntheticFocusEvent = __webpack_require__(192);
 	var SyntheticKeyboardEvent = __webpack_require__(193);
-	var SyntheticMouseEvent = __webpack_require__(178);
+	var SyntheticMouseEvent = __webpack_require__(181);
 	var SyntheticDragEvent = __webpack_require__(194);
 	var SyntheticTouchEvent = __webpack_require__(195);
 	var SyntheticUIEvent = __webpack_require__(196);
@@ -36453,61 +36472,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule isTextInputElement
-	 */
-
-	"use strict";
-
-	/**
-	 * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/the-input-element.html#input-type-attr-summary
-	 */
-	var supportedInputTypes = {
-	  'color': true,
-	  'date': true,
-	  'datetime': true,
-	  'datetime-local': true,
-	  'email': true,
-	  'month': true,
-	  'number': true,
-	  'password': true,
-	  'range': true,
-	  'search': true,
-	  'tel': true,
-	  'text': true,
-	  'time': true,
-	  'url': true,
-	  'week': true
-	};
-
-	function isTextInputElement(elem) {
-	  return elem && (
-	    (elem.nodeName === 'INPUT' && supportedInputTypes[elem.type]) ||
-	    elem.nodeName === 'TEXTAREA'
-	  );
-	}
-
-	module.exports = isTextInputElement;
-
-
-/***/ },
-/* 177 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
 	 * Copyright 2013 Facebook, Inc.
 	 *
 	 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36562,7 +36526,7 @@
 
 
 /***/ },
-/* 178 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -36580,83 +36544,44 @@
 	 * See the License for the specific language governing permissions and
 	 * limitations under the License.
 	 *
-	 * @providesModule SyntheticMouseEvent
-	 * @typechecks static-only
+	 * @providesModule isTextInputElement
 	 */
 
 	"use strict";
 
-	var SyntheticUIEvent = __webpack_require__(196);
-	var ViewportMetrics = __webpack_require__(167);
-
-	var getEventModifierState = __webpack_require__(202);
-
 	/**
-	 * @interface MouseEvent
-	 * @see http://www.w3.org/TR/DOM-Level-3-Events/
+	 * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/the-input-element.html#input-type-attr-summary
 	 */
-	var MouseEventInterface = {
-	  screenX: null,
-	  screenY: null,
-	  clientX: null,
-	  clientY: null,
-	  ctrlKey: null,
-	  shiftKey: null,
-	  altKey: null,
-	  metaKey: null,
-	  getModifierState: getEventModifierState,
-	  button: function(event) {
-	    // Webkit, Firefox, IE9+
-	    // which:  1 2 3
-	    // button: 0 1 2 (standard)
-	    var button = event.button;
-	    if ('which' in event) {
-	      return button;
-	    }
-	    // IE<9
-	    // which:  undefined
-	    // button: 0 0 0
-	    // button: 1 4 2 (onmouseup)
-	    return button === 2 ? 2 : button === 4 ? 1 : 0;
-	  },
-	  buttons: null,
-	  relatedTarget: function(event) {
-	    return event.relatedTarget || (
-	      event.fromElement === event.srcElement ?
-	        event.toElement :
-	        event.fromElement
-	    );
-	  },
-	  // "Proprietary" Interface.
-	  pageX: function(event) {
-	    return 'pageX' in event ?
-	      event.pageX :
-	      event.clientX + ViewportMetrics.currentScrollLeft;
-	  },
-	  pageY: function(event) {
-	    return 'pageY' in event ?
-	      event.pageY :
-	      event.clientY + ViewportMetrics.currentScrollTop;
-	  }
+	var supportedInputTypes = {
+	  'color': true,
+	  'date': true,
+	  'datetime': true,
+	  'datetime-local': true,
+	  'email': true,
+	  'month': true,
+	  'number': true,
+	  'password': true,
+	  'range': true,
+	  'search': true,
+	  'tel': true,
+	  'text': true,
+	  'time': true,
+	  'url': true,
+	  'week': true
 	};
 
-	/**
-	 * @param {object} dispatchConfig Configuration used to dispatch this event.
-	 * @param {string} dispatchMarker Marker identifying the event target.
-	 * @param {object} nativeEvent Native browser event.
-	 * @extends {SyntheticUIEvent}
-	 */
-	function SyntheticMouseEvent(dispatchConfig, dispatchMarker, nativeEvent) {
-	  SyntheticUIEvent.call(this, dispatchConfig, dispatchMarker, nativeEvent);
+	function isTextInputElement(elem) {
+	  return elem && (
+	    (elem.nodeName === 'INPUT' && supportedInputTypes[elem.type]) ||
+	    elem.nodeName === 'TEXTAREA'
+	  );
 	}
 
-	SyntheticUIEvent.augmentClass(SyntheticMouseEvent, MouseEventInterface);
-
-	module.exports = SyntheticMouseEvent;
+	module.exports = isTextInputElement;
 
 
 /***/ },
-/* 179 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -36679,10 +36604,10 @@
 
 	"use strict";
 
-	var ReactDOMSelection = __webpack_require__(203);
+	var ReactDOMSelection = __webpack_require__(202);
 
 	var containsNode = __webpack_require__(152);
-	var focusNode = __webpack_require__(204);
+	var focusNode = __webpack_require__(203);
 	var getActiveElement = __webpack_require__(190);
 
 	function isInDocument(node) {
@@ -36803,7 +36728,7 @@
 
 
 /***/ },
-/* 180 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -36860,7 +36785,7 @@
 
 
 /***/ },
-/* 181 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -36905,6 +36830,100 @@
 	}
 
 	module.exports = getTextContentAccessor;
+
+
+/***/ },
+/* 181 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule SyntheticMouseEvent
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	var SyntheticUIEvent = __webpack_require__(196);
+	var ViewportMetrics = __webpack_require__(167);
+
+	var getEventModifierState = __webpack_require__(204);
+
+	/**
+	 * @interface MouseEvent
+	 * @see http://www.w3.org/TR/DOM-Level-3-Events/
+	 */
+	var MouseEventInterface = {
+	  screenX: null,
+	  screenY: null,
+	  clientX: null,
+	  clientY: null,
+	  ctrlKey: null,
+	  shiftKey: null,
+	  altKey: null,
+	  metaKey: null,
+	  getModifierState: getEventModifierState,
+	  button: function(event) {
+	    // Webkit, Firefox, IE9+
+	    // which:  1 2 3
+	    // button: 0 1 2 (standard)
+	    var button = event.button;
+	    if ('which' in event) {
+	      return button;
+	    }
+	    // IE<9
+	    // which:  undefined
+	    // button: 0 0 0
+	    // button: 1 4 2 (onmouseup)
+	    return button === 2 ? 2 : button === 4 ? 1 : 0;
+	  },
+	  buttons: null,
+	  relatedTarget: function(event) {
+	    return event.relatedTarget || (
+	      event.fromElement === event.srcElement ?
+	        event.toElement :
+	        event.fromElement
+	    );
+	  },
+	  // "Proprietary" Interface.
+	  pageX: function(event) {
+	    return 'pageX' in event ?
+	      event.pageX :
+	      event.clientX + ViewportMetrics.currentScrollLeft;
+	  },
+	  pageY: function(event) {
+	    return 'pageY' in event ?
+	      event.pageY :
+	      event.clientY + ViewportMetrics.currentScrollTop;
+	  }
+	};
+
+	/**
+	 * @param {object} dispatchConfig Configuration used to dispatch this event.
+	 * @param {string} dispatchMarker Marker identifying the event target.
+	 * @param {object} nativeEvent Native browser event.
+	 * @extends {SyntheticUIEvent}
+	 */
+	function SyntheticMouseEvent(dispatchConfig, dispatchMarker, nativeEvent) {
+	  SyntheticUIEvent.call(this, dispatchConfig, dispatchMarker, nativeEvent);
+	}
+
+	SyntheticUIEvent.augmentClass(SyntheticMouseEvent, MouseEventInterface);
+
+	module.exports = SyntheticMouseEvent;
 
 
 /***/ },
@@ -37131,7 +37150,7 @@
 	var CallbackQueue = __webpack_require__(168);
 	var PooledClass = __webpack_require__(111);
 	var ReactBrowserEventEmitter = __webpack_require__(105);
-	var ReactInputSelection = __webpack_require__(179);
+	var ReactInputSelection = __webpack_require__(178);
 	var ReactPutListenerQueue = __webpack_require__(200);
 	var Transaction = __webpack_require__(169);
 
@@ -37407,7 +37426,7 @@
 
 	"use strict";
 
-	var focusNode = __webpack_require__(204);
+	var focusNode = __webpack_require__(203);
 
 	var AutoFocusMixin = {
 	  componentDidMount: function() {
@@ -37950,7 +37969,7 @@
 	var SyntheticUIEvent = __webpack_require__(196);
 
 	var getEventKey = __webpack_require__(206);
-	var getEventModifierState = __webpack_require__(202);
+	var getEventModifierState = __webpack_require__(204);
 
 	/**
 	 * @interface KeyboardEvent
@@ -38040,7 +38059,7 @@
 
 	"use strict";
 
-	var SyntheticMouseEvent = __webpack_require__(178);
+	var SyntheticMouseEvent = __webpack_require__(181);
 
 	/**
 	 * @interface DragEvent
@@ -38092,7 +38111,7 @@
 
 	var SyntheticUIEvent = __webpack_require__(196);
 
-	var getEventModifierState = __webpack_require__(202);
+	var getEventModifierState = __webpack_require__(204);
 
 	/**
 	 * @interface TouchEvent
@@ -38222,7 +38241,7 @@
 
 	"use strict";
 
-	var SyntheticMouseEvent = __webpack_require__(178);
+	var SyntheticMouseEvent = __webpack_require__(181);
 
 	/**
 	 * @interface WheelEvent
@@ -38466,64 +38485,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
-	 * Copyright 2013 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule getEventModifierState
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	/**
-	 * Translation from modifier key to the associated property in the event.
-	 * @see http://www.w3.org/TR/DOM-Level-3-Events/#keys-Modifiers
-	 */
-
-	var modifierKeyToProp = {
-	  'Alt': 'altKey',
-	  'Control': 'ctrlKey',
-	  'Meta': 'metaKey',
-	  'Shift': 'shiftKey'
-	};
-
-	// IE8 does not implement getModifierState so we simply map it to the only
-	// modifier keys exposed by the event itself, does not support Lock-keys.
-	// Currently, all major browsers except Chrome seems to support Lock-keys.
-	function modifierStateGetter(keyArg) {
-	  /*jshint validthis:true */
-	  var syntheticEvent = this;
-	  var nativeEvent = syntheticEvent.nativeEvent;
-	  if (nativeEvent.getModifierState) {
-	    return nativeEvent.getModifierState(keyArg);
-	  }
-	  var keyProp = modifierKeyToProp[keyArg];
-	  return keyProp ? !!nativeEvent[keyProp] : false;
-	}
-
-	function getEventModifierState(nativeEvent) {
-	  return modifierStateGetter;
-	}
-
-	module.exports = getEventModifierState;
-
-
-/***/ },
-/* 203 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
 	 * Copyright 2013-2014 Facebook, Inc.
 	 *
 	 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38546,7 +38507,7 @@
 	var ExecutionEnvironment = __webpack_require__(89);
 
 	var getNodeForCharacterOffset = __webpack_require__(208);
-	var getTextContentAccessor = __webpack_require__(181);
+	var getTextContentAccessor = __webpack_require__(180);
 
 	/**
 	 * While `isCollapsed` is available on the Selection object and `collapsed`
@@ -38740,7 +38701,7 @@
 
 
 /***/ },
-/* 204 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -38779,6 +38740,64 @@
 
 
 /***/ },
+/* 204 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule getEventModifierState
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	/**
+	 * Translation from modifier key to the associated property in the event.
+	 * @see http://www.w3.org/TR/DOM-Level-3-Events/#keys-Modifiers
+	 */
+
+	var modifierKeyToProp = {
+	  'Alt': 'altKey',
+	  'Control': 'ctrlKey',
+	  'Meta': 'metaKey',
+	  'Shift': 'shiftKey'
+	};
+
+	// IE8 does not implement getModifierState so we simply map it to the only
+	// modifier keys exposed by the event itself, does not support Lock-keys.
+	// Currently, all major browsers except Chrome seems to support Lock-keys.
+	function modifierStateGetter(keyArg) {
+	  /*jshint validthis:true */
+	  var syntheticEvent = this;
+	  var nativeEvent = syntheticEvent.nativeEvent;
+	  if (nativeEvent.getModifierState) {
+	    return nativeEvent.getModifierState(keyArg);
+	  }
+	  var keyProp = modifierKeyToProp[keyArg];
+	  return keyProp ? !!nativeEvent[keyProp] : false;
+	}
+
+	function getEventModifierState(nativeEvent) {
+	  return modifierStateGetter;
+	}
+
+	module.exports = getEventModifierState;
+
+
+/***/ },
 /* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -38806,7 +38825,7 @@
 	var Danger = __webpack_require__(209);
 	var ReactMultiChildUpdateTypes = __webpack_require__(154);
 
-	var getTextContentAccessor = __webpack_require__(181);
+	var getTextContentAccessor = __webpack_require__(180);
 	var invariant = __webpack_require__(98);
 
 	/**
