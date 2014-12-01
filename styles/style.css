@@ -48,12 +48,15 @@ pre {
 
 h2 > a.ui.label {
   float: right;
-  font-size: 1.55rem;
 }
 
 h2 > a.ui.label > i {
   padding-right: 0 !important;
   margin-right: 0 !important;
+}
+
+h2.ui.header {
+  font-size: 1.55rem;
 }
 
 a {
