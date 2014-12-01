@@ -15,7 +15,7 @@ module.exports = React.createClass({
           <a href={'https://github.com/' + pkg.project.get('repo') + '/' + pkg.project.get('name')} className="ui label">
             <i className="large github alternate icon"></i>
           </a>
-          {pkg.project.get('repo') + '/' + pkg.project.get('title')}
+          <span className="hide-mobile">{pkg.project.get('repo')} / </span> {pkg.project.get('title')}
         </h2>
       );
 
