@@ -105,8 +105,8 @@ module.exports = React.createClass({
     return (
       <div key="header">
         {children}
-        <div>
-          <h4 className="nav-header">{title}</h4>
+        <div className="nav-header">
+          <h4>{title}</h4>
         </div>
       </div>
     );

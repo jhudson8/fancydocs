@@ -25,6 +25,7 @@ module.exports = React.createClass({
     var viewState = this.state.viewState;
     var snippet = viewState.snippet;
     var focus = viewState.focus;
+    var className = this.state.navEnabled ? 'nav-enabled' : '';
 
     if (focus === 'outline' && !project.hasChildren()) {
       // we don't do snippets in outline but the url might show that
@@ -43,10 +44,10 @@ module.exports = React.createClass({
     }
 
     return (
-      <div key={'project-' + project.id}>
+      <div key={'project-' + project.id} className={className}>
         <div>
           <SideNav ref="nav" key={focus} model={project} viewState={viewState} onJumpTo={this.jumpToModel}
-              onSnippetTo={this.snippetTo} onFocusChange={this.onFocusChange}/>
+              onSnippetTo={this.snippetTo} onFocusChange={this.onFocusChange} onNavSelection={this.onNavSelection}/>
           <div className="page-body">
             {children}
           </div>
@@ -58,7 +59,7 @@ module.exports = React.createClass({
   getProjectPage: function() {
     var project = this.getModel();
     return (
-      <div className="pad-all">
+      <div className="pad-all project-container-view">
         <ProjectPage model={project} viewState={this.state.viewState}/>
       </div>
     );
@@ -81,6 +82,7 @@ module.exports = React.createClass({
       model: model
     };
     viewState.jumpTo = 'top';
+    this.setState({navEnabled: false, currentHeader: false});
     this.forceUpdate();
   },
 
@@ -90,7 +92,7 @@ module.exports = React.createClass({
     if (model.domId) {
       viewState.jumpTo = model.domId();
     }
-    this.forceUpdate();
+    this.setState({navEnabled: false, currentHeader: false});
     var self = this;
     _.defer(function() {
       self.jumpTo(viewState.jumpTo);
@@ -126,6 +128,21 @@ module.exports = React.createClass({
     if (focus != viewState.focus) {
       viewState.updateFocus(focus);
       this.forceUpdate();
+    }
+    this.onNavSelection({type: 'header', value: focus});
+  },
+
+  onNavSelection: function(data) {
+    if (data.type === 'header') {
+      var currentHeader = this.state.currentHeader;
+      if (currentHeader === data.value) {
+        // switch off
+        this.setState({navEnabled: false, currentHeader: false});
+      } else {
+        this.setState({navEnabled: true, currentHeader: data.value});
+      }
+    } else {
+      this.setState({navEnabled: false, currentHeader: false});
     }
   }
 });

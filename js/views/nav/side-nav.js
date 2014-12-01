@@ -41,8 +41,10 @@ module.exports = React.createClass({
 
     return (
       <div className="sidebar" key="nav">
-        <SideNavHeader key={focus} ref="header" viewState={this.state.viewState} model={project}/>
-        {content}
+        <SideNavHeader key={focus} ref="header" viewState={this.state.viewState} model={project} onNavSelection={this.props.onNavSelection}/>
+        <div className="project-nav">
+          {content}
+        </div>
       </div>
     );
   },
