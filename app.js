@@ -52,19 +52,19 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/** @jsx React.DOM */$ = __webpack_require__(12);
-	React = __webpack_require__(8);
-	_ = __webpack_require__(9);
-	Backbone = __webpack_require__(10);
+	React = __webpack_require__(11);
+	_ = __webpack_require__(6);
+	Backbone = __webpack_require__(7);
 	$script = __webpack_require__(13);
 
 	Backbone.$ = $;
-	__webpack_require__(11);
+	__webpack_require__(9);
 
 	var libs = [
 	  [__webpack_require__(4), Backbone],
 	  [__webpack_require__(5), React],
-	  [__webpack_require__(6), React],
-	  [__webpack_require__(7), React, Backbone],
+	  [__webpack_require__(8), React],
+	  [__webpack_require__(10), React, Backbone],
 	];
 	_.each(libs, function(data) {
 	  var lib = data[0];
@@ -440,25 +440,6 @@
 
 /***/ },
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */module.exports = __webpack_require__(22);
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */module.exports = __webpack_require__(23);
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */module.exports = __webpack_require__(30);
-
-
-/***/ },
-/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *///     Underscore.js 1.7.0
@@ -1879,7 +1860,7 @@
 
 
 /***/ },
-/* 10 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *///     Backbone.js 1.1.2
@@ -3493,13 +3474,19 @@
 
 
 /***/ },
-/* 11 */
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */module.exports = __webpack_require__(23);
+
+/***/ },
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM */(function (root, factory) {
 	   if (true) {
 	      // AMD. Register as an anonymous module.
-	      !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(9),__webpack_require__(10)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, Backbone) {
+	      !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(6),__webpack_require__(7)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, Backbone) {
 	        // Use global variables if the locals are undefined.
 	        return factory(_ || root._, Backbone || root.Backbone);
 	      }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -3795,6 +3782,19 @@
 	}
 
 	}));
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */module.exports = __webpack_require__(22);
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */module.exports = __webpack_require__(30);
 
 
 /***/ },
@@ -13407,7 +13407,7 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(38);
+	var Markdown = __webpack_require__(39);
 	var SideNav = __webpack_require__(19);
 	var navUtil = __webpack_require__(27);
 	var SnippetView = __webpack_require__(28);
@@ -13630,7 +13630,7 @@
 	    var text = this.refs.input.getDOMNode().value.trim();
 	    if (text) {
 	      try {
-	        var parsed = __webpack_require__(43)(text);
+	        var parsed = __webpack_require__(38)(text);
 	        this.setState({parsed: parsed});
 	      } catch (e) {
 	        console.error(e);
@@ -13729,10 +13729,10 @@
 	var SideNavHeader = __webpack_require__(29);
 
 	var FOCUS_MAP = {
-	  outline: __webpack_require__(39),
-	  packages: __webpack_require__(40),
-	  methods: __webpack_require__(41),
-	  projects: __webpack_require__(42),
+	  outline: __webpack_require__(40),
+	  packages: __webpack_require__(41),
+	  methods: __webpack_require__(42),
+	  projects: __webpack_require__(43),
 	};
 
 	module.exports = React.createClass({displayName: 'exports',
@@ -13811,7 +13811,7 @@
 	 */
 	(function (main) {
 	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(10), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_RESULT__ = function (Backbone, _) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(7), __webpack_require__(6)], __WEBPACK_AMD_DEFINE_RESULT__ = function (Backbone, _) {
 	      main(Backbone, _);
 	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (typeof exports !== 'undefined' && typeof require !== 'undefined') {
@@ -14334,367 +14334,6 @@
 /* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *//*!
-	 * react-events v0.6.0
-	 * https://github.com/jhudson8/react-events
-	 *
-	 *
-	 * Copyright (c) 2014 Joe Hudson<joehud_AT_gmail.com>
-	 *
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:
-	 *
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 *
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 */
-	 (function(main) {
-	  if (true) {
-	    // $ is intended to not be provided with define right now.
-	    // $ is only used for the DOM event handler and I do not want to
-	    // enforce the jquery requirement simply for the user of that handler.
-	    // $ must be defined globally if using the DOM handler
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(44)], __WEBPACK_AMD_DEFINE_RESULT__ = function(React) { main(React); }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports !== 'undefined' && typeof require !== 'undefined') {
-	    // $ is only required if using the DOM events
-	    module.exports = function(React) {
-	      main(React);
-	    };
-	  } else {
-	    main(React);
-	  }
-	})(function(React) {
-
-	  var handlers = {},
-	      patternHandlers = [],
-	      splitter = /^([^:]+):?(.*)/,
-	      specialWrapper = /^\*([^\(]+)\(([^)]*)\):(.*)/,
-	      noArgMethods = ['forceUpdate'];
-
-	  // wrapper for event implementations - includes on/off methods
-	  function createHandler(event, callback, context, dontWrapCallback) {
-	    if (!dontWrapCallback) {
-	      var _callback = callback,
-	          noArg;
-	      if (typeof callback === 'object') {
-	        // use the "callback" attribute to get the callback function.  useful if you need to reference the component as "this"
-	        _callback = callback.callback.call(this);
-	      }
-	      if (typeof callback === 'string') {
-	        noArg = (noArgMethods.indexOf(callback) >= 0);
-	        _callback = context[callback];
-	      }
-	      if (!_callback) {
-	        throw 'no callback function exists for "' + callback + '"';
-	      }
-	      callback = function() {
-	        return _callback.apply(context, noArg ? [] : arguments);
-	      };
-	    }
-
-	    // check for special wrapper function
-	    var match = event.match(specialWrapper);
-	    if (match) {
-	      var specialMethodName = match[1],
-	          args = match[2].split(/\s*,\s*/),
-	          rest = match[3],
-	          specialHandler = React.events.specials[specialMethodName];
-	      if (specialHandler) {
-	        if (args.length === 1 && args[0] === '') {
-	          args = [];
-	        }
-	        callback = specialHandler.call(context, callback, args);
-	        return createHandler(rest, callback, context, true);
-	      } else {
-	        throw new Error('invalid special event handler "' + specialMethodName + "'");
-	      }
-	    }
-
-	    var parts = event.match(splitter),
-	        handlerName = parts[1];
-	        path = parts[2],
-	        handler = handlers[handlerName];
-
-	    // check pattern handlers if no match
-	    for (var i=0; !handler && i<patternHandlers.length; i++) {
-	      if (handlerName.match(patternHandlers[i].pattern)) {
-	        handler = patternHandlers[i].handler;
-	      }
-	    }
-	    if (!handler) {
-	      throw 'no handler registered for "' + event + '"';
-	    }
-
-	    return handler.call(context, {key: handlerName, path: path}, callback);
-	  }
-
-	  // predefined templates of common handler types for simpler custom handling
-	  var handlerTemplates = {
-
-	    /**
-	     * Return a handler which will use a standard format of on(eventName, handlerFunction) and off(eventName, handlerFunction)
-	     * @param data {object} handler options
-	     *   - target {object or function()}: the target to bind to or function(name, event) which returns this target ("this" is the React component)
-	     *   - onKey {string}: the function attribute used to add the event binding (default is "on")
-	     *   - offKey {string}: the function attribute used to add the event binding (default is "off")
-	     */
-	    standard: function(data) {
-	      var accessors = {
-	            on: data.onKey || 'on',
-	            off: data.offKey || 'off'
-	          },
-	          target = data.target;
-	      return function(options, callback) {
-	        var path = options.path;
-	        function checkTarget(type, context) {
-	          return function() {
-	            var _target = (typeof target === 'function') ? target.call(context, path) : target;
-	            if (_target) {
-	              // register the handler
-	              _target[accessors[type]](path, callback);
-	            }
-	          };
-	        }
-
-	        return {
-	          on: checkTarget('on', this),
-	          off: checkTarget('off', this),
-	          initialize: data.initialize
-	        };
-	      };
-	    }
-	  };
-
-	  var eventManager = React.events = {
-	    // placeholder for special methods
-	    specials: {},
-
-	    /**
-	     * Register an event handler
-	     * @param identifier {string} the event type (first part of event definition)
-	     * @param handlerOrOptions {function(options, callback) *OR* options object}
-	     *
-	     * handlerOrOptions as function(options, callback) a function which returns the object used as the event handler.
-	     *      @param options {object}: will contain a *path* attribute - the event key (without the handler key prefix).
-	     *           if the custom handler was registered as "foo" and events hash was { "foo:abc": "..." }, the path is "abc"
-	     *      @param callback {function}: the callback function to be bound to the event
-	     *
-	     * handlerOrOptions as options: will use a predefined "standard" handler;  this assumes the event format of "{handler identifier}:{target identifier}:{event name}"
-	     *      @param target {object or function(targetIdentifier, eventName)} the target to bind/unbind from or the functions which retuns this target
-	     *      @param onKey {string} the attribute which identifies the event binding function on the target (default is "on")
-	     *      @param offKey {string} the attribute which identifies the event un-binding function on the target (default is "off")
-	     */
-	    handle: function(identifier, optionsOrHandler) {
-	      if (typeof optionsOrHandler !== 'function') {
-	        // it's options
-	        optionsOrHandler = handlerTemplates[optionsOrHandler.type || 'standard'](optionsOrHandler);
-	      }
-	      if (identifier instanceof RegExp) {
-	        patternHandlers.push({pattern: identifier, handler: optionsOrHandler});
-	      } else {
-	        handlers[identifier] = optionsOrHandler;
-	      }
-	    }
-	  };
-
-
-	  //// REGISTER THE DEFAULT EVENT HANDLERS
-	  if (typeof window != 'undefined') {
-	    /**
-	     * Bind to window events
-	     * format: "window:{event name}"
-	     * example: events: { 'window:scroll': 'onScroll' }
-	     */
-	    eventManager.handle('window', {
-	      target: window,
-	      onKey: 'addEventListener',
-	      offKey: 'removeEventListener'
-	    });
-	  }
-
-	  /**
-	   * Bind to events on components that are given a [ref](http://facebook.github.io/react/docs/more-about-refs.html)
-	   * format: "ref:{ref name}:{event name}"
-	   * example: "ref:myComponent:something-happened": "onSomethingHappened"
-	   */
-	  eventManager.handle('ref', function(options, callback) {
-	    var parts = options.path.match(splitter),
-	        refKey = parts[1],
-	        event = parts[2],
-	        bound, componentState;
-	    return {
-	      on: function() {
-	        var target = this.refs[refKey];
-	        if (target) {
-	          componentState = target.state || target;
-	          target.on(event, callback);
-	          bound = target;
-	        }
-	      },
-	      off: function() {
-	        if (bound) {
-	          bound.off(event, callback);
-	          bound = undefined;
-	          componentState = undefined;
-	        }
-	      },
-	      isStale: function() {
-	        if (bound) {
-	          var target = this.refs[refKey];
-	          if (!target || (target.state || target) !== componentState) {
-	            // if the target doesn't exist now and we were bound before or the target state has changed we are stale
-	            return true;
-	          }
-	        } else {
-	          // if we weren't bound before but the component exists now, we are stale
-	          return !!this.refs[refKey];
-	        }
-	      }
-	    };
-	  });
-
-
-	  /**
-	   * Allow binding to setInterval events
-	   * format: "repeat:{milis}"
-	   * example: events: { 'repeat:3000': 'onRepeat3Sec' }
-	   */
-	  eventManager.handle('repeat', function(options, callback) {
-	    var delay = parseInt(options.path, 10), id;
-	    return {
-	      on: function() {
-	        id = setInterval(callback, delay);
-	      },
-	      off: function() {
-	        id = !!clearInterval(id);
-	      }
-	    };
-	  });
-
-
-	  /**
-	   * Like setInterval events *but* will only fire when the user is actively viewing the web page
-	   * format: "!repeat:{milis}"
-	   * example: events: { '!repeat:3000': 'onRepeat3Sec' }
-	   */
-	  eventManager.handle('!repeat', function(options, callback) {
-	    var delay = parseInt(options.path, 10), keepGoing;
-	    function doInterval(suppressCallback) {
-	      if (suppressCallback !== true) {
-	        callback();
-	      }
-	      setTimeout(function() {
-	        if (keepGoing) {
-	          requestAnimationFrame(doInterval);
-	        }
-	      }, delay);
-	    }
-	    return {
-	      on: function() {
-	        keepGoing = true;
-	        doInterval(true);
-	      },
-	      off: function() {
-	        keepGoing = false;
-	      }
-	    };
-	  });
-
-	  //// REGISTER THE REACT MIXIN
-	  React.mixins.add('events', function() {
-	    var rtn = [{
-	      /**
-	       * Return a callback fundtion that will trigger an event on "this" when executed with the provided parameters
-	       */
-	      triggerWith: function(eventName) {
-	        var args = Array.prototype.slice.call(arguments),
-	            self = this;
-	        return function() {
-	          self.trigger.apply(this, args);
-	        };
-	      },
-
-	      getInitialState: function() {
-	        var handlers = this._eventHandlers = [];
-	        if (this.events) {
-	          var handler;
-	          for (var event in this.events) {
-	            handler = createHandler(event, this.events[event], this);
-	            if (handler.initialize) {
-	              handler.initialize.call(this);
-	            }
-	            handlers.push(handler);
-	          }
-	        }
-	        return null;
-	      },
-
-	      componentDidUpdate: function() {
-	        var handlers = this._eventHandlers, handler;
-	        for (var i=0; i<handlers.length; i++) {
-	          handler = handlers[i];
-	          if (handler.isStale && handler.isStale.call(this)) {
-	            handler.off.call(this);
-	            handler.on.call(this);
-	          }
-	        }
-	      },
-
-	      componentDidMount: function() {
-	        var handlers = this._eventHandlers;
-	        for (var i=0; i<handlers.length; i++) {
-	          handlers[i].on.call(this);
-	        }
-	      },
-
-	      componentWillUnmount: function() {
-	        var handlers = this._eventHandlers;
-	        for (var i=0; i<handlers.length; i++) {
-	          handlers[i].off.call(this);
-	        }
-	      }
-	    }];
-
-	    function bind(func, context) {
-	      return function() {
-	        func.apply(context, arguments);
-	      };
-	    }
-	    if (eventManager.mixin) {
-	      var eventHandlerMixin = {},
-	          state = {};
-	      for (var name in eventManager.mixin) {
-	        eventHandlerMixin[name] = bind(eventManager.mixin[name], state);
-	      }
-	      eventHandlerMixin.getInitialState = function() {
-	        return {
-	          __events: state
-	        };
-	      };
-	      rtn.push(eventHandlerMixin);
-	    }
-	    // React.eventHandler.mixin should contain impl for "on" "off" and "trigger"
-	    return rtn;
-	  });
-
-	});
-
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *//*!
 	 * react-backbone v0.12.1
 	 * https://github.com/jhudson8/react-backbone
@@ -14721,7 +14360,7 @@
 	 */
 	 (function(main) {
 	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(44), __webpack_require__(10), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_FACTORY__ = (main), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(44), __webpack_require__(7), __webpack_require__(6)], __WEBPACK_AMD_DEFINE_FACTORY__ = (main), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (typeof exports !== 'undefined' && typeof require !== 'undefined') {
 	    module.exports = function(React, Backbone) {
 	      main(React, Backbone, require('underscore'));
@@ -15441,12 +15080,373 @@
 
 
 /***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *//*!
+	 * react-events v0.6.0
+	 * https://github.com/jhudson8/react-events
+	 *
+	 *
+	 * Copyright (c) 2014 Joe Hudson<joehud_AT_gmail.com>
+	 *
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:
+	 *
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 *
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 */
+	 (function(main) {
+	  if (true) {
+	    // $ is intended to not be provided with define right now.
+	    // $ is only used for the DOM event handler and I do not want to
+	    // enforce the jquery requirement simply for the user of that handler.
+	    // $ must be defined globally if using the DOM handler
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(44)], __WEBPACK_AMD_DEFINE_RESULT__ = function(React) { main(React); }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports !== 'undefined' && typeof require !== 'undefined') {
+	    // $ is only required if using the DOM events
+	    module.exports = function(React) {
+	      main(React);
+	    };
+	  } else {
+	    main(React);
+	  }
+	})(function(React) {
+
+	  var handlers = {},
+	      patternHandlers = [],
+	      splitter = /^([^:]+):?(.*)/,
+	      specialWrapper = /^\*([^\(]+)\(([^)]*)\):(.*)/,
+	      noArgMethods = ['forceUpdate'];
+
+	  // wrapper for event implementations - includes on/off methods
+	  function createHandler(event, callback, context, dontWrapCallback) {
+	    if (!dontWrapCallback) {
+	      var _callback = callback,
+	          noArg;
+	      if (typeof callback === 'object') {
+	        // use the "callback" attribute to get the callback function.  useful if you need to reference the component as "this"
+	        _callback = callback.callback.call(this);
+	      }
+	      if (typeof callback === 'string') {
+	        noArg = (noArgMethods.indexOf(callback) >= 0);
+	        _callback = context[callback];
+	      }
+	      if (!_callback) {
+	        throw 'no callback function exists for "' + callback + '"';
+	      }
+	      callback = function() {
+	        return _callback.apply(context, noArg ? [] : arguments);
+	      };
+	    }
+
+	    // check for special wrapper function
+	    var match = event.match(specialWrapper);
+	    if (match) {
+	      var specialMethodName = match[1],
+	          args = match[2].split(/\s*,\s*/),
+	          rest = match[3],
+	          specialHandler = React.events.specials[specialMethodName];
+	      if (specialHandler) {
+	        if (args.length === 1 && args[0] === '') {
+	          args = [];
+	        }
+	        callback = specialHandler.call(context, callback, args);
+	        return createHandler(rest, callback, context, true);
+	      } else {
+	        throw new Error('invalid special event handler "' + specialMethodName + "'");
+	      }
+	    }
+
+	    var parts = event.match(splitter),
+	        handlerName = parts[1];
+	        path = parts[2],
+	        handler = handlers[handlerName];
+
+	    // check pattern handlers if no match
+	    for (var i=0; !handler && i<patternHandlers.length; i++) {
+	      if (handlerName.match(patternHandlers[i].pattern)) {
+	        handler = patternHandlers[i].handler;
+	      }
+	    }
+	    if (!handler) {
+	      throw 'no handler registered for "' + event + '"';
+	    }
+
+	    return handler.call(context, {key: handlerName, path: path}, callback);
+	  }
+
+	  // predefined templates of common handler types for simpler custom handling
+	  var handlerTemplates = {
+
+	    /**
+	     * Return a handler which will use a standard format of on(eventName, handlerFunction) and off(eventName, handlerFunction)
+	     * @param data {object} handler options
+	     *   - target {object or function()}: the target to bind to or function(name, event) which returns this target ("this" is the React component)
+	     *   - onKey {string}: the function attribute used to add the event binding (default is "on")
+	     *   - offKey {string}: the function attribute used to add the event binding (default is "off")
+	     */
+	    standard: function(data) {
+	      var accessors = {
+	            on: data.onKey || 'on',
+	            off: data.offKey || 'off'
+	          },
+	          target = data.target;
+	      return function(options, callback) {
+	        var path = options.path;
+	        function checkTarget(type, context) {
+	          return function() {
+	            var _target = (typeof target === 'function') ? target.call(context, path) : target;
+	            if (_target) {
+	              // register the handler
+	              _target[accessors[type]](path, callback);
+	            }
+	          };
+	        }
+
+	        return {
+	          on: checkTarget('on', this),
+	          off: checkTarget('off', this),
+	          initialize: data.initialize
+	        };
+	      };
+	    }
+	  };
+
+	  var eventManager = React.events = {
+	    // placeholder for special methods
+	    specials: {},
+
+	    /**
+	     * Register an event handler
+	     * @param identifier {string} the event type (first part of event definition)
+	     * @param handlerOrOptions {function(options, callback) *OR* options object}
+	     *
+	     * handlerOrOptions as function(options, callback) a function which returns the object used as the event handler.
+	     *      @param options {object}: will contain a *path* attribute - the event key (without the handler key prefix).
+	     *           if the custom handler was registered as "foo" and events hash was { "foo:abc": "..." }, the path is "abc"
+	     *      @param callback {function}: the callback function to be bound to the event
+	     *
+	     * handlerOrOptions as options: will use a predefined "standard" handler;  this assumes the event format of "{handler identifier}:{target identifier}:{event name}"
+	     *      @param target {object or function(targetIdentifier, eventName)} the target to bind/unbind from or the functions which retuns this target
+	     *      @param onKey {string} the attribute which identifies the event binding function on the target (default is "on")
+	     *      @param offKey {string} the attribute which identifies the event un-binding function on the target (default is "off")
+	     */
+	    handle: function(identifier, optionsOrHandler) {
+	      if (typeof optionsOrHandler !== 'function') {
+	        // it's options
+	        optionsOrHandler = handlerTemplates[optionsOrHandler.type || 'standard'](optionsOrHandler);
+	      }
+	      if (identifier instanceof RegExp) {
+	        patternHandlers.push({pattern: identifier, handler: optionsOrHandler});
+	      } else {
+	        handlers[identifier] = optionsOrHandler;
+	      }
+	    }
+	  };
+
+
+	  //// REGISTER THE DEFAULT EVENT HANDLERS
+	  if (typeof window != 'undefined') {
+	    /**
+	     * Bind to window events
+	     * format: "window:{event name}"
+	     * example: events: { 'window:scroll': 'onScroll' }
+	     */
+	    eventManager.handle('window', {
+	      target: window,
+	      onKey: 'addEventListener',
+	      offKey: 'removeEventListener'
+	    });
+	  }
+
+	  /**
+	   * Bind to events on components that are given a [ref](http://facebook.github.io/react/docs/more-about-refs.html)
+	   * format: "ref:{ref name}:{event name}"
+	   * example: "ref:myComponent:something-happened": "onSomethingHappened"
+	   */
+	  eventManager.handle('ref', function(options, callback) {
+	    var parts = options.path.match(splitter),
+	        refKey = parts[1],
+	        event = parts[2],
+	        bound, componentState;
+	    return {
+	      on: function() {
+	        var target = this.refs[refKey];
+	        if (target) {
+	          componentState = target.state || target;
+	          target.on(event, callback);
+	          bound = target;
+	        }
+	      },
+	      off: function() {
+	        if (bound) {
+	          bound.off(event, callback);
+	          bound = undefined;
+	          componentState = undefined;
+	        }
+	      },
+	      isStale: function() {
+	        if (bound) {
+	          var target = this.refs[refKey];
+	          if (!target || (target.state || target) !== componentState) {
+	            // if the target doesn't exist now and we were bound before or the target state has changed we are stale
+	            return true;
+	          }
+	        } else {
+	          // if we weren't bound before but the component exists now, we are stale
+	          return !!this.refs[refKey];
+	        }
+	      }
+	    };
+	  });
+
+
+	  /**
+	   * Allow binding to setInterval events
+	   * format: "repeat:{milis}"
+	   * example: events: { 'repeat:3000': 'onRepeat3Sec' }
+	   */
+	  eventManager.handle('repeat', function(options, callback) {
+	    var delay = parseInt(options.path, 10), id;
+	    return {
+	      on: function() {
+	        id = setInterval(callback, delay);
+	      },
+	      off: function() {
+	        id = !!clearInterval(id);
+	      }
+	    };
+	  });
+
+
+	  /**
+	   * Like setInterval events *but* will only fire when the user is actively viewing the web page
+	   * format: "!repeat:{milis}"
+	   * example: events: { '!repeat:3000': 'onRepeat3Sec' }
+	   */
+	  eventManager.handle('!repeat', function(options, callback) {
+	    var delay = parseInt(options.path, 10), keepGoing;
+	    function doInterval(suppressCallback) {
+	      if (suppressCallback !== true) {
+	        callback();
+	      }
+	      setTimeout(function() {
+	        if (keepGoing) {
+	          requestAnimationFrame(doInterval);
+	        }
+	      }, delay);
+	    }
+	    return {
+	      on: function() {
+	        keepGoing = true;
+	        doInterval(true);
+	      },
+	      off: function() {
+	        keepGoing = false;
+	      }
+	    };
+	  });
+
+	  //// REGISTER THE REACT MIXIN
+	  React.mixins.add('events', function() {
+	    var rtn = [{
+	      /**
+	       * Return a callback fundtion that will trigger an event on "this" when executed with the provided parameters
+	       */
+	      triggerWith: function(eventName) {
+	        var args = Array.prototype.slice.call(arguments),
+	            self = this;
+	        return function() {
+	          self.trigger.apply(this, args);
+	        };
+	      },
+
+	      getInitialState: function() {
+	        var handlers = this._eventHandlers = [];
+	        if (this.events) {
+	          var handler;
+	          for (var event in this.events) {
+	            handler = createHandler(event, this.events[event], this);
+	            if (handler.initialize) {
+	              handler.initialize.call(this);
+	            }
+	            handlers.push(handler);
+	          }
+	        }
+	        return null;
+	      },
+
+	      componentDidUpdate: function() {
+	        var handlers = this._eventHandlers, handler;
+	        for (var i=0; i<handlers.length; i++) {
+	          handler = handlers[i];
+	          if (handler.isStale && handler.isStale.call(this)) {
+	            handler.off.call(this);
+	            handler.on.call(this);
+	          }
+	        }
+	      },
+
+	      componentDidMount: function() {
+	        var handlers = this._eventHandlers;
+	        for (var i=0; i<handlers.length; i++) {
+	          handlers[i].on.call(this);
+	        }
+	      },
+
+	      componentWillUnmount: function() {
+	        var handlers = this._eventHandlers;
+	        for (var i=0; i<handlers.length; i++) {
+	          handlers[i].off.call(this);
+	        }
+	      }
+	    }];
+
+	    function bind(func, context) {
+	      return function() {
+	        func.apply(context, arguments);
+	      };
+	    }
+	    if (eventManager.mixin) {
+	      var eventHandlerMixin = {},
+	          state = {};
+	      for (var name in eventManager.mixin) {
+	        eventHandlerMixin[name] = bind(eventManager.mixin[name], state);
+	      }
+	      eventHandlerMixin.getInitialState = function() {
+	        return {
+	          __events: state
+	        };
+	      };
+	      rtn.push(eventHandlerMixin);
+	    }
+	    // React.eventHandler.mixin should contain impl for "on" "off" and "trigger"
+	    return rtn;
+	  });
+
+	});
+
+
+/***/ },
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(38);
+	var Markdown = __webpack_require__(39);
 	var PackageView = __webpack_require__(32);
 
 	module.exports = React.createClass({displayName: 'exports',
@@ -15478,7 +15478,7 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(38);
+	var Markdown = __webpack_require__(39);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelAware'],
@@ -15511,7 +15511,7 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(38);
+	var Markdown = __webpack_require__(39);
 	var navUtil = __webpack_require__(27);
 	var SnippetView = __webpack_require__(28);
 	var APIView = __webpack_require__(24);
@@ -16061,7 +16061,7 @@
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
 	var navUtil = __webpack_require__(27);
-	var Markdown = __webpack_require__(38);
+	var Markdown = __webpack_require__(39);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelAware'],
@@ -16110,7 +16110,7 @@
 
 	var navUtil = __webpack_require__(27);
 	var MethodView = __webpack_require__(33);
-	var Markdown = __webpack_require__(38);
+	var Markdown = __webpack_require__(39);
 
 
 	module.exports =  React.createClass({displayName: 'exports',
@@ -16149,7 +16149,7 @@
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
 	var navUtil = __webpack_require__(27);
-	var Markdown = __webpack_require__(38);
+	var Markdown = __webpack_require__(39);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelAware'],
@@ -16206,7 +16206,7 @@
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
 	var navUtil = __webpack_require__(27);
-	var Markdown = __webpack_require__(38);
+	var Markdown = __webpack_require__(39);
 	var APIView = __webpack_require__(24);
 
 	module.exports = React.createClass({displayName: 'exports',
@@ -16230,7 +16230,7 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(38);
+	var Markdown = __webpack_require__(39);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelAware'],
@@ -16493,6 +16493,123 @@
 /* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/** @jsx React.DOM */var util = __webpack_require__(61);
+
+	module.exports = function(contents) {
+
+
+	  headerPattern = /^={3,50}\s*/,
+	  subHeaderPattern = /^-{3,50}\s*/,
+	  h3Pattern = /^#{3}([^#]*)#*\s*$/,
+	  h4Pattern = /^#{4}([^#]*)#*\s*$/,
+	  h5Pattern = /^#{5}([^#]*)#*\s*$/,
+	  paramPattern = /^\s*\*\s*([^:]*):(.*)/;
+
+	  var handlers = {
+	    overview: function(section, data) {
+	      data.overview = section.content.join('\n');
+	    },
+	    sections: function(section, data) {
+	      data.sections = __webpack_require__(62)(section, 3);
+	    },
+	    'bundled projects': function(section, data) {
+	      data.bundledProjects = __webpack_require__(63)(section);
+	    },
+	    'dependencies': function(section, data) {
+	      data.dependantProjects = __webpack_require__(63)(section);
+	    },
+	    'depends on': function(section, data) {
+	      data.dependantProjects = __webpack_require__(63)(section);
+	    },
+	    'install': function(section, data) {
+	      data.installation = section.content.join('\n');
+	    },
+	    'api(: .+)?': function(section, data) {
+	      var api = __webpack_require__(64)(section);
+	      if (!data.api) data.api = {};
+	      data.api[section.name.match(/[Aa][Pp][Ii]:?\s*(.*)/)[1].trim() || 'API'] = api;
+	    }
+	  };
+
+	  var processedHandlers = [];
+	  for (var key in handlers) {
+	    processedHandlers.push({
+	      pattern: new RegExp(key),
+	      handler: handlers[key]
+	    });
+	  }
+
+	  var tmp = parseBody(contents);
+	  var data = {title: tmp.title, summary: tmp.summary};
+	  var handler;
+	  for (var i=0; i<tmp.sections.length; i++, handler=null) {
+	    var section = tmp.sections[i];
+	    for (var j=0; j<processedHandlers.length && !handler; j++) {
+	      if (processedHandlers[j].pattern.test(section.name.toLowerCase())) {
+	        handler = processedHandlers[j].handler;
+	        break;
+	      }
+	    }
+
+	    if (handler) {
+	      handler(section, data);
+	    } else {
+	      console.log('section "' + section.name + '" ignored');
+	    }
+	  }
+
+	  return JSON.stringify(data);
+	};
+
+	function parseBody (contents) {
+	  var lines = contents.split(/\r?\n/),
+	    buffer = [],
+	    sections = [],
+	    header,
+	    summary,
+	    currentName;
+
+	  function execute(end) {
+	    if (currentName) {
+	      var body = buffer.slice(0, buffer.length - (end?0:1));
+	        name = currentName;
+	      sections.push({name: name, content: body});
+	    } else {
+	      summary = buffer.slice(0, buffer.length-2).join('\n').trim();
+	    }
+	    if (!end) {
+	      currentName = buffer[buffer.length-1].trim();
+	      buffer = [];
+	    }
+	  }
+
+	  for (var i=0; i<lines.length; i++) {
+	    var line = lines[i];
+	    if (line.match(headerPattern)) {
+	      if (currentName) {
+	        throw "there can only be 1 title (using ==========)";
+	      }
+	      // header
+	      header = buffer.join(' ').trim();
+	      buffer = [];
+	    } else if (line.match(subHeaderPattern)) {
+	      execute();
+
+	    } else {
+	      buffer.push(line);
+	    }
+	  }
+	  execute(true);
+	  var summary = util.parseMarkdown(summary);
+	  summary = summary.replace(/^.*[Ff]ancydocs?\].*$/mg, "");
+	  return {title: header, summary: summary, sections: sections};
+	}
+
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
 	var converter = new Showdown.converter();
@@ -16520,7 +16637,7 @@
 
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
@@ -16641,7 +16758,7 @@
 
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
@@ -16698,7 +16815,7 @@
 
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
@@ -16755,7 +16872,7 @@
 
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
@@ -16785,123 +16902,6 @@
 	    };
 	  }
 	});
-
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */var util = __webpack_require__(61);
-
-	module.exports = function(contents) {
-
-
-	  headerPattern = /^={3,50}\s*/,
-	  subHeaderPattern = /^-{3,50}\s*/,
-	  h3Pattern = /^#{3}([^#]*)#*\s*$/,
-	  h4Pattern = /^#{4}([^#]*)#*\s*$/,
-	  h5Pattern = /^#{5}([^#]*)#*\s*$/,
-	  paramPattern = /^\s*\*\s*([^:]*):(.*)/;
-
-	  var handlers = {
-	    overview: function(section, data) {
-	      data.overview = section.content.join('\n');
-	    },
-	    sections: function(section, data) {
-	      data.sections = __webpack_require__(62)(section, 3);
-	    },
-	    'bundled projects': function(section, data) {
-	      data.bundledProjects = __webpack_require__(63)(section);
-	    },
-	    'dependencies': function(section, data) {
-	      data.dependantProjects = __webpack_require__(63)(section);
-	    },
-	    'depends on': function(section, data) {
-	      data.dependantProjects = __webpack_require__(63)(section);
-	    },
-	    'install': function(section, data) {
-	      data.installation = section.content.join('\n');
-	    },
-	    'api(: .+)?': function(section, data) {
-	      var api = __webpack_require__(64)(section);
-	      if (!data.api) data.api = {};
-	      data.api[section.name.match(/[Aa][Pp][Ii]:?\s*(.*)/)[1].trim() || 'API'] = api;
-	    }
-	  };
-
-	  var processedHandlers = [];
-	  for (var key in handlers) {
-	    processedHandlers.push({
-	      pattern: new RegExp(key),
-	      handler: handlers[key]
-	    });
-	  }
-
-	  var tmp = parseBody(contents);
-	  var data = {title: tmp.title, summary: tmp.summary};
-	  var handler;
-	  for (var i=0; i<tmp.sections.length; i++, handler=null) {
-	    var section = tmp.sections[i];
-	    for (var j=0; j<processedHandlers.length && !handler; j++) {
-	      if (processedHandlers[j].pattern.test(section.name.toLowerCase())) {
-	        handler = processedHandlers[j].handler;
-	        break;
-	      }
-	    }
-
-	    if (handler) {
-	      handler(section, data);
-	    } else {
-	      console.log('section "' + section.name + '" ignored');
-	    }
-	  }
-
-	  return JSON.stringify(data);
-	};
-
-	function parseBody (contents) {
-	  var lines = contents.split(/\r?\n/),
-	    buffer = [],
-	    sections = [],
-	    header,
-	    summary,
-	    currentName;
-
-	  function execute(end) {
-	    if (currentName) {
-	      var body = buffer.slice(0, buffer.length - (end?0:1));
-	        name = currentName;
-	      sections.push({name: name, content: body});
-	    } else {
-	      summary = buffer.slice(0, buffer.length-2).join('\n').trim();
-	    }
-	    if (!end) {
-	      currentName = buffer[buffer.length-1].trim();
-	      buffer = [];
-	    }
-	  }
-
-	  for (var i=0; i<lines.length; i++) {
-	    var line = lines[i];
-	    if (line.match(headerPattern)) {
-	      if (currentName) {
-	        throw "there can only be 1 title (using ==========)";
-	      }
-	      // header
-	      header = buffer.join(' ').trim();
-	      buffer = [];
-	    } else if (line.match(subHeaderPattern)) {
-	      execute();
-
-	    } else {
-	      buffer.push(line);
-	    }
-	  }
-	  execute(true);
-	  var summary = util.parseMarkdown(summary);
-	  summary = summary.replace(/^.*[Ff]ancydocs?\].*$/mg, "");
-	  return {title: header, summary: summary, sections: sections};
-	}
 
 
 /***/ },
@@ -19343,12 +19343,12 @@
 
 	"use strict";
 
-	var DOMProperty = __webpack_require__(99);
-	var ReactDefaultPerfAnalysis = __webpack_require__(100);
+	var DOMProperty = __webpack_require__(106);
+	var ReactDefaultPerfAnalysis = __webpack_require__(107);
 	var ReactMount = __webpack_require__(81);
 	var ReactPerf = __webpack_require__(83);
 
-	var performanceNow = __webpack_require__(101);
+	var performanceNow = __webpack_require__(108);
 
 	function roundFloat(val) {
 	  return Math.floor(val * 100) / 100;
@@ -19609,19 +19609,19 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPluginHub = __webpack_require__(103);
-	var EventPropagators = __webpack_require__(104);
+	var EventConstants = __webpack_require__(99);
+	var EventPluginHub = __webpack_require__(100);
+	var EventPropagators = __webpack_require__(101);
 	var React = __webpack_require__(52);
 	var ReactDescriptor = __webpack_require__(76);
 	var ReactDOM = __webpack_require__(77);
-	var ReactBrowserEventEmitter = __webpack_require__(105);
+	var ReactBrowserEventEmitter = __webpack_require__(102);
 	var ReactMount = __webpack_require__(81);
 	var ReactTextComponent = __webpack_require__(86);
-	var ReactUpdates = __webpack_require__(106);
-	var SyntheticEvent = __webpack_require__(107);
+	var ReactUpdates = __webpack_require__(103);
+	var SyntheticEvent = __webpack_require__(104);
 
-	var mergeInto = __webpack_require__(108);
+	var mergeInto = __webpack_require__(105);
 	var copyProperties = __webpack_require__(97);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
@@ -20676,7 +20676,7 @@
 
 	"use strict";
 
-	var DOMProperty = __webpack_require__(99);
+	var DOMProperty = __webpack_require__(106);
 
 	var escapeTextForBrowser = __webpack_require__(109);
 	var memoizeStringOnly = __webpack_require__(110);
@@ -20875,7 +20875,7 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
+	var EventConstants = __webpack_require__(99);
 
 	var invariant = __webpack_require__(98);
 
@@ -21268,7 +21268,7 @@
 
 	var ReactDescriptor = __webpack_require__(76);
 	var ReactOwner = __webpack_require__(113);
-	var ReactUpdates = __webpack_require__(106);
+	var ReactUpdates = __webpack_require__(103);
 
 	var invariant = __webpack_require__(98);
 	var keyMirror = __webpack_require__(114);
@@ -21731,7 +21731,7 @@
 	var ReactPropTransferer = __webpack_require__(95);
 	var ReactPropTypeLocations = __webpack_require__(118);
 	var ReactPropTypeLocationNames = __webpack_require__(119);
-	var ReactUpdates = __webpack_require__(106);
+	var ReactUpdates = __webpack_require__(103);
 
 	var instantiateReactComponent = __webpack_require__(120);
 	var invariant = __webpack_require__(98);
@@ -23532,7 +23532,7 @@
 	var ReactDescriptorValidator = __webpack_require__(115);
 	var ReactDOMComponent = __webpack_require__(78);
 
-	var mergeInto = __webpack_require__(108);
+	var mergeInto = __webpack_require__(105);
 	var mapObject = __webpack_require__(123);
 
 	/**
@@ -23746,12 +23746,12 @@
 
 	"use strict";
 
-	var CSSPropertyOperations = __webpack_require__(125);
-	var DOMProperty = __webpack_require__(99);
+	var CSSPropertyOperations = __webpack_require__(150);
+	var DOMProperty = __webpack_require__(106);
 	var DOMPropertyOperations = __webpack_require__(69);
-	var ReactBrowserComponentMixin = __webpack_require__(126);
+	var ReactBrowserComponentMixin = __webpack_require__(133);
 	var ReactComponent = __webpack_require__(72);
-	var ReactBrowserEventEmitter = __webpack_require__(105);
+	var ReactBrowserEventEmitter = __webpack_require__(102);
 	var ReactMount = __webpack_require__(81);
 	var ReactMultiChild = __webpack_require__(82);
 	var ReactPerf = __webpack_require__(83);
@@ -24170,37 +24170,37 @@
 
 	"use strict";
 
-	var BeforeInputEventPlugin = __webpack_require__(127);
-	var ChangeEventPlugin = __webpack_require__(128);
-	var ClientReactRootIndex = __webpack_require__(129);
-	var CompositionEventPlugin = __webpack_require__(130);
-	var DefaultEventPluginOrder = __webpack_require__(131);
-	var EnterLeaveEventPlugin = __webpack_require__(132);
+	var BeforeInputEventPlugin = __webpack_require__(125);
+	var ChangeEventPlugin = __webpack_require__(126);
+	var ClientReactRootIndex = __webpack_require__(127);
+	var CompositionEventPlugin = __webpack_require__(128);
+	var DefaultEventPluginOrder = __webpack_require__(129);
+	var EnterLeaveEventPlugin = __webpack_require__(130);
 	var ExecutionEnvironment = __webpack_require__(89);
-	var HTMLDOMPropertyConfig = __webpack_require__(133);
-	var MobileSafariClickEventPlugin = __webpack_require__(134);
-	var ReactBrowserComponentMixin = __webpack_require__(126);
+	var HTMLDOMPropertyConfig = __webpack_require__(131);
+	var MobileSafariClickEventPlugin = __webpack_require__(132);
+	var ReactBrowserComponentMixin = __webpack_require__(133);
 	var ReactComponentBrowserEnvironment =
-	  __webpack_require__(135);
-	var ReactDefaultBatchingStrategy = __webpack_require__(136);
+	  __webpack_require__(134);
+	var ReactDefaultBatchingStrategy = __webpack_require__(135);
 	var ReactDOM = __webpack_require__(77);
-	var ReactDOMButton = __webpack_require__(137);
-	var ReactDOMForm = __webpack_require__(138);
-	var ReactDOMImg = __webpack_require__(139);
-	var ReactDOMInput = __webpack_require__(140);
-	var ReactDOMOption = __webpack_require__(141);
-	var ReactDOMSelect = __webpack_require__(142);
-	var ReactDOMTextarea = __webpack_require__(143);
-	var ReactEventListener = __webpack_require__(144);
-	var ReactInjection = __webpack_require__(145);
+	var ReactDOMButton = __webpack_require__(136);
+	var ReactDOMForm = __webpack_require__(137);
+	var ReactDOMImg = __webpack_require__(138);
+	var ReactDOMInput = __webpack_require__(139);
+	var ReactDOMOption = __webpack_require__(140);
+	var ReactDOMSelect = __webpack_require__(141);
+	var ReactDOMTextarea = __webpack_require__(142);
+	var ReactEventListener = __webpack_require__(143);
+	var ReactInjection = __webpack_require__(144);
 	var ReactInstanceHandles = __webpack_require__(80);
 	var ReactMount = __webpack_require__(81);
-	var SelectEventPlugin = __webpack_require__(146);
-	var ServerReactRootIndex = __webpack_require__(147);
-	var SimpleEventPlugin = __webpack_require__(148);
-	var SVGDOMPropertyConfig = __webpack_require__(149);
+	var SelectEventPlugin = __webpack_require__(145);
+	var ServerReactRootIndex = __webpack_require__(146);
+	var SimpleEventPlugin = __webpack_require__(147);
+	var SVGDOMPropertyConfig = __webpack_require__(148);
 
-	var createFullPageComponent = __webpack_require__(150);
+	var createFullPageComponent = __webpack_require__(149);
 
 	function inject() {
 	  ReactInjection.EventEmitter.injectReactEventListener(
@@ -24650,8 +24650,8 @@
 
 	"use strict";
 
-	var DOMProperty = __webpack_require__(99);
-	var ReactBrowserEventEmitter = __webpack_require__(105);
+	var DOMProperty = __webpack_require__(106);
+	var ReactBrowserEventEmitter = __webpack_require__(102);
 	var ReactCurrentOwner = __webpack_require__(75);
 	var ReactDescriptor = __webpack_require__(76);
 	var ReactInstanceHandles = __webpack_require__(80);
@@ -26313,7 +26313,7 @@
 	"use strict";
 
 	var DOMPropertyOperations = __webpack_require__(69);
-	var ReactBrowserComponentMixin = __webpack_require__(126);
+	var ReactBrowserComponentMixin = __webpack_require__(133);
 	var ReactComponent = __webpack_require__(72);
 	var ReactDescriptor = __webpack_require__(76);
 
@@ -26943,7 +26943,7 @@
 
 	"use strict";
 
-	var mergeInto = __webpack_require__(108);
+	var mergeInto = __webpack_require__(105);
 
 	/**
 	 * Shallow merges two structures into a return value, without mutating either.
@@ -27310,559 +27310,6 @@
 /* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule DOMProperty
-	 * @typechecks static-only
-	 */
-
-	/*jslint bitwise: true */
-
-	"use strict";
-
-	var invariant = __webpack_require__(98);
-
-	var DOMPropertyInjection = {
-	  /**
-	   * Mapping from normalized, camelcased property names to a configuration that
-	   * specifies how the associated DOM property should be accessed or rendered.
-	   */
-	  MUST_USE_ATTRIBUTE: 0x1,
-	  MUST_USE_PROPERTY: 0x2,
-	  HAS_SIDE_EFFECTS: 0x4,
-	  HAS_BOOLEAN_VALUE: 0x8,
-	  HAS_NUMERIC_VALUE: 0x10,
-	  HAS_POSITIVE_NUMERIC_VALUE: 0x20 | 0x10,
-	  HAS_OVERLOADED_BOOLEAN_VALUE: 0x40,
-
-	  /**
-	   * Inject some specialized knowledge about the DOM. This takes a config object
-	   * with the following properties:
-	   *
-	   * isCustomAttribute: function that given an attribute name will return true
-	   * if it can be inserted into the DOM verbatim. Useful for data-* or aria-*
-	   * attributes where it's impossible to enumerate all of the possible
-	   * attribute names,
-	   *
-	   * Properties: object mapping DOM property name to one of the
-	   * DOMPropertyInjection constants or null. If your attribute isn't in here,
-	   * it won't get written to the DOM.
-	   *
-	   * DOMAttributeNames: object mapping React attribute name to the DOM
-	   * attribute name. Attribute names not specified use the **lowercase**
-	   * normalized name.
-	   *
-	   * DOMPropertyNames: similar to DOMAttributeNames but for DOM properties.
-	   * Property names not specified use the normalized name.
-	   *
-	   * DOMMutationMethods: Properties that require special mutation methods. If
-	   * `value` is undefined, the mutation method should unset the property.
-	   *
-	   * @param {object} domPropertyConfig the config as described above.
-	   */
-	  injectDOMPropertyConfig: function(domPropertyConfig) {
-	    var Properties = domPropertyConfig.Properties || {};
-	    var DOMAttributeNames = domPropertyConfig.DOMAttributeNames || {};
-	    var DOMPropertyNames = domPropertyConfig.DOMPropertyNames || {};
-	    var DOMMutationMethods = domPropertyConfig.DOMMutationMethods || {};
-
-	    if (domPropertyConfig.isCustomAttribute) {
-	      DOMProperty._isCustomAttributeFunctions.push(
-	        domPropertyConfig.isCustomAttribute
-	      );
-	    }
-
-	    for (var propName in Properties) {
-	      ("production" !== process.env.NODE_ENV ? invariant(
-	        !DOMProperty.isStandardName.hasOwnProperty(propName),
-	        'injectDOMPropertyConfig(...): You\'re trying to inject DOM property ' +
-	        '\'%s\' which has already been injected. You may be accidentally ' +
-	        'injecting the same DOM property config twice, or you may be ' +
-	        'injecting two configs that have conflicting property names.',
-	        propName
-	      ) : invariant(!DOMProperty.isStandardName.hasOwnProperty(propName)));
-
-	      DOMProperty.isStandardName[propName] = true;
-
-	      var lowerCased = propName.toLowerCase();
-	      DOMProperty.getPossibleStandardName[lowerCased] = propName;
-
-	      if (DOMAttributeNames.hasOwnProperty(propName)) {
-	        var attributeName = DOMAttributeNames[propName];
-	        DOMProperty.getPossibleStandardName[attributeName] = propName;
-	        DOMProperty.getAttributeName[propName] = attributeName;
-	      } else {
-	        DOMProperty.getAttributeName[propName] = lowerCased;
-	      }
-
-	      DOMProperty.getPropertyName[propName] =
-	        DOMPropertyNames.hasOwnProperty(propName) ?
-	          DOMPropertyNames[propName] :
-	          propName;
-
-	      if (DOMMutationMethods.hasOwnProperty(propName)) {
-	        DOMProperty.getMutationMethod[propName] = DOMMutationMethods[propName];
-	      } else {
-	        DOMProperty.getMutationMethod[propName] = null;
-	      }
-
-	      var propConfig = Properties[propName];
-	      DOMProperty.mustUseAttribute[propName] =
-	        propConfig & DOMPropertyInjection.MUST_USE_ATTRIBUTE;
-	      DOMProperty.mustUseProperty[propName] =
-	        propConfig & DOMPropertyInjection.MUST_USE_PROPERTY;
-	      DOMProperty.hasSideEffects[propName] =
-	        propConfig & DOMPropertyInjection.HAS_SIDE_EFFECTS;
-	      DOMProperty.hasBooleanValue[propName] =
-	        propConfig & DOMPropertyInjection.HAS_BOOLEAN_VALUE;
-	      DOMProperty.hasNumericValue[propName] =
-	        propConfig & DOMPropertyInjection.HAS_NUMERIC_VALUE;
-	      DOMProperty.hasPositiveNumericValue[propName] =
-	        propConfig & DOMPropertyInjection.HAS_POSITIVE_NUMERIC_VALUE;
-	      DOMProperty.hasOverloadedBooleanValue[propName] =
-	        propConfig & DOMPropertyInjection.HAS_OVERLOADED_BOOLEAN_VALUE;
-
-	      ("production" !== process.env.NODE_ENV ? invariant(
-	        !DOMProperty.mustUseAttribute[propName] ||
-	          !DOMProperty.mustUseProperty[propName],
-	        'DOMProperty: Cannot require using both attribute and property: %s',
-	        propName
-	      ) : invariant(!DOMProperty.mustUseAttribute[propName] ||
-	        !DOMProperty.mustUseProperty[propName]));
-	      ("production" !== process.env.NODE_ENV ? invariant(
-	        DOMProperty.mustUseProperty[propName] ||
-	          !DOMProperty.hasSideEffects[propName],
-	        'DOMProperty: Properties that have side effects must use property: %s',
-	        propName
-	      ) : invariant(DOMProperty.mustUseProperty[propName] ||
-	        !DOMProperty.hasSideEffects[propName]));
-	      ("production" !== process.env.NODE_ENV ? invariant(
-	        !!DOMProperty.hasBooleanValue[propName] +
-	          !!DOMProperty.hasNumericValue[propName] +
-	          !!DOMProperty.hasOverloadedBooleanValue[propName] <= 1,
-	        'DOMProperty: Value can be one of boolean, overloaded boolean, or ' +
-	        'numeric value, but not a combination: %s',
-	        propName
-	      ) : invariant(!!DOMProperty.hasBooleanValue[propName] +
-	        !!DOMProperty.hasNumericValue[propName] +
-	        !!DOMProperty.hasOverloadedBooleanValue[propName] <= 1));
-	    }
-	  }
-	};
-	var defaultValueCache = {};
-
-	/**
-	 * DOMProperty exports lookup objects that can be used like functions:
-	 *
-	 *   > DOMProperty.isValid['id']
-	 *   true
-	 *   > DOMProperty.isValid['foobar']
-	 *   undefined
-	 *
-	 * Although this may be confusing, it performs better in general.
-	 *
-	 * @see http://jsperf.com/key-exists
-	 * @see http://jsperf.com/key-missing
-	 */
-	var DOMProperty = {
-
-	  ID_ATTRIBUTE_NAME: 'data-reactid',
-
-	  /**
-	   * Checks whether a property name is a standard property.
-	   * @type {Object}
-	   */
-	  isStandardName: {},
-
-	  /**
-	   * Mapping from lowercase property names to the properly cased version, used
-	   * to warn in the case of missing properties.
-	   * @type {Object}
-	   */
-	  getPossibleStandardName: {},
-
-	  /**
-	   * Mapping from normalized names to attribute names that differ. Attribute
-	   * names are used when rendering markup or with `*Attribute()`.
-	   * @type {Object}
-	   */
-	  getAttributeName: {},
-
-	  /**
-	   * Mapping from normalized names to properties on DOM node instances.
-	   * (This includes properties that mutate due to external factors.)
-	   * @type {Object}
-	   */
-	  getPropertyName: {},
-
-	  /**
-	   * Mapping from normalized names to mutation methods. This will only exist if
-	   * mutation cannot be set simply by the property or `setAttribute()`.
-	   * @type {Object}
-	   */
-	  getMutationMethod: {},
-
-	  /**
-	   * Whether the property must be accessed and mutated as an object property.
-	   * @type {Object}
-	   */
-	  mustUseAttribute: {},
-
-	  /**
-	   * Whether the property must be accessed and mutated using `*Attribute()`.
-	   * (This includes anything that fails `<propName> in <element>`.)
-	   * @type {Object}
-	   */
-	  mustUseProperty: {},
-
-	  /**
-	   * Whether or not setting a value causes side effects such as triggering
-	   * resources to be loaded or text selection changes. We must ensure that
-	   * the value is only set if it has changed.
-	   * @type {Object}
-	   */
-	  hasSideEffects: {},
-
-	  /**
-	   * Whether the property should be removed when set to a falsey value.
-	   * @type {Object}
-	   */
-	  hasBooleanValue: {},
-
-	  /**
-	   * Whether the property must be numeric or parse as a
-	   * numeric and should be removed when set to a falsey value.
-	   * @type {Object}
-	   */
-	  hasNumericValue: {},
-
-	  /**
-	   * Whether the property must be positive numeric or parse as a positive
-	   * numeric and should be removed when set to a falsey value.
-	   * @type {Object}
-	   */
-	  hasPositiveNumericValue: {},
-
-	  /**
-	   * Whether the property can be used as a flag as well as with a value. Removed
-	   * when strictly equal to false; present without a value when strictly equal
-	   * to true; present with a value otherwise.
-	   * @type {Object}
-	   */
-	  hasOverloadedBooleanValue: {},
-
-	  /**
-	   * All of the isCustomAttribute() functions that have been injected.
-	   */
-	  _isCustomAttributeFunctions: [],
-
-	  /**
-	   * Checks whether a property name is a custom attribute.
-	   * @method
-	   */
-	  isCustomAttribute: function(attributeName) {
-	    for (var i = 0; i < DOMProperty._isCustomAttributeFunctions.length; i++) {
-	      var isCustomAttributeFn = DOMProperty._isCustomAttributeFunctions[i];
-	      if (isCustomAttributeFn(attributeName)) {
-	        return true;
-	      }
-	    }
-	    return false;
-	  },
-
-	  /**
-	   * Returns the default property value for a DOM property (i.e., not an
-	   * attribute). Most default values are '' or false, but not all. Worse yet,
-	   * some (in particular, `type`) vary depending on the type of element.
-	   *
-	   * TODO: Is it better to grab all the possible properties when creating an
-	   * element to avoid having to create the same element twice?
-	   */
-	  getDefaultValueForProperty: function(nodeName, prop) {
-	    var nodeDefaults = defaultValueCache[nodeName];
-	    var testElement;
-	    if (!nodeDefaults) {
-	      defaultValueCache[nodeName] = nodeDefaults = {};
-	    }
-	    if (!(prop in nodeDefaults)) {
-	      testElement = document.createElement(nodeName);
-	      nodeDefaults[prop] = testElement[prop];
-	    }
-	    return nodeDefaults[prop];
-	  },
-
-	  injection: DOMPropertyInjection
-	};
-
-	module.exports = DOMProperty;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
-
-/***/ },
-/* 100 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule ReactDefaultPerfAnalysis
-	 */
-
-	var merge = __webpack_require__(94);
-
-	// Don't try to save users less than 1.2ms (a number I made up)
-	var DONT_CARE_THRESHOLD = 1.2;
-	var DOM_OPERATION_TYPES = {
-	  'mountImageIntoNode': 'set innerHTML',
-	  INSERT_MARKUP: 'set innerHTML',
-	  MOVE_EXISTING: 'move',
-	  REMOVE_NODE: 'remove',
-	  TEXT_CONTENT: 'set textContent',
-	  'updatePropertyByID': 'update attribute',
-	  'deletePropertyByID': 'delete attribute',
-	  'updateStylesByID': 'update styles',
-	  'updateInnerHTMLByID': 'set innerHTML',
-	  'dangerouslyReplaceNodeWithMarkupByID': 'replace'
-	};
-
-	function getTotalTime(measurements) {
-	  // TODO: return number of DOM ops? could be misleading.
-	  // TODO: measure dropped frames after reconcile?
-	  // TODO: log total time of each reconcile and the top-level component
-	  // class that triggered it.
-	  var totalTime = 0;
-	  for (var i = 0; i < measurements.length; i++) {
-	    var measurement = measurements[i];
-	    totalTime += measurement.totalTime;
-	  }
-	  return totalTime;
-	}
-
-	function getDOMSummary(measurements) {
-	  var items = [];
-	  for (var i = 0; i < measurements.length; i++) {
-	    var measurement = measurements[i];
-	    var id;
-
-	    for (id in measurement.writes) {
-	      measurement.writes[id].forEach(function(write) {
-	        items.push({
-	          id: id,
-	          type: DOM_OPERATION_TYPES[write.type] || write.type,
-	          args: write.args
-	        });
-	      });
-	    }
-	  }
-	  return items;
-	}
-
-	function getExclusiveSummary(measurements) {
-	  var candidates = {};
-	  var displayName;
-
-	  for (var i = 0; i < measurements.length; i++) {
-	    var measurement = measurements[i];
-	    var allIDs = merge(measurement.exclusive, measurement.inclusive);
-
-	    for (var id in allIDs) {
-	      displayName = measurement.displayNames[id].current;
-
-	      candidates[displayName] = candidates[displayName] || {
-	        componentName: displayName,
-	        inclusive: 0,
-	        exclusive: 0,
-	        render: 0,
-	        count: 0
-	      };
-	      if (measurement.render[id]) {
-	        candidates[displayName].render += measurement.render[id];
-	      }
-	      if (measurement.exclusive[id]) {
-	        candidates[displayName].exclusive += measurement.exclusive[id];
-	      }
-	      if (measurement.inclusive[id]) {
-	        candidates[displayName].inclusive += measurement.inclusive[id];
-	      }
-	      if (measurement.counts[id]) {
-	        candidates[displayName].count += measurement.counts[id];
-	      }
-	    }
-	  }
-
-	  // Now make a sorted array with the results.
-	  var arr = [];
-	  for (displayName in candidates) {
-	    if (candidates[displayName].exclusive >= DONT_CARE_THRESHOLD) {
-	      arr.push(candidates[displayName]);
-	    }
-	  }
-
-	  arr.sort(function(a, b) {
-	    return b.exclusive - a.exclusive;
-	  });
-
-	  return arr;
-	}
-
-	function getInclusiveSummary(measurements, onlyClean) {
-	  var candidates = {};
-	  var inclusiveKey;
-
-	  for (var i = 0; i < measurements.length; i++) {
-	    var measurement = measurements[i];
-	    var allIDs = merge(measurement.exclusive, measurement.inclusive);
-	    var cleanComponents;
-
-	    if (onlyClean) {
-	      cleanComponents = getUnchangedComponents(measurement);
-	    }
-
-	    for (var id in allIDs) {
-	      if (onlyClean && !cleanComponents[id]) {
-	        continue;
-	      }
-
-	      var displayName = measurement.displayNames[id];
-
-	      // Inclusive time is not useful for many components without knowing where
-	      // they are instantiated. So we aggregate inclusive time with both the
-	      // owner and current displayName as the key.
-	      inclusiveKey = displayName.owner + ' > ' + displayName.current;
-
-	      candidates[inclusiveKey] = candidates[inclusiveKey] || {
-	        componentName: inclusiveKey,
-	        time: 0,
-	        count: 0
-	      };
-
-	      if (measurement.inclusive[id]) {
-	        candidates[inclusiveKey].time += measurement.inclusive[id];
-	      }
-	      if (measurement.counts[id]) {
-	        candidates[inclusiveKey].count += measurement.counts[id];
-	      }
-	    }
-	  }
-
-	  // Now make a sorted array with the results.
-	  var arr = [];
-	  for (inclusiveKey in candidates) {
-	    if (candidates[inclusiveKey].time >= DONT_CARE_THRESHOLD) {
-	      arr.push(candidates[inclusiveKey]);
-	    }
-	  }
-
-	  arr.sort(function(a, b) {
-	    return b.time - a.time;
-	  });
-
-	  return arr;
-	}
-
-	function getUnchangedComponents(measurement) {
-	  // For a given reconcile, look at which components did not actually
-	  // render anything to the DOM and return a mapping of their ID to
-	  // the amount of time it took to render the entire subtree.
-	  var cleanComponents = {};
-	  var dirtyLeafIDs = Object.keys(measurement.writes);
-	  var allIDs = merge(measurement.exclusive, measurement.inclusive);
-
-	  for (var id in allIDs) {
-	    var isDirty = false;
-	    // For each component that rendered, see if a component that triggerd
-	    // a DOM op is in its subtree.
-	    for (var i = 0; i < dirtyLeafIDs.length; i++) {
-	      if (dirtyLeafIDs[i].indexOf(id) === 0) {
-	        isDirty = true;
-	        break;
-	      }
-	    }
-	    if (!isDirty && measurement.counts[id] > 0) {
-	      cleanComponents[id] = true;
-	    }
-	  }
-	  return cleanComponents;
-	}
-
-	var ReactDefaultPerfAnalysis = {
-	  getExclusiveSummary: getExclusiveSummary,
-	  getInclusiveSummary: getInclusiveSummary,
-	  getDOMSummary: getDOMSummary,
-	  getTotalTime: getTotalTime
-	};
-
-	module.exports = ReactDefaultPerfAnalysis;
-
-
-/***/ },
-/* 101 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule performanceNow
-	 * @typechecks
-	 */
-
-	var performance = __webpack_require__(161);
-
-	/**
-	 * Detect if we can use `window.performance.now()` and gracefully fallback to
-	 * `Date.now()` if it doesn't exist. We need to support Firefox < 15 for now
-	 * because of Facebook's testing infrastructure.
-	 */
-	if (!performance || !performance.now) {
-	  performance = Date;
-	}
-
-	var performanceNow = performance.now.bind(performance);
-
-	module.exports = performanceNow;
-
-
-/***/ },
-/* 102 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/** @jsx React.DOM *//**
 	 * Copyright 2013-2014 Facebook, Inc.
 	 *
@@ -27943,7 +27390,7 @@
 
 
 /***/ },
-/* 103 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -27966,13 +27413,13 @@
 
 	"use strict";
 
-	var EventPluginRegistry = __webpack_require__(162);
+	var EventPluginRegistry = __webpack_require__(161);
 	var EventPluginUtils = __webpack_require__(70);
 
-	var accumulate = __webpack_require__(163);
-	var forEachAccumulated = __webpack_require__(164);
+	var accumulate = __webpack_require__(162);
+	var forEachAccumulated = __webpack_require__(163);
 	var invariant = __webpack_require__(98);
-	var isEventSupported = __webpack_require__(165);
+	var isEventSupported = __webpack_require__(164);
 	var monitorCodeUse = __webpack_require__(122);
 
 	/**
@@ -28240,7 +27687,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 104 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -28263,11 +27710,11 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPluginHub = __webpack_require__(103);
+	var EventConstants = __webpack_require__(99);
+	var EventPluginHub = __webpack_require__(100);
 
-	var accumulate = __webpack_require__(163);
-	var forEachAccumulated = __webpack_require__(164);
+	var accumulate = __webpack_require__(162);
+	var forEachAccumulated = __webpack_require__(163);
 
 	var PropagationPhases = EventConstants.PropagationPhases;
 	var getListener = EventPluginHub.getListener;
@@ -28390,7 +27837,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 105 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -28414,13 +27861,13 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPluginHub = __webpack_require__(103);
-	var EventPluginRegistry = __webpack_require__(162);
-	var ReactEventEmitterMixin = __webpack_require__(166);
-	var ViewportMetrics = __webpack_require__(167);
+	var EventConstants = __webpack_require__(99);
+	var EventPluginHub = __webpack_require__(100);
+	var EventPluginRegistry = __webpack_require__(161);
+	var ReactEventEmitterMixin = __webpack_require__(167);
+	var ViewportMetrics = __webpack_require__(168);
 
-	var isEventSupported = __webpack_require__(165);
+	var isEventSupported = __webpack_require__(164);
 	var merge = __webpack_require__(94);
 
 	/**
@@ -28756,7 +28203,7 @@
 
 
 /***/ },
-/* 106 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -28779,11 +28226,11 @@
 
 	"use strict";
 
-	var CallbackQueue = __webpack_require__(168);
+	var CallbackQueue = __webpack_require__(165);
 	var PooledClass = __webpack_require__(111);
 	var ReactCurrentOwner = __webpack_require__(75);
 	var ReactPerf = __webpack_require__(83);
-	var Transaction = __webpack_require__(169);
+	var Transaction = __webpack_require__(166);
 
 	var invariant = __webpack_require__(98);
 	var mixInto = __webpack_require__(121);
@@ -29028,7 +28475,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 107 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -29055,9 +28502,9 @@
 	var PooledClass = __webpack_require__(111);
 
 	var emptyFunction = __webpack_require__(93);
-	var getEventTarget = __webpack_require__(170);
+	var getEventTarget = __webpack_require__(169);
 	var merge = __webpack_require__(94);
-	var mergeInto = __webpack_require__(108);
+	var mergeInto = __webpack_require__(105);
 
 	/**
 	 * @interface Event
@@ -29198,7 +28645,7 @@
 
 
 /***/ },
-/* 108 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -29222,7 +28669,7 @@
 
 	"use strict";
 
-	var mergeHelpers = __webpack_require__(171);
+	var mergeHelpers = __webpack_require__(170);
 
 	var checkMergeObjectArg = mergeHelpers.checkMergeObjectArg;
 	var checkMergeIntoObjectArg = mergeHelpers.checkMergeIntoObjectArg;
@@ -29247,6 +28694,559 @@
 	}
 
 	module.exports = mergeInto;
+
+
+/***/ },
+/* 106 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule DOMProperty
+	 * @typechecks static-only
+	 */
+
+	/*jslint bitwise: true */
+
+	"use strict";
+
+	var invariant = __webpack_require__(98);
+
+	var DOMPropertyInjection = {
+	  /**
+	   * Mapping from normalized, camelcased property names to a configuration that
+	   * specifies how the associated DOM property should be accessed or rendered.
+	   */
+	  MUST_USE_ATTRIBUTE: 0x1,
+	  MUST_USE_PROPERTY: 0x2,
+	  HAS_SIDE_EFFECTS: 0x4,
+	  HAS_BOOLEAN_VALUE: 0x8,
+	  HAS_NUMERIC_VALUE: 0x10,
+	  HAS_POSITIVE_NUMERIC_VALUE: 0x20 | 0x10,
+	  HAS_OVERLOADED_BOOLEAN_VALUE: 0x40,
+
+	  /**
+	   * Inject some specialized knowledge about the DOM. This takes a config object
+	   * with the following properties:
+	   *
+	   * isCustomAttribute: function that given an attribute name will return true
+	   * if it can be inserted into the DOM verbatim. Useful for data-* or aria-*
+	   * attributes where it's impossible to enumerate all of the possible
+	   * attribute names,
+	   *
+	   * Properties: object mapping DOM property name to one of the
+	   * DOMPropertyInjection constants or null. If your attribute isn't in here,
+	   * it won't get written to the DOM.
+	   *
+	   * DOMAttributeNames: object mapping React attribute name to the DOM
+	   * attribute name. Attribute names not specified use the **lowercase**
+	   * normalized name.
+	   *
+	   * DOMPropertyNames: similar to DOMAttributeNames but for DOM properties.
+	   * Property names not specified use the normalized name.
+	   *
+	   * DOMMutationMethods: Properties that require special mutation methods. If
+	   * `value` is undefined, the mutation method should unset the property.
+	   *
+	   * @param {object} domPropertyConfig the config as described above.
+	   */
+	  injectDOMPropertyConfig: function(domPropertyConfig) {
+	    var Properties = domPropertyConfig.Properties || {};
+	    var DOMAttributeNames = domPropertyConfig.DOMAttributeNames || {};
+	    var DOMPropertyNames = domPropertyConfig.DOMPropertyNames || {};
+	    var DOMMutationMethods = domPropertyConfig.DOMMutationMethods || {};
+
+	    if (domPropertyConfig.isCustomAttribute) {
+	      DOMProperty._isCustomAttributeFunctions.push(
+	        domPropertyConfig.isCustomAttribute
+	      );
+	    }
+
+	    for (var propName in Properties) {
+	      ("production" !== process.env.NODE_ENV ? invariant(
+	        !DOMProperty.isStandardName.hasOwnProperty(propName),
+	        'injectDOMPropertyConfig(...): You\'re trying to inject DOM property ' +
+	        '\'%s\' which has already been injected. You may be accidentally ' +
+	        'injecting the same DOM property config twice, or you may be ' +
+	        'injecting two configs that have conflicting property names.',
+	        propName
+	      ) : invariant(!DOMProperty.isStandardName.hasOwnProperty(propName)));
+
+	      DOMProperty.isStandardName[propName] = true;
+
+	      var lowerCased = propName.toLowerCase();
+	      DOMProperty.getPossibleStandardName[lowerCased] = propName;
+
+	      if (DOMAttributeNames.hasOwnProperty(propName)) {
+	        var attributeName = DOMAttributeNames[propName];
+	        DOMProperty.getPossibleStandardName[attributeName] = propName;
+	        DOMProperty.getAttributeName[propName] = attributeName;
+	      } else {
+	        DOMProperty.getAttributeName[propName] = lowerCased;
+	      }
+
+	      DOMProperty.getPropertyName[propName] =
+	        DOMPropertyNames.hasOwnProperty(propName) ?
+	          DOMPropertyNames[propName] :
+	          propName;
+
+	      if (DOMMutationMethods.hasOwnProperty(propName)) {
+	        DOMProperty.getMutationMethod[propName] = DOMMutationMethods[propName];
+	      } else {
+	        DOMProperty.getMutationMethod[propName] = null;
+	      }
+
+	      var propConfig = Properties[propName];
+	      DOMProperty.mustUseAttribute[propName] =
+	        propConfig & DOMPropertyInjection.MUST_USE_ATTRIBUTE;
+	      DOMProperty.mustUseProperty[propName] =
+	        propConfig & DOMPropertyInjection.MUST_USE_PROPERTY;
+	      DOMProperty.hasSideEffects[propName] =
+	        propConfig & DOMPropertyInjection.HAS_SIDE_EFFECTS;
+	      DOMProperty.hasBooleanValue[propName] =
+	        propConfig & DOMPropertyInjection.HAS_BOOLEAN_VALUE;
+	      DOMProperty.hasNumericValue[propName] =
+	        propConfig & DOMPropertyInjection.HAS_NUMERIC_VALUE;
+	      DOMProperty.hasPositiveNumericValue[propName] =
+	        propConfig & DOMPropertyInjection.HAS_POSITIVE_NUMERIC_VALUE;
+	      DOMProperty.hasOverloadedBooleanValue[propName] =
+	        propConfig & DOMPropertyInjection.HAS_OVERLOADED_BOOLEAN_VALUE;
+
+	      ("production" !== process.env.NODE_ENV ? invariant(
+	        !DOMProperty.mustUseAttribute[propName] ||
+	          !DOMProperty.mustUseProperty[propName],
+	        'DOMProperty: Cannot require using both attribute and property: %s',
+	        propName
+	      ) : invariant(!DOMProperty.mustUseAttribute[propName] ||
+	        !DOMProperty.mustUseProperty[propName]));
+	      ("production" !== process.env.NODE_ENV ? invariant(
+	        DOMProperty.mustUseProperty[propName] ||
+	          !DOMProperty.hasSideEffects[propName],
+	        'DOMProperty: Properties that have side effects must use property: %s',
+	        propName
+	      ) : invariant(DOMProperty.mustUseProperty[propName] ||
+	        !DOMProperty.hasSideEffects[propName]));
+	      ("production" !== process.env.NODE_ENV ? invariant(
+	        !!DOMProperty.hasBooleanValue[propName] +
+	          !!DOMProperty.hasNumericValue[propName] +
+	          !!DOMProperty.hasOverloadedBooleanValue[propName] <= 1,
+	        'DOMProperty: Value can be one of boolean, overloaded boolean, or ' +
+	        'numeric value, but not a combination: %s',
+	        propName
+	      ) : invariant(!!DOMProperty.hasBooleanValue[propName] +
+	        !!DOMProperty.hasNumericValue[propName] +
+	        !!DOMProperty.hasOverloadedBooleanValue[propName] <= 1));
+	    }
+	  }
+	};
+	var defaultValueCache = {};
+
+	/**
+	 * DOMProperty exports lookup objects that can be used like functions:
+	 *
+	 *   > DOMProperty.isValid['id']
+	 *   true
+	 *   > DOMProperty.isValid['foobar']
+	 *   undefined
+	 *
+	 * Although this may be confusing, it performs better in general.
+	 *
+	 * @see http://jsperf.com/key-exists
+	 * @see http://jsperf.com/key-missing
+	 */
+	var DOMProperty = {
+
+	  ID_ATTRIBUTE_NAME: 'data-reactid',
+
+	  /**
+	   * Checks whether a property name is a standard property.
+	   * @type {Object}
+	   */
+	  isStandardName: {},
+
+	  /**
+	   * Mapping from lowercase property names to the properly cased version, used
+	   * to warn in the case of missing properties.
+	   * @type {Object}
+	   */
+	  getPossibleStandardName: {},
+
+	  /**
+	   * Mapping from normalized names to attribute names that differ. Attribute
+	   * names are used when rendering markup or with `*Attribute()`.
+	   * @type {Object}
+	   */
+	  getAttributeName: {},
+
+	  /**
+	   * Mapping from normalized names to properties on DOM node instances.
+	   * (This includes properties that mutate due to external factors.)
+	   * @type {Object}
+	   */
+	  getPropertyName: {},
+
+	  /**
+	   * Mapping from normalized names to mutation methods. This will only exist if
+	   * mutation cannot be set simply by the property or `setAttribute()`.
+	   * @type {Object}
+	   */
+	  getMutationMethod: {},
+
+	  /**
+	   * Whether the property must be accessed and mutated as an object property.
+	   * @type {Object}
+	   */
+	  mustUseAttribute: {},
+
+	  /**
+	   * Whether the property must be accessed and mutated using `*Attribute()`.
+	   * (This includes anything that fails `<propName> in <element>`.)
+	   * @type {Object}
+	   */
+	  mustUseProperty: {},
+
+	  /**
+	   * Whether or not setting a value causes side effects such as triggering
+	   * resources to be loaded or text selection changes. We must ensure that
+	   * the value is only set if it has changed.
+	   * @type {Object}
+	   */
+	  hasSideEffects: {},
+
+	  /**
+	   * Whether the property should be removed when set to a falsey value.
+	   * @type {Object}
+	   */
+	  hasBooleanValue: {},
+
+	  /**
+	   * Whether the property must be numeric or parse as a
+	   * numeric and should be removed when set to a falsey value.
+	   * @type {Object}
+	   */
+	  hasNumericValue: {},
+
+	  /**
+	   * Whether the property must be positive numeric or parse as a positive
+	   * numeric and should be removed when set to a falsey value.
+	   * @type {Object}
+	   */
+	  hasPositiveNumericValue: {},
+
+	  /**
+	   * Whether the property can be used as a flag as well as with a value. Removed
+	   * when strictly equal to false; present without a value when strictly equal
+	   * to true; present with a value otherwise.
+	   * @type {Object}
+	   */
+	  hasOverloadedBooleanValue: {},
+
+	  /**
+	   * All of the isCustomAttribute() functions that have been injected.
+	   */
+	  _isCustomAttributeFunctions: [],
+
+	  /**
+	   * Checks whether a property name is a custom attribute.
+	   * @method
+	   */
+	  isCustomAttribute: function(attributeName) {
+	    for (var i = 0; i < DOMProperty._isCustomAttributeFunctions.length; i++) {
+	      var isCustomAttributeFn = DOMProperty._isCustomAttributeFunctions[i];
+	      if (isCustomAttributeFn(attributeName)) {
+	        return true;
+	      }
+	    }
+	    return false;
+	  },
+
+	  /**
+	   * Returns the default property value for a DOM property (i.e., not an
+	   * attribute). Most default values are '' or false, but not all. Worse yet,
+	   * some (in particular, `type`) vary depending on the type of element.
+	   *
+	   * TODO: Is it better to grab all the possible properties when creating an
+	   * element to avoid having to create the same element twice?
+	   */
+	  getDefaultValueForProperty: function(nodeName, prop) {
+	    var nodeDefaults = defaultValueCache[nodeName];
+	    var testElement;
+	    if (!nodeDefaults) {
+	      defaultValueCache[nodeName] = nodeDefaults = {};
+	    }
+	    if (!(prop in nodeDefaults)) {
+	      testElement = document.createElement(nodeName);
+	      nodeDefaults[prop] = testElement[prop];
+	    }
+	    return nodeDefaults[prop];
+	  },
+
+	  injection: DOMPropertyInjection
+	};
+
+	module.exports = DOMProperty;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+
+/***/ },
+/* 107 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule ReactDefaultPerfAnalysis
+	 */
+
+	var merge = __webpack_require__(94);
+
+	// Don't try to save users less than 1.2ms (a number I made up)
+	var DONT_CARE_THRESHOLD = 1.2;
+	var DOM_OPERATION_TYPES = {
+	  'mountImageIntoNode': 'set innerHTML',
+	  INSERT_MARKUP: 'set innerHTML',
+	  MOVE_EXISTING: 'move',
+	  REMOVE_NODE: 'remove',
+	  TEXT_CONTENT: 'set textContent',
+	  'updatePropertyByID': 'update attribute',
+	  'deletePropertyByID': 'delete attribute',
+	  'updateStylesByID': 'update styles',
+	  'updateInnerHTMLByID': 'set innerHTML',
+	  'dangerouslyReplaceNodeWithMarkupByID': 'replace'
+	};
+
+	function getTotalTime(measurements) {
+	  // TODO: return number of DOM ops? could be misleading.
+	  // TODO: measure dropped frames after reconcile?
+	  // TODO: log total time of each reconcile and the top-level component
+	  // class that triggered it.
+	  var totalTime = 0;
+	  for (var i = 0; i < measurements.length; i++) {
+	    var measurement = measurements[i];
+	    totalTime += measurement.totalTime;
+	  }
+	  return totalTime;
+	}
+
+	function getDOMSummary(measurements) {
+	  var items = [];
+	  for (var i = 0; i < measurements.length; i++) {
+	    var measurement = measurements[i];
+	    var id;
+
+	    for (id in measurement.writes) {
+	      measurement.writes[id].forEach(function(write) {
+	        items.push({
+	          id: id,
+	          type: DOM_OPERATION_TYPES[write.type] || write.type,
+	          args: write.args
+	        });
+	      });
+	    }
+	  }
+	  return items;
+	}
+
+	function getExclusiveSummary(measurements) {
+	  var candidates = {};
+	  var displayName;
+
+	  for (var i = 0; i < measurements.length; i++) {
+	    var measurement = measurements[i];
+	    var allIDs = merge(measurement.exclusive, measurement.inclusive);
+
+	    for (var id in allIDs) {
+	      displayName = measurement.displayNames[id].current;
+
+	      candidates[displayName] = candidates[displayName] || {
+	        componentName: displayName,
+	        inclusive: 0,
+	        exclusive: 0,
+	        render: 0,
+	        count: 0
+	      };
+	      if (measurement.render[id]) {
+	        candidates[displayName].render += measurement.render[id];
+	      }
+	      if (measurement.exclusive[id]) {
+	        candidates[displayName].exclusive += measurement.exclusive[id];
+	      }
+	      if (measurement.inclusive[id]) {
+	        candidates[displayName].inclusive += measurement.inclusive[id];
+	      }
+	      if (measurement.counts[id]) {
+	        candidates[displayName].count += measurement.counts[id];
+	      }
+	    }
+	  }
+
+	  // Now make a sorted array with the results.
+	  var arr = [];
+	  for (displayName in candidates) {
+	    if (candidates[displayName].exclusive >= DONT_CARE_THRESHOLD) {
+	      arr.push(candidates[displayName]);
+	    }
+	  }
+
+	  arr.sort(function(a, b) {
+	    return b.exclusive - a.exclusive;
+	  });
+
+	  return arr;
+	}
+
+	function getInclusiveSummary(measurements, onlyClean) {
+	  var candidates = {};
+	  var inclusiveKey;
+
+	  for (var i = 0; i < measurements.length; i++) {
+	    var measurement = measurements[i];
+	    var allIDs = merge(measurement.exclusive, measurement.inclusive);
+	    var cleanComponents;
+
+	    if (onlyClean) {
+	      cleanComponents = getUnchangedComponents(measurement);
+	    }
+
+	    for (var id in allIDs) {
+	      if (onlyClean && !cleanComponents[id]) {
+	        continue;
+	      }
+
+	      var displayName = measurement.displayNames[id];
+
+	      // Inclusive time is not useful for many components without knowing where
+	      // they are instantiated. So we aggregate inclusive time with both the
+	      // owner and current displayName as the key.
+	      inclusiveKey = displayName.owner + ' > ' + displayName.current;
+
+	      candidates[inclusiveKey] = candidates[inclusiveKey] || {
+	        componentName: inclusiveKey,
+	        time: 0,
+	        count: 0
+	      };
+
+	      if (measurement.inclusive[id]) {
+	        candidates[inclusiveKey].time += measurement.inclusive[id];
+	      }
+	      if (measurement.counts[id]) {
+	        candidates[inclusiveKey].count += measurement.counts[id];
+	      }
+	    }
+	  }
+
+	  // Now make a sorted array with the results.
+	  var arr = [];
+	  for (inclusiveKey in candidates) {
+	    if (candidates[inclusiveKey].time >= DONT_CARE_THRESHOLD) {
+	      arr.push(candidates[inclusiveKey]);
+	    }
+	  }
+
+	  arr.sort(function(a, b) {
+	    return b.time - a.time;
+	  });
+
+	  return arr;
+	}
+
+	function getUnchangedComponents(measurement) {
+	  // For a given reconcile, look at which components did not actually
+	  // render anything to the DOM and return a mapping of their ID to
+	  // the amount of time it took to render the entire subtree.
+	  var cleanComponents = {};
+	  var dirtyLeafIDs = Object.keys(measurement.writes);
+	  var allIDs = merge(measurement.exclusive, measurement.inclusive);
+
+	  for (var id in allIDs) {
+	    var isDirty = false;
+	    // For each component that rendered, see if a component that triggerd
+	    // a DOM op is in its subtree.
+	    for (var i = 0; i < dirtyLeafIDs.length; i++) {
+	      if (dirtyLeafIDs[i].indexOf(id) === 0) {
+	        isDirty = true;
+	        break;
+	      }
+	    }
+	    if (!isDirty && measurement.counts[id] > 0) {
+	      cleanComponents[id] = true;
+	    }
+	  }
+	  return cleanComponents;
+	}
+
+	var ReactDefaultPerfAnalysis = {
+	  getExclusiveSummary: getExclusiveSummary,
+	  getInclusiveSummary: getInclusiveSummary,
+	  getDOMSummary: getDOMSummary,
+	  getTotalTime: getTotalTime
+	};
+
+	module.exports = ReactDefaultPerfAnalysis;
+
+
+/***/ },
+/* 108 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule performanceNow
+	 * @typechecks
+	 */
+
+	var performance = __webpack_require__(171);
+
+	/**
+	 * Detect if we can use `window.performance.now()` and gracefully fallback to
+	 * `Date.now()` if it doesn't exist. We need to support Firefox < 15 for now
+	 * because of Facebook's testing infrastructure.
+	 */
+	if (!performance || !performance.now) {
+	  performance = Date;
+	}
+
+	var performanceNow = performance.now.bind(performance);
+
+	module.exports = performanceNow;
 
 
 /***/ },
@@ -30659,162 +30659,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule CSSPropertyOperations
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	var CSSProperty = __webpack_require__(173);
-
-	var dangerousStyleValue = __webpack_require__(174);
-	var hyphenateStyleName = __webpack_require__(175);
-	var memoizeStringOnly = __webpack_require__(110);
-
-	var processStyleName = memoizeStringOnly(function(styleName) {
-	  return hyphenateStyleName(styleName);
-	});
-
-	/**
-	 * Operations for dealing with CSS properties.
-	 */
-	var CSSPropertyOperations = {
-
-	  /**
-	   * Serializes a mapping of style properties for use as inline styles:
-	   *
-	   *   > createMarkupForStyles({width: '200px', height: 0})
-	   *   "width:200px;height:0;"
-	   *
-	   * Undefined values are ignored so that declarative programming is easier.
-	   * The result should be HTML-escaped before insertion into the DOM.
-	   *
-	   * @param {object} styles
-	   * @return {?string}
-	   */
-	  createMarkupForStyles: function(styles) {
-	    var serialized = '';
-	    for (var styleName in styles) {
-	      if (!styles.hasOwnProperty(styleName)) {
-	        continue;
-	      }
-	      var styleValue = styles[styleName];
-	      if (styleValue != null) {
-	        serialized += processStyleName(styleName) + ':';
-	        serialized += dangerousStyleValue(styleName, styleValue) + ';';
-	      }
-	    }
-	    return serialized || null;
-	  },
-
-	  /**
-	   * Sets the value for multiple styles on a node.  If a value is specified as
-	   * '' (empty string), the corresponding style property will be unset.
-	   *
-	   * @param {DOMElement} node
-	   * @param {object} styles
-	   */
-	  setValueForStyles: function(node, styles) {
-	    var style = node.style;
-	    for (var styleName in styles) {
-	      if (!styles.hasOwnProperty(styleName)) {
-	        continue;
-	      }
-	      var styleValue = dangerousStyleValue(styleName, styles[styleName]);
-	      if (styleValue) {
-	        style[styleName] = styleValue;
-	      } else {
-	        var expansion = CSSProperty.shorthandPropertyExpansions[styleName];
-	        if (expansion) {
-	          // Shorthand property that IE8 won't like unsetting, so unset each
-	          // component to placate it
-	          for (var individualStyleName in expansion) {
-	            style[individualStyleName] = '';
-	          }
-	        } else {
-	          style[styleName] = '';
-	        }
-	      }
-	    }
-	  }
-
-	};
-
-	module.exports = CSSPropertyOperations;
-
-
-/***/ },
-/* 126 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule ReactBrowserComponentMixin
-	 */
-
-	"use strict";
-
-	var ReactEmptyComponent = __webpack_require__(116);
-	var ReactMount = __webpack_require__(81);
-
-	var invariant = __webpack_require__(98);
-
-	var ReactBrowserComponentMixin = {
-	  /**
-	   * Returns the DOM node rendered by this component.
-	   *
-	   * @return {DOMElement} The root node of this component.
-	   * @final
-	   * @protected
-	   */
-	  getDOMNode: function() {
-	    ("production" !== process.env.NODE_ENV ? invariant(
-	      this.isMounted(),
-	      'getDOMNode(): A component must be mounted to have a DOM node.'
-	    ) : invariant(this.isMounted()));
-	    if (ReactEmptyComponent.isNullComponentID(this._rootNodeID)) {
-	      return null;
-	    }
-	    return ReactMount.getNode(this._rootNodeID);
-	  }
-	};
-
-	module.exports = ReactBrowserComponentMixin;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
-
-/***/ },
-/* 127 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
 	 * Copyright 2013 Facebook, Inc.
 	 *
 	 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30835,10 +30679,10 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPropagators = __webpack_require__(104);
+	var EventConstants = __webpack_require__(99);
+	var EventPropagators = __webpack_require__(101);
 	var ExecutionEnvironment = __webpack_require__(89);
-	var SyntheticInputEvent = __webpack_require__(176);
+	var SyntheticInputEvent = __webpack_require__(173);
 
 	var keyOf = __webpack_require__(96);
 
@@ -31039,7 +30883,7 @@
 
 
 /***/ },
-/* 128 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -31062,15 +30906,15 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPluginHub = __webpack_require__(103);
-	var EventPropagators = __webpack_require__(104);
+	var EventConstants = __webpack_require__(99);
+	var EventPluginHub = __webpack_require__(100);
+	var EventPropagators = __webpack_require__(101);
 	var ExecutionEnvironment = __webpack_require__(89);
-	var ReactUpdates = __webpack_require__(106);
-	var SyntheticEvent = __webpack_require__(107);
+	var ReactUpdates = __webpack_require__(103);
+	var SyntheticEvent = __webpack_require__(104);
 
-	var isEventSupported = __webpack_require__(165);
-	var isTextInputElement = __webpack_require__(177);
+	var isEventSupported = __webpack_require__(164);
+	var isTextInputElement = __webpack_require__(174);
 	var keyOf = __webpack_require__(96);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
@@ -31432,7 +31276,7 @@
 
 
 /***/ },
-/* 129 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -31468,7 +31312,7 @@
 
 
 /***/ },
-/* 130 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -31492,13 +31336,13 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPropagators = __webpack_require__(104);
+	var EventConstants = __webpack_require__(99);
+	var EventPropagators = __webpack_require__(101);
 	var ExecutionEnvironment = __webpack_require__(89);
-	var ReactInputSelection = __webpack_require__(178);
-	var SyntheticCompositionEvent = __webpack_require__(179);
+	var ReactInputSelection = __webpack_require__(175);
+	var SyntheticCompositionEvent = __webpack_require__(176);
 
-	var getTextContentAccessor = __webpack_require__(180);
+	var getTextContentAccessor = __webpack_require__(177);
 	var keyOf = __webpack_require__(96);
 
 	var END_KEYCODES = [9, 13, 27, 32]; // Tab, Return, Esc, Space
@@ -31738,7 +31582,7 @@
 
 
 /***/ },
-/* 131 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -31789,7 +31633,7 @@
 
 
 /***/ },
-/* 132 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -31813,9 +31657,9 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPropagators = __webpack_require__(104);
-	var SyntheticMouseEvent = __webpack_require__(181);
+	var EventConstants = __webpack_require__(99);
+	var EventPropagators = __webpack_require__(101);
+	var SyntheticMouseEvent = __webpack_require__(178);
 
 	var ReactMount = __webpack_require__(81);
 	var keyOf = __webpack_require__(96);
@@ -31940,7 +31784,7 @@
 
 
 /***/ },
-/* 133 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -31965,7 +31809,7 @@
 
 	"use strict";
 
-	var DOMProperty = __webpack_require__(99);
+	var DOMProperty = __webpack_require__(106);
 	var ExecutionEnvironment = __webpack_require__(89);
 
 	var MUST_USE_ATTRIBUTE = DOMProperty.injection.MUST_USE_ATTRIBUTE;
@@ -32135,7 +31979,7 @@
 
 
 /***/ },
-/* 134 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -32159,7 +32003,7 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
+	var EventConstants = __webpack_require__(99);
 
 	var emptyFunction = __webpack_require__(93);
 
@@ -32204,7 +32048,60 @@
 
 
 /***/ },
-/* 135 */
+/* 133 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule ReactBrowserComponentMixin
+	 */
+
+	"use strict";
+
+	var ReactEmptyComponent = __webpack_require__(116);
+	var ReactMount = __webpack_require__(81);
+
+	var invariant = __webpack_require__(98);
+
+	var ReactBrowserComponentMixin = {
+	  /**
+	   * Returns the DOM node rendered by this component.
+	   *
+	   * @return {DOMElement} The root node of this component.
+	   * @final
+	   * @protected
+	   */
+	  getDOMNode: function() {
+	    ("production" !== process.env.NODE_ENV ? invariant(
+	      this.isMounted(),
+	      'getDOMNode(): A component must be mounted to have a DOM node.'
+	    ) : invariant(this.isMounted()));
+	    if (ReactEmptyComponent.isNullComponentID(this._rootNodeID)) {
+	      return null;
+	    }
+	    return ReactMount.getNode(this._rootNodeID);
+	  }
+	};
+
+	module.exports = ReactBrowserComponentMixin;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+
+/***/ },
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -32229,15 +32126,15 @@
 
 	"use strict";
 
-	var ReactDOMIDOperations = __webpack_require__(182);
+	var ReactDOMIDOperations = __webpack_require__(180);
 	var ReactMarkupChecksum = __webpack_require__(156);
 	var ReactMount = __webpack_require__(81);
 	var ReactPerf = __webpack_require__(83);
-	var ReactReconcileTransaction = __webpack_require__(183);
+	var ReactReconcileTransaction = __webpack_require__(181);
 
 	var getReactRootElementInContainer = __webpack_require__(153);
 	var invariant = __webpack_require__(98);
-	var setInnerHTML = __webpack_require__(184);
+	var setInnerHTML = __webpack_require__(182);
 
 
 	var ELEMENT_NODE_TYPE = 1;
@@ -32336,7 +32233,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 136 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -32359,8 +32256,8 @@
 
 	"use strict";
 
-	var ReactUpdates = __webpack_require__(106);
-	var Transaction = __webpack_require__(169);
+	var ReactUpdates = __webpack_require__(103);
+	var Transaction = __webpack_require__(166);
 
 	var emptyFunction = __webpack_require__(93);
 	var mixInto = __webpack_require__(121);
@@ -32417,7 +32314,7 @@
 
 
 /***/ },
-/* 137 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -32440,8 +32337,8 @@
 
 	"use strict";
 
-	var AutoFocusMixin = __webpack_require__(185);
-	var ReactBrowserComponentMixin = __webpack_require__(126);
+	var AutoFocusMixin = __webpack_require__(179);
+	var ReactBrowserComponentMixin = __webpack_require__(133);
 	var ReactCompositeComponent = __webpack_require__(73);
 	var ReactDOM = __webpack_require__(77);
 
@@ -32492,7 +32389,7 @@
 
 
 /***/ },
-/* 138 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -32515,9 +32412,9 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var LocalEventTrapMixin = __webpack_require__(186);
-	var ReactBrowserComponentMixin = __webpack_require__(126);
+	var EventConstants = __webpack_require__(99);
+	var LocalEventTrapMixin = __webpack_require__(183);
+	var ReactBrowserComponentMixin = __webpack_require__(133);
 	var ReactCompositeComponent = __webpack_require__(73);
 	var ReactDOM = __webpack_require__(77);
 
@@ -32552,7 +32449,7 @@
 
 
 /***/ },
-/* 139 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -32575,9 +32472,9 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var LocalEventTrapMixin = __webpack_require__(186);
-	var ReactBrowserComponentMixin = __webpack_require__(126);
+	var EventConstants = __webpack_require__(99);
+	var LocalEventTrapMixin = __webpack_require__(183);
+	var ReactBrowserComponentMixin = __webpack_require__(133);
 	var ReactCompositeComponent = __webpack_require__(73);
 	var ReactDOM = __webpack_require__(77);
 
@@ -32610,7 +32507,7 @@
 
 
 /***/ },
-/* 140 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -32633,10 +32530,10 @@
 
 	"use strict";
 
-	var AutoFocusMixin = __webpack_require__(185);
+	var AutoFocusMixin = __webpack_require__(179);
 	var DOMPropertyOperations = __webpack_require__(69);
-	var LinkedValueUtils = __webpack_require__(187);
-	var ReactBrowserComponentMixin = __webpack_require__(126);
+	var LinkedValueUtils = __webpack_require__(184);
+	var ReactBrowserComponentMixin = __webpack_require__(133);
 	var ReactCompositeComponent = __webpack_require__(73);
 	var ReactDOM = __webpack_require__(77);
 	var ReactMount = __webpack_require__(81);
@@ -32799,7 +32696,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 141 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -32822,7 +32719,7 @@
 
 	"use strict";
 
-	var ReactBrowserComponentMixin = __webpack_require__(126);
+	var ReactBrowserComponentMixin = __webpack_require__(133);
 	var ReactCompositeComponent = __webpack_require__(73);
 	var ReactDOM = __webpack_require__(77);
 
@@ -32861,7 +32758,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 142 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -32884,9 +32781,9 @@
 
 	"use strict";
 
-	var AutoFocusMixin = __webpack_require__(185);
-	var LinkedValueUtils = __webpack_require__(187);
-	var ReactBrowserComponentMixin = __webpack_require__(126);
+	var AutoFocusMixin = __webpack_require__(179);
+	var LinkedValueUtils = __webpack_require__(184);
+	var ReactBrowserComponentMixin = __webpack_require__(133);
 	var ReactCompositeComponent = __webpack_require__(73);
 	var ReactDOM = __webpack_require__(77);
 
@@ -33048,7 +32945,7 @@
 
 
 /***/ },
-/* 143 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -33071,10 +32968,10 @@
 
 	"use strict";
 
-	var AutoFocusMixin = __webpack_require__(185);
+	var AutoFocusMixin = __webpack_require__(179);
 	var DOMPropertyOperations = __webpack_require__(69);
-	var LinkedValueUtils = __webpack_require__(187);
-	var ReactBrowserComponentMixin = __webpack_require__(126);
+	var LinkedValueUtils = __webpack_require__(184);
+	var ReactBrowserComponentMixin = __webpack_require__(133);
 	var ReactCompositeComponent = __webpack_require__(73);
 	var ReactDOM = __webpack_require__(77);
 
@@ -33197,7 +33094,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 144 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -33221,15 +33118,15 @@
 
 	"use strict";
 
-	var EventListener = __webpack_require__(188);
+	var EventListener = __webpack_require__(185);
 	var ExecutionEnvironment = __webpack_require__(89);
 	var PooledClass = __webpack_require__(111);
 	var ReactInstanceHandles = __webpack_require__(80);
 	var ReactMount = __webpack_require__(81);
-	var ReactUpdates = __webpack_require__(106);
+	var ReactUpdates = __webpack_require__(103);
 
-	var getEventTarget = __webpack_require__(170);
-	var getUnboundedScrollPosition = __webpack_require__(189);
+	var getEventTarget = __webpack_require__(169);
+	var getUnboundedScrollPosition = __webpack_require__(186);
 	var mixInto = __webpack_require__(121);
 
 	/**
@@ -33392,7 +33289,7 @@
 
 
 /***/ },
-/* 145 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -33415,16 +33312,16 @@
 
 	"use strict";
 
-	var DOMProperty = __webpack_require__(99);
-	var EventPluginHub = __webpack_require__(103);
+	var DOMProperty = __webpack_require__(106);
+	var EventPluginHub = __webpack_require__(100);
 	var ReactComponent = __webpack_require__(72);
 	var ReactCompositeComponent = __webpack_require__(73);
 	var ReactDOM = __webpack_require__(77);
 	var ReactEmptyComponent = __webpack_require__(116);
-	var ReactBrowserEventEmitter = __webpack_require__(105);
+	var ReactBrowserEventEmitter = __webpack_require__(102);
 	var ReactPerf = __webpack_require__(83);
 	var ReactRootIndex = __webpack_require__(151);
-	var ReactUpdates = __webpack_require__(106);
+	var ReactUpdates = __webpack_require__(103);
 
 	var ReactInjection = {
 	  Component: ReactComponent.injection,
@@ -33443,7 +33340,7 @@
 
 
 /***/ },
-/* 146 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -33466,13 +33363,13 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPropagators = __webpack_require__(104);
-	var ReactInputSelection = __webpack_require__(178);
-	var SyntheticEvent = __webpack_require__(107);
+	var EventConstants = __webpack_require__(99);
+	var EventPropagators = __webpack_require__(101);
+	var ReactInputSelection = __webpack_require__(175);
+	var SyntheticEvent = __webpack_require__(104);
 
-	var getActiveElement = __webpack_require__(190);
-	var isTextInputElement = __webpack_require__(177);
+	var getActiveElement = __webpack_require__(187);
+	var isTextInputElement = __webpack_require__(174);
 	var keyOf = __webpack_require__(96);
 	var shallowEqual = __webpack_require__(90);
 
@@ -33649,7 +33546,7 @@
 
 
 /***/ },
-/* 147 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -33691,7 +33588,7 @@
 
 
 /***/ },
-/* 148 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -33714,18 +33611,18 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
+	var EventConstants = __webpack_require__(99);
 	var EventPluginUtils = __webpack_require__(70);
-	var EventPropagators = __webpack_require__(104);
-	var SyntheticClipboardEvent = __webpack_require__(191);
-	var SyntheticEvent = __webpack_require__(107);
-	var SyntheticFocusEvent = __webpack_require__(192);
-	var SyntheticKeyboardEvent = __webpack_require__(193);
-	var SyntheticMouseEvent = __webpack_require__(181);
-	var SyntheticDragEvent = __webpack_require__(194);
-	var SyntheticTouchEvent = __webpack_require__(195);
-	var SyntheticUIEvent = __webpack_require__(196);
-	var SyntheticWheelEvent = __webpack_require__(197);
+	var EventPropagators = __webpack_require__(101);
+	var SyntheticClipboardEvent = __webpack_require__(188);
+	var SyntheticEvent = __webpack_require__(104);
+	var SyntheticFocusEvent = __webpack_require__(189);
+	var SyntheticKeyboardEvent = __webpack_require__(190);
+	var SyntheticMouseEvent = __webpack_require__(178);
+	var SyntheticDragEvent = __webpack_require__(191);
+	var SyntheticTouchEvent = __webpack_require__(192);
+	var SyntheticUIEvent = __webpack_require__(193);
+	var SyntheticWheelEvent = __webpack_require__(194);
 
 	var invariant = __webpack_require__(98);
 	var keyOf = __webpack_require__(96);
@@ -34117,7 +34014,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 149 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -34142,7 +34039,7 @@
 
 	"use strict";
 
-	var DOMProperty = __webpack_require__(99);
+	var DOMProperty = __webpack_require__(106);
 
 	var MUST_USE_ATTRIBUTE = DOMProperty.injection.MUST_USE_ATTRIBUTE;
 
@@ -34220,7 +34117,7 @@
 
 
 /***/ },
-/* 150 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -34288,6 +34185,109 @@
 	module.exports = createFullPageComponent;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+
+/***/ },
+/* 150 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule CSSPropertyOperations
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	var CSSProperty = __webpack_require__(195);
+
+	var dangerousStyleValue = __webpack_require__(196);
+	var hyphenateStyleName = __webpack_require__(197);
+	var memoizeStringOnly = __webpack_require__(110);
+
+	var processStyleName = memoizeStringOnly(function(styleName) {
+	  return hyphenateStyleName(styleName);
+	});
+
+	/**
+	 * Operations for dealing with CSS properties.
+	 */
+	var CSSPropertyOperations = {
+
+	  /**
+	   * Serializes a mapping of style properties for use as inline styles:
+	   *
+	   *   > createMarkupForStyles({width: '200px', height: 0})
+	   *   "width:200px;height:0;"
+	   *
+	   * Undefined values are ignored so that declarative programming is easier.
+	   * The result should be HTML-escaped before insertion into the DOM.
+	   *
+	   * @param {object} styles
+	   * @return {?string}
+	   */
+	  createMarkupForStyles: function(styles) {
+	    var serialized = '';
+	    for (var styleName in styles) {
+	      if (!styles.hasOwnProperty(styleName)) {
+	        continue;
+	      }
+	      var styleValue = styles[styleName];
+	      if (styleValue != null) {
+	        serialized += processStyleName(styleName) + ':';
+	        serialized += dangerousStyleValue(styleName, styleValue) + ';';
+	      }
+	    }
+	    return serialized || null;
+	  },
+
+	  /**
+	   * Sets the value for multiple styles on a node.  If a value is specified as
+	   * '' (empty string), the corresponding style property will be unset.
+	   *
+	   * @param {DOMElement} node
+	   * @param {object} styles
+	   */
+	  setValueForStyles: function(node, styles) {
+	    var style = node.style;
+	    for (var styleName in styles) {
+	      if (!styles.hasOwnProperty(styleName)) {
+	        continue;
+	      }
+	      var styleValue = dangerousStyleValue(styleName, styles[styleName]);
+	      if (styleValue) {
+	        style[styleName] = styleValue;
+	      } else {
+	        var expansion = CSSProperty.shorthandPropertyExpansions[styleName];
+	        if (expansion) {
+	          // Shorthand property that IE8 won't like unsetting, so unset each
+	          // component to placate it
+	          for (var individualStyleName in expansion) {
+	            style[individualStyleName] = '';
+	          }
+	        } else {
+	          style[styleName] = '';
+	        }
+	      }
+	    }
+	  }
+
+	};
+
+	module.exports = CSSPropertyOperations;
+
 
 /***/ },
 /* 151 */
@@ -34627,9 +34627,9 @@
 	"use strict";
 
 	var PooledClass = __webpack_require__(111);
-	var CallbackQueue = __webpack_require__(168);
+	var CallbackQueue = __webpack_require__(165);
 	var ReactPutListenerQueue = __webpack_require__(200);
-	var Transaction = __webpack_require__(169);
+	var Transaction = __webpack_require__(166);
 
 	var emptyFunction = __webpack_require__(93);
 	var mixInto = __webpack_require__(121);
@@ -35020,45 +35020,6 @@
 /* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule performance
-	 * @typechecks
-	 */
-
-	"use strict";
-
-	var ExecutionEnvironment = __webpack_require__(89);
-
-	var performance;
-
-	if (ExecutionEnvironment.canUseDOM) {
-	  performance =
-	    window.performance ||
-	    window.msPerformance ||
-	    window.webkitPerformance;
-	}
-
-	module.exports = performance || {};
-
-
-/***/ },
-/* 162 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
 	 * Copyright 2013-2014 Facebook, Inc.
 	 *
@@ -35346,7 +35307,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 163 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -35407,7 +35368,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 164 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -35449,7 +35410,7 @@
 
 
 /***/ },
-/* 165 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -35525,111 +35486,7 @@
 
 
 /***/ },
-/* 166 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule ReactEventEmitterMixin
-	 */
-
-	"use strict";
-
-	var EventPluginHub = __webpack_require__(103);
-
-	function runEventQueueInBatch(events) {
-	  EventPluginHub.enqueueEvents(events);
-	  EventPluginHub.processEventQueue();
-	}
-
-	var ReactEventEmitterMixin = {
-
-	  /**
-	   * Streams a fired top-level event to `EventPluginHub` where plugins have the
-	   * opportunity to create `ReactEvent`s to be dispatched.
-	   *
-	   * @param {string} topLevelType Record from `EventConstants`.
-	   * @param {object} topLevelTarget The listening component root node.
-	   * @param {string} topLevelTargetID ID of `topLevelTarget`.
-	   * @param {object} nativeEvent Native environment event.
-	   */
-	  handleTopLevel: function(
-	      topLevelType,
-	      topLevelTarget,
-	      topLevelTargetID,
-	      nativeEvent) {
-	    var events = EventPluginHub.extractEvents(
-	      topLevelType,
-	      topLevelTarget,
-	      topLevelTargetID,
-	      nativeEvent
-	    );
-
-	    runEventQueueInBatch(events);
-	  }
-	};
-
-	module.exports = ReactEventEmitterMixin;
-
-
-/***/ },
-/* 167 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule ViewportMetrics
-	 */
-
-	"use strict";
-
-	var getUnboundedScrollPosition = __webpack_require__(189);
-
-	var ViewportMetrics = {
-
-	  currentScrollLeft: 0,
-
-	  currentScrollTop: 0,
-
-	  refreshScrollValues: function() {
-	    var scrollPosition = getUnboundedScrollPosition(window);
-	    ViewportMetrics.currentScrollLeft = scrollPosition.x;
-	    ViewportMetrics.currentScrollTop = scrollPosition.y;
-	  }
-
-	};
-
-	module.exports = ViewportMetrics;
-
-
-/***/ },
-/* 168 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -35739,7 +35596,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 169 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -35990,7 +35847,111 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 170 */
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule ReactEventEmitterMixin
+	 */
+
+	"use strict";
+
+	var EventPluginHub = __webpack_require__(100);
+
+	function runEventQueueInBatch(events) {
+	  EventPluginHub.enqueueEvents(events);
+	  EventPluginHub.processEventQueue();
+	}
+
+	var ReactEventEmitterMixin = {
+
+	  /**
+	   * Streams a fired top-level event to `EventPluginHub` where plugins have the
+	   * opportunity to create `ReactEvent`s to be dispatched.
+	   *
+	   * @param {string} topLevelType Record from `EventConstants`.
+	   * @param {object} topLevelTarget The listening component root node.
+	   * @param {string} topLevelTargetID ID of `topLevelTarget`.
+	   * @param {object} nativeEvent Native environment event.
+	   */
+	  handleTopLevel: function(
+	      topLevelType,
+	      topLevelTarget,
+	      topLevelTargetID,
+	      nativeEvent) {
+	    var events = EventPluginHub.extractEvents(
+	      topLevelType,
+	      topLevelTarget,
+	      topLevelTargetID,
+	      nativeEvent
+	    );
+
+	    runEventQueueInBatch(events);
+	  }
+	};
+
+	module.exports = ReactEventEmitterMixin;
+
+
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule ViewportMetrics
+	 */
+
+	"use strict";
+
+	var getUnboundedScrollPosition = __webpack_require__(186);
+
+	var ViewportMetrics = {
+
+	  currentScrollLeft: 0,
+
+	  currentScrollTop: 0,
+
+	  refreshScrollValues: function() {
+	    var scrollPosition = getUnboundedScrollPosition(window);
+	    ViewportMetrics.currentScrollLeft = scrollPosition.x;
+	    ViewportMetrics.currentScrollTop = scrollPosition.y;
+	  }
+
+	};
+
+	module.exports = ViewportMetrics;
+
+
+/***/ },
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -36032,7 +35993,7 @@
 
 
 /***/ },
-/* 171 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -36186,6 +36147,45 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
+/* 171 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule performance
+	 * @typechecks
+	 */
+
+	"use strict";
+
+	var ExecutionEnvironment = __webpack_require__(89);
+
+	var performance;
+
+	if (ExecutionEnvironment.canUseDOM) {
+	  performance =
+	    window.performance ||
+	    window.msPerformance ||
+	    window.webkitPerformance;
+	}
+
+	module.exports = performance || {};
+
+
+/***/ },
 /* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -36224,254 +36224,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule CSSProperty
-	 */
-
-	"use strict";
-
-	/**
-	 * CSS properties which accept numbers but are not in units of "px".
-	 */
-	var isUnitlessNumber = {
-	  columnCount: true,
-	  fillOpacity: true,
-	  flex: true,
-	  flexGrow: true,
-	  flexShrink: true,
-	  fontWeight: true,
-	  lineClamp: true,
-	  lineHeight: true,
-	  opacity: true,
-	  order: true,
-	  orphans: true,
-	  widows: true,
-	  zIndex: true,
-	  zoom: true
-	};
-
-	/**
-	 * @param {string} prefix vendor-specific prefix, eg: Webkit
-	 * @param {string} key style name, eg: transitionDuration
-	 * @return {string} style name prefixed with `prefix`, properly camelCased, eg:
-	 * WebkitTransitionDuration
-	 */
-	function prefixKey(prefix, key) {
-	  return prefix + key.charAt(0).toUpperCase() + key.substring(1);
-	}
-
-	/**
-	 * Support style names that may come passed in prefixed by adding permutations
-	 * of vendor prefixes.
-	 */
-	var prefixes = ['Webkit', 'ms', 'Moz', 'O'];
-
-	// Using Object.keys here, or else the vanilla for-in loop makes IE8 go into an
-	// infinite loop, because it iterates over the newly added props too.
-	Object.keys(isUnitlessNumber).forEach(function(prop) {
-	  prefixes.forEach(function(prefix) {
-	    isUnitlessNumber[prefixKey(prefix, prop)] = isUnitlessNumber[prop];
-	  });
-	});
-
-	/**
-	 * Most style properties can be unset by doing .style[prop] = '' but IE8
-	 * doesn't like doing that with shorthand properties so for the properties that
-	 * IE8 breaks on, which are listed here, we instead unset each of the
-	 * individual properties. See http://bugs.jquery.com/ticket/12385.
-	 * The 4-value 'clock' properties like margin, padding, border-width seem to
-	 * behave without any problems. Curiously, list-style works too without any
-	 * special prodding.
-	 */
-	var shorthandPropertyExpansions = {
-	  background: {
-	    backgroundImage: true,
-	    backgroundPosition: true,
-	    backgroundRepeat: true,
-	    backgroundColor: true
-	  },
-	  border: {
-	    borderWidth: true,
-	    borderStyle: true,
-	    borderColor: true
-	  },
-	  borderBottom: {
-	    borderBottomWidth: true,
-	    borderBottomStyle: true,
-	    borderBottomColor: true
-	  },
-	  borderLeft: {
-	    borderLeftWidth: true,
-	    borderLeftStyle: true,
-	    borderLeftColor: true
-	  },
-	  borderRight: {
-	    borderRightWidth: true,
-	    borderRightStyle: true,
-	    borderRightColor: true
-	  },
-	  borderTop: {
-	    borderTopWidth: true,
-	    borderTopStyle: true,
-	    borderTopColor: true
-	  },
-	  font: {
-	    fontStyle: true,
-	    fontVariant: true,
-	    fontWeight: true,
-	    fontSize: true,
-	    lineHeight: true,
-	    fontFamily: true
-	  }
-	};
-
-	var CSSProperty = {
-	  isUnitlessNumber: isUnitlessNumber,
-	  shorthandPropertyExpansions: shorthandPropertyExpansions
-	};
-
-	module.exports = CSSProperty;
-
-
-/***/ },
-/* 174 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule dangerousStyleValue
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	var CSSProperty = __webpack_require__(173);
-
-	var isUnitlessNumber = CSSProperty.isUnitlessNumber;
-
-	/**
-	 * Convert a value into the proper css writable value. The style name `name`
-	 * should be logical (no hyphens), as specified
-	 * in `CSSProperty.isUnitlessNumber`.
-	 *
-	 * @param {string} name CSS property name such as `topMargin`.
-	 * @param {*} value CSS property value such as `10px`.
-	 * @return {string} Normalized style value with dimensions applied.
-	 */
-	function dangerousStyleValue(name, value) {
-	  // Note that we've removed escapeTextForBrowser() calls here since the
-	  // whole string will be escaped when the attribute is injected into
-	  // the markup. If you provide unsafe user data here they can inject
-	  // arbitrary CSS which may be problematic (I couldn't repro this):
-	  // https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
-	  // http://www.thespanner.co.uk/2007/11/26/ultimate-xss-css-injection/
-	  // This is not an XSS hole but instead a potential CSS injection issue
-	  // which has lead to a greater discussion about how we're going to
-	  // trust URLs moving forward. See #2115901
-
-	  var isEmpty = value == null || typeof value === 'boolean' || value === '';
-	  if (isEmpty) {
-	    return '';
-	  }
-
-	  var isNonNumeric = isNaN(value);
-	  if (isNonNumeric || value === 0 ||
-	      isUnitlessNumber.hasOwnProperty(name) && isUnitlessNumber[name]) {
-	    return '' + value; // cast to string
-	  }
-
-	  if (typeof value === 'string') {
-	    value = value.trim();
-	  }
-	  return value + 'px';
-	}
-
-	module.exports = dangerousStyleValue;
-
-
-/***/ },
-/* 175 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule hyphenateStyleName
-	 * @typechecks
-	 */
-
-	"use strict";
-
-	var hyphenate = __webpack_require__(201);
-
-	var msPattern = /^ms-/;
-
-	/**
-	 * Hyphenates a camelcased CSS property name, for example:
-	 *
-	 *   > hyphenate('backgroundColor')
-	 *   < "background-color"
-	 *   > hyphenate('MozTransition')
-	 *   < "-moz-transition"
-	 *   > hyphenate('msTransition')
-	 *   < "-ms-transition"
-	 *
-	 * As Modernizr suggests (http://modernizr.com/docs/#prefixed), an `ms` prefix
-	 * is converted to `-ms-`.
-	 *
-	 * @param {string} string
-	 * @return {string}
-	 */
-	function hyphenateStyleName(string) {
-	  return hyphenate(string).replace(msPattern, '-ms-');
-	}
-
-	module.exports = hyphenateStyleName;
-
-
-/***/ },
-/* 176 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
 	 * Copyright 2013 Facebook, Inc.
 	 *
 	 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36492,7 +36244,7 @@
 
 	"use strict";
 
-	var SyntheticEvent = __webpack_require__(107);
+	var SyntheticEvent = __webpack_require__(104);
 
 	/**
 	 * @interface Event
@@ -36526,7 +36278,7 @@
 
 
 /***/ },
-/* 177 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -36581,7 +36333,7 @@
 
 
 /***/ },
-/* 178 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -36604,11 +36356,11 @@
 
 	"use strict";
 
-	var ReactDOMSelection = __webpack_require__(202);
+	var ReactDOMSelection = __webpack_require__(201);
 
 	var containsNode = __webpack_require__(152);
-	var focusNode = __webpack_require__(203);
-	var getActiveElement = __webpack_require__(190);
+	var focusNode = __webpack_require__(202);
+	var getActiveElement = __webpack_require__(187);
 
 	function isInDocument(node) {
 	  return containsNode(document.documentElement, node);
@@ -36728,7 +36480,7 @@
 
 
 /***/ },
-/* 179 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -36752,7 +36504,7 @@
 
 	"use strict";
 
-	var SyntheticEvent = __webpack_require__(107);
+	var SyntheticEvent = __webpack_require__(104);
 
 	/**
 	 * @interface Event
@@ -36785,7 +36537,7 @@
 
 
 /***/ },
-/* 180 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -36833,7 +36585,7 @@
 
 
 /***/ },
-/* 181 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -36857,10 +36609,10 @@
 
 	"use strict";
 
-	var SyntheticUIEvent = __webpack_require__(196);
-	var ViewportMetrics = __webpack_require__(167);
+	var SyntheticUIEvent = __webpack_require__(193);
+	var ViewportMetrics = __webpack_require__(168);
 
-	var getEventModifierState = __webpack_require__(205);
+	var getEventModifierState = __webpack_require__(203);
 
 	/**
 	 * @interface MouseEvent
@@ -36927,7 +36679,45 @@
 
 
 /***/ },
-/* 182 */
+/* 179 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule AutoFocusMixin
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	var focusNode = __webpack_require__(202);
+
+	var AutoFocusMixin = {
+	  componentDidMount: function() {
+	    if (this.props.autoFocus) {
+	      focusNode(this.getDOMNode());
+	    }
+	  }
+	};
+
+	module.exports = AutoFocusMixin;
+
+
+/***/ },
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -36953,14 +36743,14 @@
 
 	"use strict";
 
-	var CSSPropertyOperations = __webpack_require__(125);
+	var CSSPropertyOperations = __webpack_require__(150);
 	var DOMChildrenOperations = __webpack_require__(204);
 	var DOMPropertyOperations = __webpack_require__(69);
 	var ReactMount = __webpack_require__(81);
 	var ReactPerf = __webpack_require__(83);
 
 	var invariant = __webpack_require__(98);
-	var setInnerHTML = __webpack_require__(184);
+	var setInnerHTML = __webpack_require__(182);
 
 	/**
 	 * Errors for properties that should not be updated with `updatePropertyById()`.
@@ -37123,7 +36913,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 183 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -37147,12 +36937,12 @@
 
 	"use strict";
 
-	var CallbackQueue = __webpack_require__(168);
+	var CallbackQueue = __webpack_require__(165);
 	var PooledClass = __webpack_require__(111);
-	var ReactBrowserEventEmitter = __webpack_require__(105);
-	var ReactInputSelection = __webpack_require__(178);
+	var ReactBrowserEventEmitter = __webpack_require__(102);
+	var ReactInputSelection = __webpack_require__(175);
 	var ReactPutListenerQueue = __webpack_require__(200);
-	var Transaction = __webpack_require__(169);
+	var Transaction = __webpack_require__(166);
 
 	var mixInto = __webpack_require__(121);
 
@@ -37311,7 +37101,7 @@
 
 
 /***/ },
-/* 184 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -37402,45 +37192,7 @@
 
 
 /***/ },
-/* 185 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule AutoFocusMixin
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	var focusNode = __webpack_require__(203);
-
-	var AutoFocusMixin = {
-	  componentDidMount: function() {
-	    if (this.props.autoFocus) {
-	      focusNode(this.getDOMNode());
-	    }
-	  }
-	};
-
-	module.exports = AutoFocusMixin;
-
-
-/***/ },
-/* 186 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -37463,10 +37215,10 @@
 
 	"use strict";
 
-	var ReactBrowserEventEmitter = __webpack_require__(105);
+	var ReactBrowserEventEmitter = __webpack_require__(102);
 
-	var accumulate = __webpack_require__(163);
-	var forEachAccumulated = __webpack_require__(164);
+	var accumulate = __webpack_require__(162);
+	var forEachAccumulated = __webpack_require__(163);
 	var invariant = __webpack_require__(98);
 
 	function remove(event) {
@@ -37499,7 +37251,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 187 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -37665,7 +37417,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 188 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -37744,7 +37496,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 189 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -37795,7 +37547,7 @@
 
 
 /***/ },
-/* 190 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -37835,7 +37587,7 @@
 
 
 /***/ },
-/* 191 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -37859,7 +37611,7 @@
 
 	"use strict";
 
-	var SyntheticEvent = __webpack_require__(107);
+	var SyntheticEvent = __webpack_require__(104);
 
 	/**
 	 * @interface Event
@@ -37892,7 +37644,7 @@
 
 
 /***/ },
-/* 192 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -37916,7 +37668,7 @@
 
 	"use strict";
 
-	var SyntheticUIEvent = __webpack_require__(196);
+	var SyntheticUIEvent = __webpack_require__(193);
 
 	/**
 	 * @interface FocusEvent
@@ -37942,7 +37694,7 @@
 
 
 /***/ },
-/* 193 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -37966,10 +37718,10 @@
 
 	"use strict";
 
-	var SyntheticUIEvent = __webpack_require__(196);
+	var SyntheticUIEvent = __webpack_require__(193);
 
-	var getEventKey = __webpack_require__(206);
-	var getEventModifierState = __webpack_require__(205);
+	var getEventKey = __webpack_require__(205);
+	var getEventModifierState = __webpack_require__(203);
 
 	/**
 	 * @interface KeyboardEvent
@@ -38035,7 +37787,7 @@
 
 
 /***/ },
-/* 194 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -38059,7 +37811,7 @@
 
 	"use strict";
 
-	var SyntheticMouseEvent = __webpack_require__(181);
+	var SyntheticMouseEvent = __webpack_require__(178);
 
 	/**
 	 * @interface DragEvent
@@ -38085,7 +37837,7 @@
 
 
 /***/ },
-/* 195 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -38109,9 +37861,9 @@
 
 	"use strict";
 
-	var SyntheticUIEvent = __webpack_require__(196);
+	var SyntheticUIEvent = __webpack_require__(193);
 
-	var getEventModifierState = __webpack_require__(205);
+	var getEventModifierState = __webpack_require__(203);
 
 	/**
 	 * @interface TouchEvent
@@ -38144,7 +37896,7 @@
 
 
 /***/ },
-/* 196 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -38168,9 +37920,9 @@
 
 	"use strict";
 
-	var SyntheticEvent = __webpack_require__(107);
+	var SyntheticEvent = __webpack_require__(104);
 
-	var getEventTarget = __webpack_require__(170);
+	var getEventTarget = __webpack_require__(169);
 
 	/**
 	 * @interface UIEvent
@@ -38217,7 +37969,7 @@
 
 
 /***/ },
-/* 197 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -38241,7 +37993,7 @@
 
 	"use strict";
 
-	var SyntheticMouseEvent = __webpack_require__(181);
+	var SyntheticMouseEvent = __webpack_require__(178);
 
 	/**
 	 * @interface WheelEvent
@@ -38286,6 +38038,254 @@
 	SyntheticMouseEvent.augmentClass(SyntheticWheelEvent, WheelEventInterface);
 
 	module.exports = SyntheticWheelEvent;
+
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule CSSProperty
+	 */
+
+	"use strict";
+
+	/**
+	 * CSS properties which accept numbers but are not in units of "px".
+	 */
+	var isUnitlessNumber = {
+	  columnCount: true,
+	  fillOpacity: true,
+	  flex: true,
+	  flexGrow: true,
+	  flexShrink: true,
+	  fontWeight: true,
+	  lineClamp: true,
+	  lineHeight: true,
+	  opacity: true,
+	  order: true,
+	  orphans: true,
+	  widows: true,
+	  zIndex: true,
+	  zoom: true
+	};
+
+	/**
+	 * @param {string} prefix vendor-specific prefix, eg: Webkit
+	 * @param {string} key style name, eg: transitionDuration
+	 * @return {string} style name prefixed with `prefix`, properly camelCased, eg:
+	 * WebkitTransitionDuration
+	 */
+	function prefixKey(prefix, key) {
+	  return prefix + key.charAt(0).toUpperCase() + key.substring(1);
+	}
+
+	/**
+	 * Support style names that may come passed in prefixed by adding permutations
+	 * of vendor prefixes.
+	 */
+	var prefixes = ['Webkit', 'ms', 'Moz', 'O'];
+
+	// Using Object.keys here, or else the vanilla for-in loop makes IE8 go into an
+	// infinite loop, because it iterates over the newly added props too.
+	Object.keys(isUnitlessNumber).forEach(function(prop) {
+	  prefixes.forEach(function(prefix) {
+	    isUnitlessNumber[prefixKey(prefix, prop)] = isUnitlessNumber[prop];
+	  });
+	});
+
+	/**
+	 * Most style properties can be unset by doing .style[prop] = '' but IE8
+	 * doesn't like doing that with shorthand properties so for the properties that
+	 * IE8 breaks on, which are listed here, we instead unset each of the
+	 * individual properties. See http://bugs.jquery.com/ticket/12385.
+	 * The 4-value 'clock' properties like margin, padding, border-width seem to
+	 * behave without any problems. Curiously, list-style works too without any
+	 * special prodding.
+	 */
+	var shorthandPropertyExpansions = {
+	  background: {
+	    backgroundImage: true,
+	    backgroundPosition: true,
+	    backgroundRepeat: true,
+	    backgroundColor: true
+	  },
+	  border: {
+	    borderWidth: true,
+	    borderStyle: true,
+	    borderColor: true
+	  },
+	  borderBottom: {
+	    borderBottomWidth: true,
+	    borderBottomStyle: true,
+	    borderBottomColor: true
+	  },
+	  borderLeft: {
+	    borderLeftWidth: true,
+	    borderLeftStyle: true,
+	    borderLeftColor: true
+	  },
+	  borderRight: {
+	    borderRightWidth: true,
+	    borderRightStyle: true,
+	    borderRightColor: true
+	  },
+	  borderTop: {
+	    borderTopWidth: true,
+	    borderTopStyle: true,
+	    borderTopColor: true
+	  },
+	  font: {
+	    fontStyle: true,
+	    fontVariant: true,
+	    fontWeight: true,
+	    fontSize: true,
+	    lineHeight: true,
+	    fontFamily: true
+	  }
+	};
+
+	var CSSProperty = {
+	  isUnitlessNumber: isUnitlessNumber,
+	  shorthandPropertyExpansions: shorthandPropertyExpansions
+	};
+
+	module.exports = CSSProperty;
+
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule dangerousStyleValue
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	var CSSProperty = __webpack_require__(195);
+
+	var isUnitlessNumber = CSSProperty.isUnitlessNumber;
+
+	/**
+	 * Convert a value into the proper css writable value. The style name `name`
+	 * should be logical (no hyphens), as specified
+	 * in `CSSProperty.isUnitlessNumber`.
+	 *
+	 * @param {string} name CSS property name such as `topMargin`.
+	 * @param {*} value CSS property value such as `10px`.
+	 * @return {string} Normalized style value with dimensions applied.
+	 */
+	function dangerousStyleValue(name, value) {
+	  // Note that we've removed escapeTextForBrowser() calls here since the
+	  // whole string will be escaped when the attribute is injected into
+	  // the markup. If you provide unsafe user data here they can inject
+	  // arbitrary CSS which may be problematic (I couldn't repro this):
+	  // https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
+	  // http://www.thespanner.co.uk/2007/11/26/ultimate-xss-css-injection/
+	  // This is not an XSS hole but instead a potential CSS injection issue
+	  // which has lead to a greater discussion about how we're going to
+	  // trust URLs moving forward. See #2115901
+
+	  var isEmpty = value == null || typeof value === 'boolean' || value === '';
+	  if (isEmpty) {
+	    return '';
+	  }
+
+	  var isNonNumeric = isNaN(value);
+	  if (isNonNumeric || value === 0 ||
+	      isUnitlessNumber.hasOwnProperty(name) && isUnitlessNumber[name]) {
+	    return '' + value; // cast to string
+	  }
+
+	  if (typeof value === 'string') {
+	    value = value.trim();
+	  }
+	  return value + 'px';
+	}
+
+	module.exports = dangerousStyleValue;
+
+
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule hyphenateStyleName
+	 * @typechecks
+	 */
+
+	"use strict";
+
+	var hyphenate = __webpack_require__(206);
+
+	var msPattern = /^ms-/;
+
+	/**
+	 * Hyphenates a camelcased CSS property name, for example:
+	 *
+	 *   > hyphenate('backgroundColor')
+	 *   < "background-color"
+	 *   > hyphenate('MozTransition')
+	 *   < "-moz-transition"
+	 *   > hyphenate('msTransition')
+	 *   < "-ms-transition"
+	 *
+	 * As Modernizr suggests (http://modernizr.com/docs/#prefixed), an `ms` prefix
+	 * is converted to `-ms-`.
+	 *
+	 * @param {string} string
+	 * @return {string}
+	 */
+	function hyphenateStyleName(string) {
+	  return hyphenate(string).replace(msPattern, '-ms-');
+	}
+
+	module.exports = hyphenateStyleName;
 
 
 /***/ },
@@ -38394,7 +38394,7 @@
 	"use strict";
 
 	var PooledClass = __webpack_require__(111);
-	var ReactBrowserEventEmitter = __webpack_require__(105);
+	var ReactBrowserEventEmitter = __webpack_require__(102);
 
 	var mixInto = __webpack_require__(121);
 
@@ -38455,50 +38455,6 @@
 	 * See the License for the specific language governing permissions and
 	 * limitations under the License.
 	 *
-	 * @providesModule hyphenate
-	 * @typechecks
-	 */
-
-	var _uppercasePattern = /([A-Z])/g;
-
-	/**
-	 * Hyphenates a camelcased string, for example:
-	 *
-	 *   > hyphenate('backgroundColor')
-	 *   < "background-color"
-	 *
-	 * For CSS style names, use `hyphenateStyleName` instead which works properly
-	 * with all vendor prefixes, including `ms`.
-	 *
-	 * @param {string} string
-	 * @return {string}
-	 */
-	function hyphenate(string) {
-	  return string.replace(_uppercasePattern, '-$1').toLowerCase();
-	}
-
-	module.exports = hyphenate;
-
-
-/***/ },
-/* 202 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
 	 * @providesModule ReactDOMSelection
 	 */
 
@@ -38507,7 +38463,7 @@
 	var ExecutionEnvironment = __webpack_require__(89);
 
 	var getNodeForCharacterOffset = __webpack_require__(208);
-	var getTextContentAccessor = __webpack_require__(180);
+	var getTextContentAccessor = __webpack_require__(177);
 
 	/**
 	 * While `isCollapsed` is available on the Selection object and `collapsed`
@@ -38701,7 +38657,7 @@
 
 
 /***/ },
-/* 203 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -38740,6 +38696,64 @@
 
 
 /***/ },
+/* 203 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule getEventModifierState
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	/**
+	 * Translation from modifier key to the associated property in the event.
+	 * @see http://www.w3.org/TR/DOM-Level-3-Events/#keys-Modifiers
+	 */
+
+	var modifierKeyToProp = {
+	  'Alt': 'altKey',
+	  'Control': 'ctrlKey',
+	  'Meta': 'metaKey',
+	  'Shift': 'shiftKey'
+	};
+
+	// IE8 does not implement getModifierState so we simply map it to the only
+	// modifier keys exposed by the event itself, does not support Lock-keys.
+	// Currently, all major browsers except Chrome seems to support Lock-keys.
+	function modifierStateGetter(keyArg) {
+	  /*jshint validthis:true */
+	  var syntheticEvent = this;
+	  var nativeEvent = syntheticEvent.nativeEvent;
+	  if (nativeEvent.getModifierState) {
+	    return nativeEvent.getModifierState(keyArg);
+	  }
+	  var keyProp = modifierKeyToProp[keyArg];
+	  return keyProp ? !!nativeEvent[keyProp] : false;
+	}
+
+	function getEventModifierState(nativeEvent) {
+	  return modifierStateGetter;
+	}
+
+	module.exports = getEventModifierState;
+
+
+/***/ },
 /* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -38767,7 +38781,7 @@
 	var Danger = __webpack_require__(209);
 	var ReactMultiChildUpdateTypes = __webpack_require__(154);
 
-	var getTextContentAccessor = __webpack_require__(180);
+	var getTextContentAccessor = __webpack_require__(177);
 	var invariant = __webpack_require__(98);
 
 	/**
@@ -38928,64 +38942,6 @@
 /* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM *//**
-	 * Copyright 2013 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule getEventModifierState
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	/**
-	 * Translation from modifier key to the associated property in the event.
-	 * @see http://www.w3.org/TR/DOM-Level-3-Events/#keys-Modifiers
-	 */
-
-	var modifierKeyToProp = {
-	  'Alt': 'altKey',
-	  'Control': 'ctrlKey',
-	  'Meta': 'metaKey',
-	  'Shift': 'shiftKey'
-	};
-
-	// IE8 does not implement getModifierState so we simply map it to the only
-	// modifier keys exposed by the event itself, does not support Lock-keys.
-	// Currently, all major browsers except Chrome seems to support Lock-keys.
-	function modifierStateGetter(keyArg) {
-	  /*jshint validthis:true */
-	  var syntheticEvent = this;
-	  var nativeEvent = syntheticEvent.nativeEvent;
-	  if (nativeEvent.getModifierState) {
-	    return nativeEvent.getModifierState(keyArg);
-	  }
-	  var keyProp = modifierKeyToProp[keyArg];
-	  return keyProp ? !!nativeEvent[keyProp] : false;
-	}
-
-	function getEventModifierState(nativeEvent) {
-	  return modifierStateGetter;
-	}
-
-	module.exports = getEventModifierState;
-
-
-/***/ },
-/* 206 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
 	 * Copyright 2013-2014 Facebook, Inc.
 	 *
@@ -39103,6 +39059,50 @@
 	module.exports = getEventKey;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule hyphenate
+	 * @typechecks
+	 */
+
+	var _uppercasePattern = /([A-Z])/g;
+
+	/**
+	 * Hyphenates a camelcased string, for example:
+	 *
+	 *   > hyphenate('backgroundColor')
+	 *   < "background-color"
+	 *
+	 * For CSS style names, use `hyphenateStyleName` instead which works properly
+	 * with all vendor prefixes, including `ms`.
+	 *
+	 * @param {string} string
+	 * @return {string}
+	 */
+	function hyphenate(string) {
+	  return string.replace(_uppercasePattern, '-$1').toLowerCase();
+	}
+
+	module.exports = hyphenate;
+
 
 /***/ },
 /* 207 */
