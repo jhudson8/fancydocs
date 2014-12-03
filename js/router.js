@@ -166,6 +166,7 @@ var Router = Backbone.Router.extend({
   },
 
   link: function(url) {
+    url = url.url || url;
     // see if the url is a project reference for any known projects
     if (lastProject) {
       var project = lastProject.urlMatch(url);
