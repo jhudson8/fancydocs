@@ -51,20 +51,20 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {/** @jsx React.DOM */$ = __webpack_require__(13);
-	React = __webpack_require__(11);
-	_ = __webpack_require__(8);
-	Backbone = __webpack_require__(7);
+	/* WEBPACK VAR INJECTION */(function(global) {/** @jsx React.DOM */$ = __webpack_require__(9);
+	React = __webpack_require__(8);
+	_ = __webpack_require__(10);
+	Backbone = __webpack_require__(11);
 	$script = __webpack_require__(12);
 
 	Backbone.$ = $;
-	__webpack_require__(9);
+	__webpack_require__(13);
 
 	var libs = [
 	  [__webpack_require__(4), Backbone],
-	  [__webpack_require__(6), React],
 	  [__webpack_require__(5), React],
-	  [__webpack_require__(10), React, Backbone],
+	  [__webpack_require__(6), React],
+	  [__webpack_require__(7), React, Backbone],
 	];
 	_.each(libs, function(data) {
 	  var lib = data[0];
@@ -78,8 +78,8 @@
 	var Router = __webpack_require__(2);
 	var init = __webpack_require__(3);
 
-	global.$ = __webpack_require__(13);
-	global.$ = __webpack_require__(13);
+	global.$ = __webpack_require__(9);
+	global.$ = __webpack_require__(9);
 
 	// initialize when the document is ready
 	$(document).ready(function() {
@@ -101,11 +101,11 @@
 	/** @jsx React.DOM */Backbone.Router.namedParameters = true;
 
 	var projectManager = __webpack_require__(14);
-	var SideNav = __webpack_require__(19);
+	var SideNav = __webpack_require__(15);
 	var ProjectView = __webpack_require__(16);
 	var CreateView = __webpack_require__(17);
 	var ProjectNotFoundView = __webpack_require__(18);
-	var util = __webpack_require__(15);
+	var util = __webpack_require__(19);
 	var lastProject;
 
 	$(document.body).on('click', 'a', function(ev) {
@@ -449,3482 +449,17 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *///     Backbone.js 1.1.2
-
-	//     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	//     Backbone may be freely distributed under the MIT license.
-	//     For all details and documentation:
-	//     http://backbonejs.org
-
-	(function(root, factory) {
-
-	  // Set up Backbone appropriately for the environment. Start with AMD.
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(45), __webpack_require__(13), exports], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, $, exports) {
-	      // Export global even in AMD case in case this script is loaded with
-	      // others that may still expect a global Backbone.
-	      root.Backbone = factory(root, exports, _, $);
-	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-	  // Next for Node.js or CommonJS. jQuery may not be needed as a module.
-	  } else if (typeof exports !== 'undefined') {
-	    var _ = require('underscore');
-	    factory(root, exports, _);
-
-	  // Finally, as a browser global.
-	  } else {
-	    root.Backbone = factory(root, {}, root._, (root.jQuery || root.Zepto || root.ender || root.$));
-	  }
-
-	}(this, function(root, Backbone, _, $) {
-
-	  // Initial Setup
-	  // -------------
-
-	  // Save the previous value of the `Backbone` variable, so that it can be
-	  // restored later on, if `noConflict` is used.
-	  var previousBackbone = root.Backbone;
-
-	  // Create local references to array methods we'll want to use later.
-	  var array = [];
-	  var push = array.push;
-	  var slice = array.slice;
-	  var splice = array.splice;
-
-	  // Current version of the library. Keep in sync with `package.json`.
-	  Backbone.VERSION = '1.1.2';
-
-	  // For Backbone's purposes, jQuery, Zepto, Ender, or My Library (kidding) owns
-	  // the `$` variable.
-	  Backbone.$ = $;
-
-	  // Runs Backbone.js in *noConflict* mode, returning the `Backbone` variable
-	  // to its previous owner. Returns a reference to this Backbone object.
-	  Backbone.noConflict = function() {
-	    root.Backbone = previousBackbone;
-	    return this;
-	  };
-
-	  // Turn on `emulateHTTP` to support legacy HTTP servers. Setting this option
-	  // will fake `"PATCH"`, `"PUT"` and `"DELETE"` requests via the `_method` parameter and
-	  // set a `X-Http-Method-Override` header.
-	  Backbone.emulateHTTP = false;
-
-	  // Turn on `emulateJSON` to support legacy servers that can't deal with direct
-	  // `application/json` requests ... will encode the body as
-	  // `application/x-www-form-urlencoded` instead and will send the model in a
-	  // form param named `model`.
-	  Backbone.emulateJSON = false;
-
-	  // Backbone.Events
-	  // ---------------
-
-	  // A module that can be mixed in to *any object* in order to provide it with
-	  // custom events. You may bind with `on` or remove with `off` callback
-	  // functions to an event; `trigger`-ing an event fires all callbacks in
-	  // succession.
-	  //
-	  //     var object = {};
-	  //     _.extend(object, Backbone.Events);
-	  //     object.on('expand', function(){ alert('expanded'); });
-	  //     object.trigger('expand');
-	  //
-	  var Events = Backbone.Events = {
-
-	    // Bind an event to a `callback` function. Passing `"all"` will bind
-	    // the callback to all events fired.
-	    on: function(name, callback, context) {
-	      if (!eventsApi(this, 'on', name, [callback, context]) || !callback) return this;
-	      this._events || (this._events = {});
-	      var events = this._events[name] || (this._events[name] = []);
-	      events.push({callback: callback, context: context, ctx: context || this});
-	      return this;
-	    },
-
-	    // Bind an event to only be triggered a single time. After the first time
-	    // the callback is invoked, it will be removed.
-	    once: function(name, callback, context) {
-	      if (!eventsApi(this, 'once', name, [callback, context]) || !callback) return this;
-	      var self = this;
-	      var once = _.once(function() {
-	        self.off(name, once);
-	        callback.apply(this, arguments);
-	      });
-	      once._callback = callback;
-	      return this.on(name, once, context);
-	    },
-
-	    // Remove one or many callbacks. If `context` is null, removes all
-	    // callbacks with that function. If `callback` is null, removes all
-	    // callbacks for the event. If `name` is null, removes all bound
-	    // callbacks for all events.
-	    off: function(name, callback, context) {
-	      var retain, ev, events, names, i, l, j, k;
-	      if (!this._events || !eventsApi(this, 'off', name, [callback, context])) return this;
-	      if (!name && !callback && !context) {
-	        this._events = void 0;
-	        return this;
-	      }
-	      names = name ? [name] : _.keys(this._events);
-	      for (i = 0, l = names.length; i < l; i++) {
-	        name = names[i];
-	        if (events = this._events[name]) {
-	          this._events[name] = retain = [];
-	          if (callback || context) {
-	            for (j = 0, k = events.length; j < k; j++) {
-	              ev = events[j];
-	              if ((callback && callback !== ev.callback && callback !== ev.callback._callback) ||
-	                  (context && context !== ev.context)) {
-	                retain.push(ev);
-	              }
-	            }
-	          }
-	          if (!retain.length) delete this._events[name];
-	        }
-	      }
-
-	      return this;
-	    },
-
-	    // Trigger one or many events, firing all bound callbacks. Callbacks are
-	    // passed the same arguments as `trigger` is, apart from the event name
-	    // (unless you're listening on `"all"`, which will cause your callback to
-	    // receive the true name of the event as the first argument).
-	    trigger: function(name) {
-	      if (!this._events) return this;
-	      var args = slice.call(arguments, 1);
-	      if (!eventsApi(this, 'trigger', name, args)) return this;
-	      var events = this._events[name];
-	      var allEvents = this._events.all;
-	      if (events) triggerEvents(events, args);
-	      if (allEvents) triggerEvents(allEvents, arguments);
-	      return this;
-	    },
-
-	    // Tell this object to stop listening to either specific events ... or
-	    // to every object it's currently listening to.
-	    stopListening: function(obj, name, callback) {
-	      var listeningTo = this._listeningTo;
-	      if (!listeningTo) return this;
-	      var remove = !name && !callback;
-	      if (!callback && typeof name === 'object') callback = this;
-	      if (obj) (listeningTo = {})[obj._listenId] = obj;
-	      for (var id in listeningTo) {
-	        obj = listeningTo[id];
-	        obj.off(name, callback, this);
-	        if (remove || _.isEmpty(obj._events)) delete this._listeningTo[id];
-	      }
-	      return this;
-	    }
-
-	  };
-
-	  // Regular expression used to split event strings.
-	  var eventSplitter = /\s+/;
-
-	  // Implement fancy features of the Events API such as multiple event
-	  // names `"change blur"` and jQuery-style event maps `{change: action}`
-	  // in terms of the existing API.
-	  var eventsApi = function(obj, action, name, rest) {
-	    if (!name) return true;
-
-	    // Handle event maps.
-	    if (typeof name === 'object') {
-	      for (var key in name) {
-	        obj[action].apply(obj, [key, name[key]].concat(rest));
-	      }
-	      return false;
-	    }
-
-	    // Handle space separated event names.
-	    if (eventSplitter.test(name)) {
-	      var names = name.split(eventSplitter);
-	      for (var i = 0, l = names.length; i < l; i++) {
-	        obj[action].apply(obj, [names[i]].concat(rest));
-	      }
-	      return false;
-	    }
-
-	    return true;
-	  };
-
-	  // A difficult-to-believe, but optimized internal dispatch function for
-	  // triggering events. Tries to keep the usual cases speedy (most internal
-	  // Backbone events have 3 arguments).
-	  var triggerEvents = function(events, args) {
-	    var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2];
-	    switch (args.length) {
-	      case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx); return;
-	      case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1); return;
-	      case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2); return;
-	      case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2, a3); return;
-	      default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args); return;
-	    }
-	  };
-
-	  var listenMethods = {listenTo: 'on', listenToOnce: 'once'};
-
-	  // Inversion-of-control versions of `on` and `once`. Tell *this* object to
-	  // listen to an event in another object ... keeping track of what it's
-	  // listening to.
-	  _.each(listenMethods, function(implementation, method) {
-	    Events[method] = function(obj, name, callback) {
-	      var listeningTo = this._listeningTo || (this._listeningTo = {});
-	      var id = obj._listenId || (obj._listenId = _.uniqueId('l'));
-	      listeningTo[id] = obj;
-	      if (!callback && typeof name === 'object') callback = this;
-	      obj[implementation](name, callback, this);
-	      return this;
-	    };
-	  });
-
-	  // Aliases for backwards compatibility.
-	  Events.bind   = Events.on;
-	  Events.unbind = Events.off;
-
-	  // Allow the `Backbone` object to serve as a global event bus, for folks who
-	  // want global "pubsub" in a convenient place.
-	  _.extend(Backbone, Events);
-
-	  // Backbone.Model
-	  // --------------
-
-	  // Backbone **Models** are the basic data object in the framework --
-	  // frequently representing a row in a table in a database on your server.
-	  // A discrete chunk of data and a bunch of useful, related methods for
-	  // performing computations and transformations on that data.
-
-	  // Create a new model with the specified attributes. A client id (`cid`)
-	  // is automatically generated and assigned for you.
-	  var Model = Backbone.Model = function(attributes, options) {
-	    var attrs = attributes || {};
-	    options || (options = {});
-	    this.cid = _.uniqueId('c');
-	    this.attributes = {};
-	    if (options.collection) this.collection = options.collection;
-	    if (options.parse) attrs = this.parse(attrs, options) || {};
-	    attrs = _.defaults({}, attrs, _.result(this, 'defaults'));
-	    this.set(attrs, options);
-	    this.changed = {};
-	    this.initialize.apply(this, arguments);
-	  };
-
-	  // Attach all inheritable methods to the Model prototype.
-	  _.extend(Model.prototype, Events, {
-
-	    // A hash of attributes whose current and previous value differ.
-	    changed: null,
-
-	    // The value returned during the last failed validation.
-	    validationError: null,
-
-	    // The default name for the JSON `id` attribute is `"id"`. MongoDB and
-	    // CouchDB users may want to set this to `"_id"`.
-	    idAttribute: 'id',
-
-	    // Initialize is an empty function by default. Override it with your own
-	    // initialization logic.
-	    initialize: function(){},
-
-	    // Return a copy of the model's `attributes` object.
-	    toJSON: function(options) {
-	      return _.clone(this.attributes);
-	    },
-
-	    // Proxy `Backbone.sync` by default -- but override this if you need
-	    // custom syncing semantics for *this* particular model.
-	    sync: function() {
-	      return Backbone.sync.apply(this, arguments);
-	    },
-
-	    // Get the value of an attribute.
-	    get: function(attr) {
-	      return this.attributes[attr];
-	    },
-
-	    // Get the HTML-escaped value of an attribute.
-	    escape: function(attr) {
-	      return _.escape(this.get(attr));
-	    },
-
-	    // Returns `true` if the attribute contains a value that is not null
-	    // or undefined.
-	    has: function(attr) {
-	      return this.get(attr) != null;
-	    },
-
-	    // Set a hash of model attributes on the object, firing `"change"`. This is
-	    // the core primitive operation of a model, updating the data and notifying
-	    // anyone who needs to know about the change in state. The heart of the beast.
-	    set: function(key, val, options) {
-	      var attr, attrs, unset, changes, silent, changing, prev, current;
-	      if (key == null) return this;
-
-	      // Handle both `"key", value` and `{key: value}` -style arguments.
-	      if (typeof key === 'object') {
-	        attrs = key;
-	        options = val;
-	      } else {
-	        (attrs = {})[key] = val;
-	      }
-
-	      options || (options = {});
-
-	      // Run validation.
-	      if (!this._validate(attrs, options)) return false;
-
-	      // Extract attributes and options.
-	      unset           = options.unset;
-	      silent          = options.silent;
-	      changes         = [];
-	      changing        = this._changing;
-	      this._changing  = true;
-
-	      if (!changing) {
-	        this._previousAttributes = _.clone(this.attributes);
-	        this.changed = {};
-	      }
-	      current = this.attributes, prev = this._previousAttributes;
-
-	      // Check for changes of `id`.
-	      if (this.idAttribute in attrs) this.id = attrs[this.idAttribute];
-
-	      // For each `set` attribute, update or delete the current value.
-	      for (attr in attrs) {
-	        val = attrs[attr];
-	        if (!_.isEqual(current[attr], val)) changes.push(attr);
-	        if (!_.isEqual(prev[attr], val)) {
-	          this.changed[attr] = val;
-	        } else {
-	          delete this.changed[attr];
-	        }
-	        unset ? delete current[attr] : current[attr] = val;
-	      }
-
-	      // Trigger all relevant attribute changes.
-	      if (!silent) {
-	        if (changes.length) this._pending = options;
-	        for (var i = 0, l = changes.length; i < l; i++) {
-	          this.trigger('change:' + changes[i], this, current[changes[i]], options);
-	        }
-	      }
-
-	      // You might be wondering why there's a `while` loop here. Changes can
-	      // be recursively nested within `"change"` events.
-	      if (changing) return this;
-	      if (!silent) {
-	        while (this._pending) {
-	          options = this._pending;
-	          this._pending = false;
-	          this.trigger('change', this, options);
-	        }
-	      }
-	      this._pending = false;
-	      this._changing = false;
-	      return this;
-	    },
-
-	    // Remove an attribute from the model, firing `"change"`. `unset` is a noop
-	    // if the attribute doesn't exist.
-	    unset: function(attr, options) {
-	      return this.set(attr, void 0, _.extend({}, options, {unset: true}));
-	    },
-
-	    // Clear all attributes on the model, firing `"change"`.
-	    clear: function(options) {
-	      var attrs = {};
-	      for (var key in this.attributes) attrs[key] = void 0;
-	      return this.set(attrs, _.extend({}, options, {unset: true}));
-	    },
-
-	    // Determine if the model has changed since the last `"change"` event.
-	    // If you specify an attribute name, determine if that attribute has changed.
-	    hasChanged: function(attr) {
-	      if (attr == null) return !_.isEmpty(this.changed);
-	      return _.has(this.changed, attr);
-	    },
-
-	    // Return an object containing all the attributes that have changed, or
-	    // false if there are no changed attributes. Useful for determining what
-	    // parts of a view need to be updated and/or what attributes need to be
-	    // persisted to the server. Unset attributes will be set to undefined.
-	    // You can also pass an attributes object to diff against the model,
-	    // determining if there *would be* a change.
-	    changedAttributes: function(diff) {
-	      if (!diff) return this.hasChanged() ? _.clone(this.changed) : false;
-	      var val, changed = false;
-	      var old = this._changing ? this._previousAttributes : this.attributes;
-	      for (var attr in diff) {
-	        if (_.isEqual(old[attr], (val = diff[attr]))) continue;
-	        (changed || (changed = {}))[attr] = val;
-	      }
-	      return changed;
-	    },
-
-	    // Get the previous value of an attribute, recorded at the time the last
-	    // `"change"` event was fired.
-	    previous: function(attr) {
-	      if (attr == null || !this._previousAttributes) return null;
-	      return this._previousAttributes[attr];
-	    },
-
-	    // Get all of the attributes of the model at the time of the previous
-	    // `"change"` event.
-	    previousAttributes: function() {
-	      return _.clone(this._previousAttributes);
-	    },
-
-	    // Fetch the model from the server. If the server's representation of the
-	    // model differs from its current attributes, they will be overridden,
-	    // triggering a `"change"` event.
-	    fetch: function(options) {
-	      options = options ? _.clone(options) : {};
-	      if (options.parse === void 0) options.parse = true;
-	      var model = this;
-	      var success = options.success;
-	      options.success = function(resp) {
-	        if (!model.set(model.parse(resp, options), options)) return false;
-	        if (success) success(model, resp, options);
-	        model.trigger('sync', model, resp, options);
-	      };
-	      wrapError(this, options);
-	      return this.sync('read', this, options);
-	    },
-
-	    // Set a hash of model attributes, and sync the model to the server.
-	    // If the server returns an attributes hash that differs, the model's
-	    // state will be `set` again.
-	    save: function(key, val, options) {
-	      var attrs, method, xhr, attributes = this.attributes;
-
-	      // Handle both `"key", value` and `{key: value}` -style arguments.
-	      if (key == null || typeof key === 'object') {
-	        attrs = key;
-	        options = val;
-	      } else {
-	        (attrs = {})[key] = val;
-	      }
-
-	      options = _.extend({validate: true}, options);
-
-	      // If we're not waiting and attributes exist, save acts as
-	      // `set(attr).save(null, opts)` with validation. Otherwise, check if
-	      // the model will be valid when the attributes, if any, are set.
-	      if (attrs && !options.wait) {
-	        if (!this.set(attrs, options)) return false;
-	      } else {
-	        if (!this._validate(attrs, options)) return false;
-	      }
-
-	      // Set temporary attributes if `{wait: true}`.
-	      if (attrs && options.wait) {
-	        this.attributes = _.extend({}, attributes, attrs);
-	      }
-
-	      // After a successful server-side save, the client is (optionally)
-	      // updated with the server-side state.
-	      if (options.parse === void 0) options.parse = true;
-	      var model = this;
-	      var success = options.success;
-	      options.success = function(resp) {
-	        // Ensure attributes are restored during synchronous saves.
-	        model.attributes = attributes;
-	        var serverAttrs = model.parse(resp, options);
-	        if (options.wait) serverAttrs = _.extend(attrs || {}, serverAttrs);
-	        if (_.isObject(serverAttrs) && !model.set(serverAttrs, options)) {
-	          return false;
-	        }
-	        if (success) success(model, resp, options);
-	        model.trigger('sync', model, resp, options);
-	      };
-	      wrapError(this, options);
-
-	      method = this.isNew() ? 'create' : (options.patch ? 'patch' : 'update');
-	      if (method === 'patch') options.attrs = attrs;
-	      xhr = this.sync(method, this, options);
-
-	      // Restore attributes.
-	      if (attrs && options.wait) this.attributes = attributes;
-
-	      return xhr;
-	    },
-
-	    // Destroy this model on the server if it was already persisted.
-	    // Optimistically removes the model from its collection, if it has one.
-	    // If `wait: true` is passed, waits for the server to respond before removal.
-	    destroy: function(options) {
-	      options = options ? _.clone(options) : {};
-	      var model = this;
-	      var success = options.success;
-
-	      var destroy = function() {
-	        model.trigger('destroy', model, model.collection, options);
-	      };
-
-	      options.success = function(resp) {
-	        if (options.wait || model.isNew()) destroy();
-	        if (success) success(model, resp, options);
-	        if (!model.isNew()) model.trigger('sync', model, resp, options);
-	      };
-
-	      if (this.isNew()) {
-	        options.success();
-	        return false;
-	      }
-	      wrapError(this, options);
-
-	      var xhr = this.sync('delete', this, options);
-	      if (!options.wait) destroy();
-	      return xhr;
-	    },
-
-	    // Default URL for the model's representation on the server -- if you're
-	    // using Backbone's restful methods, override this to change the endpoint
-	    // that will be called.
-	    url: function() {
-	      var base =
-	        _.result(this, 'urlRoot') ||
-	        _.result(this.collection, 'url') ||
-	        urlError();
-	      if (this.isNew()) return base;
-	      return base.replace(/([^\/])$/, '$1/') + encodeURIComponent(this.id);
-	    },
-
-	    // **parse** converts a response into the hash of attributes to be `set` on
-	    // the model. The default implementation is just to pass the response along.
-	    parse: function(resp, options) {
-	      return resp;
-	    },
-
-	    // Create a new model with identical attributes to this one.
-	    clone: function() {
-	      return new this.constructor(this.attributes);
-	    },
-
-	    // A model is new if it has never been saved to the server, and lacks an id.
-	    isNew: function() {
-	      return !this.has(this.idAttribute);
-	    },
-
-	    // Check if the model is currently in a valid state.
-	    isValid: function(options) {
-	      return this._validate({}, _.extend(options || {}, { validate: true }));
-	    },
-
-	    // Run validation against the next complete set of model attributes,
-	    // returning `true` if all is well. Otherwise, fire an `"invalid"` event.
-	    _validate: function(attrs, options) {
-	      if (!options.validate || !this.validate) return true;
-	      attrs = _.extend({}, this.attributes, attrs);
-	      var error = this.validationError = this.validate(attrs, options) || null;
-	      if (!error) return true;
-	      this.trigger('invalid', this, error, _.extend(options, {validationError: error}));
-	      return false;
-	    }
-
-	  });
-
-	  // Underscore methods that we want to implement on the Model.
-	  var modelMethods = ['keys', 'values', 'pairs', 'invert', 'pick', 'omit'];
-
-	  // Mix in each Underscore method as a proxy to `Model#attributes`.
-	  _.each(modelMethods, function(method) {
-	    Model.prototype[method] = function() {
-	      var args = slice.call(arguments);
-	      args.unshift(this.attributes);
-	      return _[method].apply(_, args);
-	    };
-	  });
-
-	  // Backbone.Collection
-	  // -------------------
-
-	  // If models tend to represent a single row of data, a Backbone Collection is
-	  // more analagous to a table full of data ... or a small slice or page of that
-	  // table, or a collection of rows that belong together for a particular reason
-	  // -- all of the messages in this particular folder, all of the documents
-	  // belonging to this particular author, and so on. Collections maintain
-	  // indexes of their models, both in order, and for lookup by `id`.
-
-	  // Create a new **Collection**, perhaps to contain a specific type of `model`.
-	  // If a `comparator` is specified, the Collection will maintain
-	  // its models in sort order, as they're added and removed.
-	  var Collection = Backbone.Collection = function(models, options) {
-	    options || (options = {});
-	    if (options.model) this.model = options.model;
-	    if (options.comparator !== void 0) this.comparator = options.comparator;
-	    this._reset();
-	    this.initialize.apply(this, arguments);
-	    if (models) this.reset(models, _.extend({silent: true}, options));
-	  };
-
-	  // Default options for `Collection#set`.
-	  var setOptions = {add: true, remove: true, merge: true};
-	  var addOptions = {add: true, remove: false};
-
-	  // Define the Collection's inheritable methods.
-	  _.extend(Collection.prototype, Events, {
-
-	    // The default model for a collection is just a **Backbone.Model**.
-	    // This should be overridden in most cases.
-	    model: Model,
-
-	    // Initialize is an empty function by default. Override it with your own
-	    // initialization logic.
-	    initialize: function(){},
-
-	    // The JSON representation of a Collection is an array of the
-	    // models' attributes.
-	    toJSON: function(options) {
-	      return this.map(function(model){ return model.toJSON(options); });
-	    },
-
-	    // Proxy `Backbone.sync` by default.
-	    sync: function() {
-	      return Backbone.sync.apply(this, arguments);
-	    },
-
-	    // Add a model, or list of models to the set.
-	    add: function(models, options) {
-	      return this.set(models, _.extend({merge: false}, options, addOptions));
-	    },
-
-	    // Remove a model, or a list of models from the set.
-	    remove: function(models, options) {
-	      var singular = !_.isArray(models);
-	      models = singular ? [models] : _.clone(models);
-	      options || (options = {});
-	      var i, l, index, model;
-	      for (i = 0, l = models.length; i < l; i++) {
-	        model = models[i] = this.get(models[i]);
-	        if (!model) continue;
-	        delete this._byId[model.id];
-	        delete this._byId[model.cid];
-	        index = this.indexOf(model);
-	        this.models.splice(index, 1);
-	        this.length--;
-	        if (!options.silent) {
-	          options.index = index;
-	          model.trigger('remove', model, this, options);
-	        }
-	        this._removeReference(model, options);
-	      }
-	      return singular ? models[0] : models;
-	    },
-
-	    // Update a collection by `set`-ing a new list of models, adding new ones,
-	    // removing models that are no longer present, and merging models that
-	    // already exist in the collection, as necessary. Similar to **Model#set**,
-	    // the core operation for updating the data contained by the collection.
-	    set: function(models, options) {
-	      options = _.defaults({}, options, setOptions);
-	      if (options.parse) models = this.parse(models, options);
-	      var singular = !_.isArray(models);
-	      models = singular ? (models ? [models] : []) : _.clone(models);
-	      var i, l, id, model, attrs, existing, sort;
-	      var at = options.at;
-	      var targetModel = this.model;
-	      var sortable = this.comparator && (at == null) && options.sort !== false;
-	      var sortAttr = _.isString(this.comparator) ? this.comparator : null;
-	      var toAdd = [], toRemove = [], modelMap = {};
-	      var add = options.add, merge = options.merge, remove = options.remove;
-	      var order = !sortable && add && remove ? [] : false;
-
-	      // Turn bare objects into model references, and prevent invalid models
-	      // from being added.
-	      for (i = 0, l = models.length; i < l; i++) {
-	        attrs = models[i] || {};
-	        if (attrs instanceof Model) {
-	          id = model = attrs;
-	        } else {
-	          id = attrs[targetModel.prototype.idAttribute || 'id'];
-	        }
-
-	        // If a duplicate is found, prevent it from being added and
-	        // optionally merge it into the existing model.
-	        if (existing = this.get(id)) {
-	          if (remove) modelMap[existing.cid] = true;
-	          if (merge) {
-	            attrs = attrs === model ? model.attributes : attrs;
-	            if (options.parse) attrs = existing.parse(attrs, options);
-	            existing.set(attrs, options);
-	            if (sortable && !sort && existing.hasChanged(sortAttr)) sort = true;
-	          }
-	          models[i] = existing;
-
-	        // If this is a new, valid model, push it to the `toAdd` list.
-	        } else if (add) {
-	          model = models[i] = this._prepareModel(attrs, options);
-	          if (!model) continue;
-	          toAdd.push(model);
-	          this._addReference(model, options);
-	        }
-
-	        // Do not add multiple models with the same `id`.
-	        model = existing || model;
-	        if (order && (model.isNew() || !modelMap[model.id])) order.push(model);
-	        modelMap[model.id] = true;
-	      }
-
-	      // Remove nonexistent models if appropriate.
-	      if (remove) {
-	        for (i = 0, l = this.length; i < l; ++i) {
-	          if (!modelMap[(model = this.models[i]).cid]) toRemove.push(model);
-	        }
-	        if (toRemove.length) this.remove(toRemove, options);
-	      }
-
-	      // See if sorting is needed, update `length` and splice in new models.
-	      if (toAdd.length || (order && order.length)) {
-	        if (sortable) sort = true;
-	        this.length += toAdd.length;
-	        if (at != null) {
-	          for (i = 0, l = toAdd.length; i < l; i++) {
-	            this.models.splice(at + i, 0, toAdd[i]);
-	          }
-	        } else {
-	          if (order) this.models.length = 0;
-	          var orderedModels = order || toAdd;
-	          for (i = 0, l = orderedModels.length; i < l; i++) {
-	            this.models.push(orderedModels[i]);
-	          }
-	        }
-	      }
-
-	      // Silently sort the collection if appropriate.
-	      if (sort) this.sort({silent: true});
-
-	      // Unless silenced, it's time to fire all appropriate add/sort events.
-	      if (!options.silent) {
-	        for (i = 0, l = toAdd.length; i < l; i++) {
-	          (model = toAdd[i]).trigger('add', model, this, options);
-	        }
-	        if (sort || (order && order.length)) this.trigger('sort', this, options);
-	      }
-
-	      // Return the added (or merged) model (or models).
-	      return singular ? models[0] : models;
-	    },
-
-	    // When you have more items than you want to add or remove individually,
-	    // you can reset the entire set with a new list of models, without firing
-	    // any granular `add` or `remove` events. Fires `reset` when finished.
-	    // Useful for bulk operations and optimizations.
-	    reset: function(models, options) {
-	      options || (options = {});
-	      for (var i = 0, l = this.models.length; i < l; i++) {
-	        this._removeReference(this.models[i], options);
-	      }
-	      options.previousModels = this.models;
-	      this._reset();
-	      models = this.add(models, _.extend({silent: true}, options));
-	      if (!options.silent) this.trigger('reset', this, options);
-	      return models;
-	    },
-
-	    // Add a model to the end of the collection.
-	    push: function(model, options) {
-	      return this.add(model, _.extend({at: this.length}, options));
-	    },
-
-	    // Remove a model from the end of the collection.
-	    pop: function(options) {
-	      var model = this.at(this.length - 1);
-	      this.remove(model, options);
-	      return model;
-	    },
-
-	    // Add a model to the beginning of the collection.
-	    unshift: function(model, options) {
-	      return this.add(model, _.extend({at: 0}, options));
-	    },
-
-	    // Remove a model from the beginning of the collection.
-	    shift: function(options) {
-	      var model = this.at(0);
-	      this.remove(model, options);
-	      return model;
-	    },
-
-	    // Slice out a sub-array of models from the collection.
-	    slice: function() {
-	      return slice.apply(this.models, arguments);
-	    },
-
-	    // Get a model from the set by id.
-	    get: function(obj) {
-	      if (obj == null) return void 0;
-	      return this._byId[obj] || this._byId[obj.id] || this._byId[obj.cid];
-	    },
-
-	    // Get the model at the given index.
-	    at: function(index) {
-	      return this.models[index];
-	    },
-
-	    // Return models with matching attributes. Useful for simple cases of
-	    // `filter`.
-	    where: function(attrs, first) {
-	      if (_.isEmpty(attrs)) return first ? void 0 : [];
-	      return this[first ? 'find' : 'filter'](function(model) {
-	        for (var key in attrs) {
-	          if (attrs[key] !== model.get(key)) return false;
-	        }
-	        return true;
-	      });
-	    },
-
-	    // Return the first model with matching attributes. Useful for simple cases
-	    // of `find`.
-	    findWhere: function(attrs) {
-	      return this.where(attrs, true);
-	    },
-
-	    // Force the collection to re-sort itself. You don't need to call this under
-	    // normal circumstances, as the set will maintain sort order as each item
-	    // is added.
-	    sort: function(options) {
-	      if (!this.comparator) throw new Error('Cannot sort a set without a comparator');
-	      options || (options = {});
-
-	      // Run sort based on type of `comparator`.
-	      if (_.isString(this.comparator) || this.comparator.length === 1) {
-	        this.models = this.sortBy(this.comparator, this);
-	      } else {
-	        this.models.sort(_.bind(this.comparator, this));
-	      }
-
-	      if (!options.silent) this.trigger('sort', this, options);
-	      return this;
-	    },
-
-	    // Pluck an attribute from each model in the collection.
-	    pluck: function(attr) {
-	      return _.invoke(this.models, 'get', attr);
-	    },
-
-	    // Fetch the default set of models for this collection, resetting the
-	    // collection when they arrive. If `reset: true` is passed, the response
-	    // data will be passed through the `reset` method instead of `set`.
-	    fetch: function(options) {
-	      options = options ? _.clone(options) : {};
-	      if (options.parse === void 0) options.parse = true;
-	      var success = options.success;
-	      var collection = this;
-	      options.success = function(resp) {
-	        var method = options.reset ? 'reset' : 'set';
-	        collection[method](resp, options);
-	        if (success) success(collection, resp, options);
-	        collection.trigger('sync', collection, resp, options);
-	      };
-	      wrapError(this, options);
-	      return this.sync('read', this, options);
-	    },
-
-	    // Create a new instance of a model in this collection. Add the model to the
-	    // collection immediately, unless `wait: true` is passed, in which case we
-	    // wait for the server to agree.
-	    create: function(model, options) {
-	      options = options ? _.clone(options) : {};
-	      if (!(model = this._prepareModel(model, options))) return false;
-	      if (!options.wait) this.add(model, options);
-	      var collection = this;
-	      var success = options.success;
-	      options.success = function(model, resp) {
-	        if (options.wait) collection.add(model, options);
-	        if (success) success(model, resp, options);
-	      };
-	      model.save(null, options);
-	      return model;
-	    },
-
-	    // **parse** converts a response into a list of models to be added to the
-	    // collection. The default implementation is just to pass it through.
-	    parse: function(resp, options) {
-	      return resp;
-	    },
-
-	    // Create a new collection with an identical list of models as this one.
-	    clone: function() {
-	      return new this.constructor(this.models);
-	    },
-
-	    // Private method to reset all internal state. Called when the collection
-	    // is first initialized or reset.
-	    _reset: function() {
-	      this.length = 0;
-	      this.models = [];
-	      this._byId  = {};
-	    },
-
-	    // Prepare a hash of attributes (or other model) to be added to this
-	    // collection.
-	    _prepareModel: function(attrs, options) {
-	      if (attrs instanceof Model) return attrs;
-	      options = options ? _.clone(options) : {};
-	      options.collection = this;
-	      var model = new this.model(attrs, options);
-	      if (!model.validationError) return model;
-	      this.trigger('invalid', this, model.validationError, options);
-	      return false;
-	    },
-
-	    // Internal method to create a model's ties to a collection.
-	    _addReference: function(model, options) {
-	      this._byId[model.cid] = model;
-	      if (model.id != null) this._byId[model.id] = model;
-	      if (!model.collection) model.collection = this;
-	      model.on('all', this._onModelEvent, this);
-	    },
-
-	    // Internal method to sever a model's ties to a collection.
-	    _removeReference: function(model, options) {
-	      if (this === model.collection) delete model.collection;
-	      model.off('all', this._onModelEvent, this);
-	    },
-
-	    // Internal method called every time a model in the set fires an event.
-	    // Sets need to update their indexes when models change ids. All other
-	    // events simply proxy through. "add" and "remove" events that originate
-	    // in other collections are ignored.
-	    _onModelEvent: function(event, model, collection, options) {
-	      if ((event === 'add' || event === 'remove') && collection !== this) return;
-	      if (event === 'destroy') this.remove(model, options);
-	      if (model && event === 'change:' + model.idAttribute) {
-	        delete this._byId[model.previous(model.idAttribute)];
-	        if (model.id != null) this._byId[model.id] = model;
-	      }
-	      this.trigger.apply(this, arguments);
-	    }
-
-	  });
-
-	  // Underscore methods that we want to implement on the Collection.
-	  // 90% of the core usefulness of Backbone Collections is actually implemented
-	  // right here:
-	  var methods = ['forEach', 'each', 'map', 'collect', 'reduce', 'foldl',
-	    'inject', 'reduceRight', 'foldr', 'find', 'detect', 'filter', 'select',
-	    'reject', 'every', 'all', 'some', 'any', 'include', 'contains', 'invoke',
-	    'max', 'min', 'toArray', 'size', 'first', 'head', 'take', 'initial', 'rest',
-	    'tail', 'drop', 'last', 'without', 'difference', 'indexOf', 'shuffle',
-	    'lastIndexOf', 'isEmpty', 'chain', 'sample'];
-
-	  // Mix in each Underscore method as a proxy to `Collection#models`.
-	  _.each(methods, function(method) {
-	    Collection.prototype[method] = function() {
-	      var args = slice.call(arguments);
-	      args.unshift(this.models);
-	      return _[method].apply(_, args);
-	    };
-	  });
-
-	  // Underscore methods that take a property name as an argument.
-	  var attributeMethods = ['groupBy', 'countBy', 'sortBy', 'indexBy'];
-
-	  // Use attributes instead of properties.
-	  _.each(attributeMethods, function(method) {
-	    Collection.prototype[method] = function(value, context) {
-	      var iterator = _.isFunction(value) ? value : function(model) {
-	        return model.get(value);
-	      };
-	      return _[method](this.models, iterator, context);
-	    };
-	  });
-
-	  // Backbone.View
-	  // -------------
-
-	  // Backbone Views are almost more convention than they are actual code. A View
-	  // is simply a JavaScript object that represents a logical chunk of UI in the
-	  // DOM. This might be a single item, an entire list, a sidebar or panel, or
-	  // even the surrounding frame which wraps your whole app. Defining a chunk of
-	  // UI as a **View** allows you to define your DOM events declaratively, without
-	  // having to worry about render order ... and makes it easy for the view to
-	  // react to specific changes in the state of your models.
-
-	  // Creating a Backbone.View creates its initial element outside of the DOM,
-	  // if an existing element is not provided...
-	  var View = Backbone.View = function(options) {
-	    this.cid = _.uniqueId('view');
-	    options || (options = {});
-	    _.extend(this, _.pick(options, viewOptions));
-	    this._ensureElement();
-	    this.initialize.apply(this, arguments);
-	    this.delegateEvents();
-	  };
-
-	  // Cached regex to split keys for `delegate`.
-	  var delegateEventSplitter = /^(\S+)\s*(.*)$/;
-
-	  // List of view options to be merged as properties.
-	  var viewOptions = ['model', 'collection', 'el', 'id', 'attributes', 'className', 'tagName', 'events'];
-
-	  // Set up all inheritable **Backbone.View** properties and methods.
-	  _.extend(View.prototype, Events, {
-
-	    // The default `tagName` of a View's element is `"div"`.
-	    tagName: 'div',
-
-	    // jQuery delegate for element lookup, scoped to DOM elements within the
-	    // current view. This should be preferred to global lookups where possible.
-	    $: function(selector) {
-	      return this.$el.find(selector);
-	    },
-
-	    // Initialize is an empty function by default. Override it with your own
-	    // initialization logic.
-	    initialize: function(){},
-
-	    // **render** is the core function that your view should override, in order
-	    // to populate its element (`this.el`), with the appropriate HTML. The
-	    // convention is for **render** to always return `this`.
-	    render: function() {
-	      return this;
-	    },
-
-	    // Remove this view by taking the element out of the DOM, and removing any
-	    // applicable Backbone.Events listeners.
-	    remove: function() {
-	      this.$el.remove();
-	      this.stopListening();
-	      return this;
-	    },
-
-	    // Change the view's element (`this.el` property), including event
-	    // re-delegation.
-	    setElement: function(element, delegate) {
-	      if (this.$el) this.undelegateEvents();
-	      this.$el = element instanceof Backbone.$ ? element : Backbone.$(element);
-	      this.el = this.$el[0];
-	      if (delegate !== false) this.delegateEvents();
-	      return this;
-	    },
-
-	    // Set callbacks, where `this.events` is a hash of
-	    //
-	    // *{"event selector": "callback"}*
-	    //
-	    //     {
-	    //       'mousedown .title':  'edit',
-	    //       'click .button':     'save',
-	    //       'click .open':       function(e) { ... }
-	    //     }
-	    //
-	    // pairs. Callbacks will be bound to the view, with `this` set properly.
-	    // Uses event delegation for efficiency.
-	    // Omitting the selector binds the event to `this.el`.
-	    // This only works for delegate-able events: not `focus`, `blur`, and
-	    // not `change`, `submit`, and `reset` in Internet Explorer.
-	    delegateEvents: function(events) {
-	      if (!(events || (events = _.result(this, 'events')))) return this;
-	      this.undelegateEvents();
-	      for (var key in events) {
-	        var method = events[key];
-	        if (!_.isFunction(method)) method = this[events[key]];
-	        if (!method) continue;
-
-	        var match = key.match(delegateEventSplitter);
-	        var eventName = match[1], selector = match[2];
-	        method = _.bind(method, this);
-	        eventName += '.delegateEvents' + this.cid;
-	        if (selector === '') {
-	          this.$el.on(eventName, method);
-	        } else {
-	          this.$el.on(eventName, selector, method);
-	        }
-	      }
-	      return this;
-	    },
-
-	    // Clears all callbacks previously bound to the view with `delegateEvents`.
-	    // You usually don't need to use this, but may wish to if you have multiple
-	    // Backbone views attached to the same DOM element.
-	    undelegateEvents: function() {
-	      this.$el.off('.delegateEvents' + this.cid);
-	      return this;
-	    },
-
-	    // Ensure that the View has a DOM element to render into.
-	    // If `this.el` is a string, pass it through `$()`, take the first
-	    // matching element, and re-assign it to `el`. Otherwise, create
-	    // an element from the `id`, `className` and `tagName` properties.
-	    _ensureElement: function() {
-	      if (!this.el) {
-	        var attrs = _.extend({}, _.result(this, 'attributes'));
-	        if (this.id) attrs.id = _.result(this, 'id');
-	        if (this.className) attrs['class'] = _.result(this, 'className');
-	        var $el = Backbone.$('<' + _.result(this, 'tagName') + '>').attr(attrs);
-	        this.setElement($el, false);
-	      } else {
-	        this.setElement(_.result(this, 'el'), false);
-	      }
-	    }
-
-	  });
-
-	  // Backbone.sync
-	  // -------------
-
-	  // Override this function to change the manner in which Backbone persists
-	  // models to the server. You will be passed the type of request, and the
-	  // model in question. By default, makes a RESTful Ajax request
-	  // to the model's `url()`. Some possible customizations could be:
-	  //
-	  // * Use `setTimeout` to batch rapid-fire updates into a single request.
-	  // * Send up the models as XML instead of JSON.
-	  // * Persist models via WebSockets instead of Ajax.
-	  //
-	  // Turn on `Backbone.emulateHTTP` in order to send `PUT` and `DELETE` requests
-	  // as `POST`, with a `_method` parameter containing the true HTTP method,
-	  // as well as all requests with the body as `application/x-www-form-urlencoded`
-	  // instead of `application/json` with the model in a param named `model`.
-	  // Useful when interfacing with server-side languages like **PHP** that make
-	  // it difficult to read the body of `PUT` requests.
-	  Backbone.sync = function(method, model, options) {
-	    var type = methodMap[method];
-
-	    // Default options, unless specified.
-	    _.defaults(options || (options = {}), {
-	      emulateHTTP: Backbone.emulateHTTP,
-	      emulateJSON: Backbone.emulateJSON
-	    });
-
-	    // Default JSON-request options.
-	    var params = {type: type, dataType: 'json'};
-
-	    // Ensure that we have a URL.
-	    if (!options.url) {
-	      params.url = _.result(model, 'url') || urlError();
-	    }
-
-	    // Ensure that we have the appropriate request data.
-	    if (options.data == null && model && (method === 'create' || method === 'update' || method === 'patch')) {
-	      params.contentType = 'application/json';
-	      params.data = JSON.stringify(options.attrs || model.toJSON(options));
-	    }
-
-	    // For older servers, emulate JSON by encoding the request into an HTML-form.
-	    if (options.emulateJSON) {
-	      params.contentType = 'application/x-www-form-urlencoded';
-	      params.data = params.data ? {model: params.data} : {};
-	    }
-
-	    // For older servers, emulate HTTP by mimicking the HTTP method with `_method`
-	    // And an `X-HTTP-Method-Override` header.
-	    if (options.emulateHTTP && (type === 'PUT' || type === 'DELETE' || type === 'PATCH')) {
-	      params.type = 'POST';
-	      if (options.emulateJSON) params.data._method = type;
-	      var beforeSend = options.beforeSend;
-	      options.beforeSend = function(xhr) {
-	        xhr.setRequestHeader('X-HTTP-Method-Override', type);
-	        if (beforeSend) return beforeSend.apply(this, arguments);
-	      };
-	    }
-
-	    // Don't process data on a non-GET request.
-	    if (params.type !== 'GET' && !options.emulateJSON) {
-	      params.processData = false;
-	    }
-
-	    // If we're sending a `PATCH` request, and we're in an old Internet Explorer
-	    // that still has ActiveX enabled by default, override jQuery to use that
-	    // for XHR instead. Remove this line when jQuery supports `PATCH` on IE8.
-	    if (params.type === 'PATCH' && noXhrPatch) {
-	      params.xhr = function() {
-	        return new ActiveXObject("Microsoft.XMLHTTP");
-	      };
-	    }
-
-	    // Make the request, allowing the user to override any Ajax options.
-	    var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
-	    model.trigger('request', model, xhr, options);
-	    return xhr;
-	  };
-
-	  var noXhrPatch =
-	    typeof window !== 'undefined' && !!window.ActiveXObject &&
-	      !(window.XMLHttpRequest && (new XMLHttpRequest).dispatchEvent);
-
-	  // Map from CRUD to HTTP for our default `Backbone.sync` implementation.
-	  var methodMap = {
-	    'create': 'POST',
-	    'update': 'PUT',
-	    'patch':  'PATCH',
-	    'delete': 'DELETE',
-	    'read':   'GET'
-	  };
-
-	  // Set the default implementation of `Backbone.ajax` to proxy through to `$`.
-	  // Override this if you'd like to use a different library.
-	  Backbone.ajax = function() {
-	    return Backbone.$.ajax.apply(Backbone.$, arguments);
-	  };
-
-	  // Backbone.Router
-	  // ---------------
-
-	  // Routers map faux-URLs to actions, and fire events when routes are
-	  // matched. Creating a new one sets its `routes` hash, if not set statically.
-	  var Router = Backbone.Router = function(options) {
-	    options || (options = {});
-	    if (options.routes) this.routes = options.routes;
-	    this._bindRoutes();
-	    this.initialize.apply(this, arguments);
-	  };
-
-	  // Cached regular expressions for matching named param parts and splatted
-	  // parts of route strings.
-	  var optionalParam = /\((.*?)\)/g;
-	  var namedParam    = /(\(\?)?:\w+/g;
-	  var splatParam    = /\*\w+/g;
-	  var escapeRegExp  = /[\-{}\[\]+?.,\\\^$|#\s]/g;
-
-	  // Set up all inheritable **Backbone.Router** properties and methods.
-	  _.extend(Router.prototype, Events, {
-
-	    // Initialize is an empty function by default. Override it with your own
-	    // initialization logic.
-	    initialize: function(){},
-
-	    // Manually bind a single named route to a callback. For example:
-	    //
-	    //     this.route('search/:query/p:num', 'search', function(query, num) {
-	    //       ...
-	    //     });
-	    //
-	    route: function(route, name, callback) {
-	      if (!_.isRegExp(route)) route = this._routeToRegExp(route);
-	      if (_.isFunction(name)) {
-	        callback = name;
-	        name = '';
-	      }
-	      if (!callback) callback = this[name];
-	      var router = this;
-	      Backbone.history.route(route, function(fragment) {
-	        var args = router._extractParameters(route, fragment);
-	        router.execute(callback, args);
-	        router.trigger.apply(router, ['route:' + name].concat(args));
-	        router.trigger('route', name, args);
-	        Backbone.history.trigger('route', router, name, args);
-	      });
-	      return this;
-	    },
-
-	    // Execute a route handler with the provided parameters.  This is an
-	    // excellent place to do pre-route setup or post-route cleanup.
-	    execute: function(callback, args) {
-	      if (callback) callback.apply(this, args);
-	    },
-
-	    // Simple proxy to `Backbone.history` to save a fragment into the history.
-	    navigate: function(fragment, options) {
-	      Backbone.history.navigate(fragment, options);
-	      return this;
-	    },
-
-	    // Bind all defined routes to `Backbone.history`. We have to reverse the
-	    // order of the routes here to support behavior where the most general
-	    // routes can be defined at the bottom of the route map.
-	    _bindRoutes: function() {
-	      if (!this.routes) return;
-	      this.routes = _.result(this, 'routes');
-	      var route, routes = _.keys(this.routes);
-	      while ((route = routes.pop()) != null) {
-	        this.route(route, this.routes[route]);
-	      }
-	    },
-
-	    // Convert a route string into a regular expression, suitable for matching
-	    // against the current location hash.
-	    _routeToRegExp: function(route) {
-	      route = route.replace(escapeRegExp, '\\$&')
-	                   .replace(optionalParam, '(?:$1)?')
-	                   .replace(namedParam, function(match, optional) {
-	                     return optional ? match : '([^/?]+)';
-	                   })
-	                   .replace(splatParam, '([^?]*?)');
-	      return new RegExp('^' + route + '(?:\\?([\\s\\S]*))?$');
-	    },
-
-	    // Given a route, and a URL fragment that it matches, return the array of
-	    // extracted decoded parameters. Empty or unmatched parameters will be
-	    // treated as `null` to normalize cross-browser behavior.
-	    _extractParameters: function(route, fragment) {
-	      var params = route.exec(fragment).slice(1);
-	      return _.map(params, function(param, i) {
-	        // Don't decode the search params.
-	        if (i === params.length - 1) return param || null;
-	        return param ? decodeURIComponent(param) : null;
-	      });
-	    }
-
-	  });
-
-	  // Backbone.History
-	  // ----------------
-
-	  // Handles cross-browser history management, based on either
-	  // [pushState](http://diveintohtml5.info/history.html) and real URLs, or
-	  // [onhashchange](https://developer.mozilla.org/en-US/docs/DOM/window.onhashchange)
-	  // and URL fragments. If the browser supports neither (old IE, natch),
-	  // falls back to polling.
-	  var History = Backbone.History = function() {
-	    this.handlers = [];
-	    _.bindAll(this, 'checkUrl');
-
-	    // Ensure that `History` can be used outside of the browser.
-	    if (typeof window !== 'undefined') {
-	      this.location = window.location;
-	      this.history = window.history;
-	    }
-	  };
-
-	  // Cached regex for stripping a leading hash/slash and trailing space.
-	  var routeStripper = /^[#\/]|\s+$/g;
-
-	  // Cached regex for stripping leading and trailing slashes.
-	  var rootStripper = /^\/+|\/+$/g;
-
-	  // Cached regex for detecting MSIE.
-	  var isExplorer = /msie [\w.]+/;
-
-	  // Cached regex for removing a trailing slash.
-	  var trailingSlash = /\/$/;
-
-	  // Cached regex for stripping urls of hash.
-	  var pathStripper = /#.*$/;
-
-	  // Has the history handling already been started?
-	  History.started = false;
-
-	  // Set up all inheritable **Backbone.History** properties and methods.
-	  _.extend(History.prototype, Events, {
-
-	    // The default interval to poll for hash changes, if necessary, is
-	    // twenty times a second.
-	    interval: 50,
-
-	    // Are we at the app root?
-	    atRoot: function() {
-	      return this.location.pathname.replace(/[^\/]$/, '$&/') === this.root;
-	    },
-
-	    // Gets the true hash value. Cannot use location.hash directly due to bug
-	    // in Firefox where location.hash will always be decoded.
-	    getHash: function(window) {
-	      var match = (window || this).location.href.match(/#(.*)$/);
-	      return match ? match[1] : '';
-	    },
-
-	    // Get the cross-browser normalized URL fragment, either from the URL,
-	    // the hash, or the override.
-	    getFragment: function(fragment, forcePushState) {
-	      if (fragment == null) {
-	        if (this._hasPushState || !this._wantsHashChange || forcePushState) {
-	          fragment = decodeURI(this.location.pathname + this.location.search);
-	          var root = this.root.replace(trailingSlash, '');
-	          if (!fragment.indexOf(root)) fragment = fragment.slice(root.length);
-	        } else {
-	          fragment = this.getHash();
-	        }
-	      }
-	      return fragment.replace(routeStripper, '');
-	    },
-
-	    // Start the hash change handling, returning `true` if the current URL matches
-	    // an existing route, and `false` otherwise.
-	    start: function(options) {
-	      if (History.started) throw new Error("Backbone.history has already been started");
-	      History.started = true;
-
-	      // Figure out the initial configuration. Do we need an iframe?
-	      // Is pushState desired ... is it available?
-	      this.options          = _.extend({root: '/'}, this.options, options);
-	      this.root             = this.options.root;
-	      this._wantsHashChange = this.options.hashChange !== false;
-	      this._wantsPushState  = !!this.options.pushState;
-	      this._hasPushState    = !!(this.options.pushState && this.history && this.history.pushState);
-	      var fragment          = this.getFragment();
-	      var docMode           = document.documentMode;
-	      var oldIE             = (isExplorer.exec(navigator.userAgent.toLowerCase()) && (!docMode || docMode <= 7));
-
-	      // Normalize root to always include a leading and trailing slash.
-	      this.root = ('/' + this.root + '/').replace(rootStripper, '/');
-
-	      if (oldIE && this._wantsHashChange) {
-	        var frame = Backbone.$('<iframe src="javascript:0" tabindex="-1">');
-	        this.iframe = frame.hide().appendTo('body')[0].contentWindow;
-	        this.navigate(fragment);
-	      }
-
-	      // Depending on whether we're using pushState or hashes, and whether
-	      // 'onhashchange' is supported, determine how we check the URL state.
-	      if (this._hasPushState) {
-	        Backbone.$(window).on('popstate', this.checkUrl);
-	      } else if (this._wantsHashChange && ('onhashchange' in window) && !oldIE) {
-	        Backbone.$(window).on('hashchange', this.checkUrl);
-	      } else if (this._wantsHashChange) {
-	        this._checkUrlInterval = setInterval(this.checkUrl, this.interval);
-	      }
-
-	      // Determine if we need to change the base url, for a pushState link
-	      // opened by a non-pushState browser.
-	      this.fragment = fragment;
-	      var loc = this.location;
-
-	      // Transition from hashChange to pushState or vice versa if both are
-	      // requested.
-	      if (this._wantsHashChange && this._wantsPushState) {
-
-	        // If we've started off with a route from a `pushState`-enabled
-	        // browser, but we're currently in a browser that doesn't support it...
-	        if (!this._hasPushState && !this.atRoot()) {
-	          this.fragment = this.getFragment(null, true);
-	          this.location.replace(this.root + '#' + this.fragment);
-	          // Return immediately as browser will do redirect to new url
-	          return true;
-
-	        // Or if we've started out with a hash-based route, but we're currently
-	        // in a browser where it could be `pushState`-based instead...
-	        } else if (this._hasPushState && this.atRoot() && loc.hash) {
-	          this.fragment = this.getHash().replace(routeStripper, '');
-	          this.history.replaceState({}, document.title, this.root + this.fragment);
-	        }
-
-	      }
-
-	      if (!this.options.silent) return this.loadUrl();
-	    },
-
-	    // Disable Backbone.history, perhaps temporarily. Not useful in a real app,
-	    // but possibly useful for unit testing Routers.
-	    stop: function() {
-	      Backbone.$(window).off('popstate', this.checkUrl).off('hashchange', this.checkUrl);
-	      if (this._checkUrlInterval) clearInterval(this._checkUrlInterval);
-	      History.started = false;
-	    },
-
-	    // Add a route to be tested when the fragment changes. Routes added later
-	    // may override previous routes.
-	    route: function(route, callback) {
-	      this.handlers.unshift({route: route, callback: callback});
-	    },
-
-	    // Checks the current URL to see if it has changed, and if it has,
-	    // calls `loadUrl`, normalizing across the hidden iframe.
-	    checkUrl: function(e) {
-	      var current = this.getFragment();
-	      if (current === this.fragment && this.iframe) {
-	        current = this.getFragment(this.getHash(this.iframe));
-	      }
-	      if (current === this.fragment) return false;
-	      if (this.iframe) this.navigate(current);
-	      this.loadUrl();
-	    },
-
-	    // Attempt to load the current URL fragment. If a route succeeds with a
-	    // match, returns `true`. If no defined routes matches the fragment,
-	    // returns `false`.
-	    loadUrl: function(fragment) {
-	      fragment = this.fragment = this.getFragment(fragment);
-	      return _.any(this.handlers, function(handler) {
-	        if (handler.route.test(fragment)) {
-	          handler.callback(fragment);
-	          return true;
-	        }
-	      });
-	    },
-
-	    // Save a fragment into the hash history, or replace the URL state if the
-	    // 'replace' option is passed. You are responsible for properly URL-encoding
-	    // the fragment in advance.
-	    //
-	    // The options object can contain `trigger: true` if you wish to have the
-	    // route callback be fired (not usually desirable), or `replace: true`, if
-	    // you wish to modify the current URL without adding an entry to the history.
-	    navigate: function(fragment, options) {
-	      if (!History.started) return false;
-	      if (!options || options === true) options = {trigger: !!options};
-
-	      var url = this.root + (fragment = this.getFragment(fragment || ''));
-
-	      // Strip the hash for matching.
-	      fragment = fragment.replace(pathStripper, '');
-
-	      if (this.fragment === fragment) return;
-	      this.fragment = fragment;
-
-	      // Don't include a trailing slash on the root.
-	      if (fragment === '' && url !== '/') url = url.slice(0, -1);
-
-	      // If pushState is available, we use it to set the fragment as a real URL.
-	      if (this._hasPushState) {
-	        this.history[options.replace ? 'replaceState' : 'pushState']({}, document.title, url);
-
-	      // If hash changes haven't been explicitly disabled, update the hash
-	      // fragment to store history.
-	      } else if (this._wantsHashChange) {
-	        this._updateHash(this.location, fragment, options.replace);
-	        if (this.iframe && (fragment !== this.getFragment(this.getHash(this.iframe)))) {
-	          // Opening and closing the iframe tricks IE7 and earlier to push a
-	          // history entry on hash-tag change.  When replace is true, we don't
-	          // want this.
-	          if(!options.replace) this.iframe.document.open().close();
-	          this._updateHash(this.iframe.location, fragment, options.replace);
-	        }
-
-	      // If you've told us that you explicitly don't want fallback hashchange-
-	      // based history, then `navigate` becomes a page refresh.
-	      } else {
-	        return this.location.assign(url);
-	      }
-	      if (options.trigger) return this.loadUrl(fragment);
-	    },
-
-	    // Update the hash location, either replacing the current entry, or adding
-	    // a new one to the browser history.
-	    _updateHash: function(location, fragment, replace) {
-	      if (replace) {
-	        var href = location.href.replace(/(javascript:|#).*$/, '');
-	        location.replace(href + '#' + fragment);
-	      } else {
-	        // Some browsers require that `hash` contains a leading #.
-	        location.hash = '#' + fragment;
-	      }
-	    }
-
-	  });
-
-	  // Create the default Backbone.history.
-	  Backbone.history = new History;
-
-	  // Helpers
-	  // -------
-
-	  // Helper function to correctly set up the prototype chain, for subclasses.
-	  // Similar to `goog.inherits`, but uses a hash of prototype properties and
-	  // class properties to be extended.
-	  var extend = function(protoProps, staticProps) {
-	    var parent = this;
-	    var child;
-
-	    // The constructor function for the new subclass is either defined by you
-	    // (the "constructor" property in your `extend` definition), or defaulted
-	    // by us to simply call the parent's constructor.
-	    if (protoProps && _.has(protoProps, 'constructor')) {
-	      child = protoProps.constructor;
-	    } else {
-	      child = function(){ return parent.apply(this, arguments); };
-	    }
-
-	    // Add static properties to the constructor function, if supplied.
-	    _.extend(child, parent, staticProps);
-
-	    // Set the prototype chain to inherit from `parent`, without calling
-	    // `parent`'s constructor function.
-	    var Surrogate = function(){ this.constructor = child; };
-	    Surrogate.prototype = parent.prototype;
-	    child.prototype = new Surrogate;
-
-	    // Add prototype properties (instance properties) to the subclass,
-	    // if supplied.
-	    if (protoProps) _.extend(child.prototype, protoProps);
-
-	    // Set a convenience property in case the parent's prototype is needed
-	    // later.
-	    child.__super__ = parent.prototype;
-
-	    return child;
-	  };
-
-	  // Set up inheritance for the model, collection, router, view and history.
-	  Model.extend = Collection.extend = Router.extend = View.extend = History.extend = extend;
-
-	  // Throw an error when a URL is needed, and none is supplied.
-	  var urlError = function() {
-	    throw new Error('A "url" property or function must be specified');
-	  };
-
-	  // Wrap an optional error callback with a fallback error event.
-	  var wrapError = function(model, options) {
-	    var error = options.error;
-	    options.error = function(resp) {
-	      if (error) error(model, resp, options);
-	      model.trigger('error', model, resp, options);
-	    };
-	  };
-
-	  return Backbone;
-
-	}));
-
+	/** @jsx React.DOM */module.exports = __webpack_require__(23);
 
 /***/ },
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *///     Underscore.js 1.7.0
-	//     http://underscorejs.org
-	//     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	//     Underscore may be freely distributed under the MIT license.
-
-	(function() {
-
-	  // Baseline setup
-	  // --------------
-
-	  // Establish the root object, `window` in the browser, or `exports` on the server.
-	  var root = this;
-
-	  // Save the previous value of the `_` variable.
-	  var previousUnderscore = root._;
-
-	  // Save bytes in the minified (but not gzipped) version:
-	  var ArrayProto = Array.prototype, ObjProto = Object.prototype, FuncProto = Function.prototype;
-
-	  // Create quick reference variables for speed access to core prototypes.
-	  var
-	    push             = ArrayProto.push,
-	    slice            = ArrayProto.slice,
-	    concat           = ArrayProto.concat,
-	    toString         = ObjProto.toString,
-	    hasOwnProperty   = ObjProto.hasOwnProperty;
-
-	  // All **ECMAScript 5** native function implementations that we hope to use
-	  // are declared here.
-	  var
-	    nativeIsArray      = Array.isArray,
-	    nativeKeys         = Object.keys,
-	    nativeBind         = FuncProto.bind;
-
-	  // Create a safe reference to the Underscore object for use below.
-	  var _ = function(obj) {
-	    if (obj instanceof _) return obj;
-	    if (!(this instanceof _)) return new _(obj);
-	    this._wrapped = obj;
-	  };
-
-	  // Export the Underscore object for **Node.js**, with
-	  // backwards-compatibility for the old `require()` API. If we're in
-	  // the browser, add `_` as a global object.
-	  if (true) {
-	    if (typeof module !== 'undefined' && module.exports) {
-	      exports = module.exports = _;
-	    }
-	    exports._ = _;
-	  } else {
-	    root._ = _;
-	  }
-
-	  // Current version.
-	  _.VERSION = '1.7.0';
-
-	  // Internal function that returns an efficient (for current engines) version
-	  // of the passed-in callback, to be repeatedly applied in other Underscore
-	  // functions.
-	  var createCallback = function(func, context, argCount) {
-	    if (context === void 0) return func;
-	    switch (argCount == null ? 3 : argCount) {
-	      case 1: return function(value) {
-	        return func.call(context, value);
-	      };
-	      case 2: return function(value, other) {
-	        return func.call(context, value, other);
-	      };
-	      case 3: return function(value, index, collection) {
-	        return func.call(context, value, index, collection);
-	      };
-	      case 4: return function(accumulator, value, index, collection) {
-	        return func.call(context, accumulator, value, index, collection);
-	      };
-	    }
-	    return function() {
-	      return func.apply(context, arguments);
-	    };
-	  };
-
-	  // A mostly-internal function to generate callbacks that can be applied
-	  // to each element in a collection, returning the desired result — either
-	  // identity, an arbitrary callback, a property matcher, or a property accessor.
-	  _.iteratee = function(value, context, argCount) {
-	    if (value == null) return _.identity;
-	    if (_.isFunction(value)) return createCallback(value, context, argCount);
-	    if (_.isObject(value)) return _.matches(value);
-	    return _.property(value);
-	  };
-
-	  // Collection Functions
-	  // --------------------
-
-	  // The cornerstone, an `each` implementation, aka `forEach`.
-	  // Handles raw objects in addition to array-likes. Treats all
-	  // sparse array-likes as if they were dense.
-	  _.each = _.forEach = function(obj, iteratee, context) {
-	    if (obj == null) return obj;
-	    iteratee = createCallback(iteratee, context);
-	    var i, length = obj.length;
-	    if (length === +length) {
-	      for (i = 0; i < length; i++) {
-	        iteratee(obj[i], i, obj);
-	      }
-	    } else {
-	      var keys = _.keys(obj);
-	      for (i = 0, length = keys.length; i < length; i++) {
-	        iteratee(obj[keys[i]], keys[i], obj);
-	      }
-	    }
-	    return obj;
-	  };
-
-	  // Return the results of applying the iteratee to each element.
-	  _.map = _.collect = function(obj, iteratee, context) {
-	    if (obj == null) return [];
-	    iteratee = _.iteratee(iteratee, context);
-	    var keys = obj.length !== +obj.length && _.keys(obj),
-	        length = (keys || obj).length,
-	        results = Array(length),
-	        currentKey;
-	    for (var index = 0; index < length; index++) {
-	      currentKey = keys ? keys[index] : index;
-	      results[index] = iteratee(obj[currentKey], currentKey, obj);
-	    }
-	    return results;
-	  };
-
-	  var reduceError = 'Reduce of empty array with no initial value';
-
-	  // **Reduce** builds up a single result from a list of values, aka `inject`,
-	  // or `foldl`.
-	  _.reduce = _.foldl = _.inject = function(obj, iteratee, memo, context) {
-	    if (obj == null) obj = [];
-	    iteratee = createCallback(iteratee, context, 4);
-	    var keys = obj.length !== +obj.length && _.keys(obj),
-	        length = (keys || obj).length,
-	        index = 0, currentKey;
-	    if (arguments.length < 3) {
-	      if (!length) throw new TypeError(reduceError);
-	      memo = obj[keys ? keys[index++] : index++];
-	    }
-	    for (; index < length; index++) {
-	      currentKey = keys ? keys[index] : index;
-	      memo = iteratee(memo, obj[currentKey], currentKey, obj);
-	    }
-	    return memo;
-	  };
-
-	  // The right-associative version of reduce, also known as `foldr`.
-	  _.reduceRight = _.foldr = function(obj, iteratee, memo, context) {
-	    if (obj == null) obj = [];
-	    iteratee = createCallback(iteratee, context, 4);
-	    var keys = obj.length !== + obj.length && _.keys(obj),
-	        index = (keys || obj).length,
-	        currentKey;
-	    if (arguments.length < 3) {
-	      if (!index) throw new TypeError(reduceError);
-	      memo = obj[keys ? keys[--index] : --index];
-	    }
-	    while (index--) {
-	      currentKey = keys ? keys[index] : index;
-	      memo = iteratee(memo, obj[currentKey], currentKey, obj);
-	    }
-	    return memo;
-	  };
-
-	  // Return the first value which passes a truth test. Aliased as `detect`.
-	  _.find = _.detect = function(obj, predicate, context) {
-	    var result;
-	    predicate = _.iteratee(predicate, context);
-	    _.some(obj, function(value, index, list) {
-	      if (predicate(value, index, list)) {
-	        result = value;
-	        return true;
-	      }
-	    });
-	    return result;
-	  };
-
-	  // Return all the elements that pass a truth test.
-	  // Aliased as `select`.
-	  _.filter = _.select = function(obj, predicate, context) {
-	    var results = [];
-	    if (obj == null) return results;
-	    predicate = _.iteratee(predicate, context);
-	    _.each(obj, function(value, index, list) {
-	      if (predicate(value, index, list)) results.push(value);
-	    });
-	    return results;
-	  };
-
-	  // Return all the elements for which a truth test fails.
-	  _.reject = function(obj, predicate, context) {
-	    return _.filter(obj, _.negate(_.iteratee(predicate)), context);
-	  };
-
-	  // Determine whether all of the elements match a truth test.
-	  // Aliased as `all`.
-	  _.every = _.all = function(obj, predicate, context) {
-	    if (obj == null) return true;
-	    predicate = _.iteratee(predicate, context);
-	    var keys = obj.length !== +obj.length && _.keys(obj),
-	        length = (keys || obj).length,
-	        index, currentKey;
-	    for (index = 0; index < length; index++) {
-	      currentKey = keys ? keys[index] : index;
-	      if (!predicate(obj[currentKey], currentKey, obj)) return false;
-	    }
-	    return true;
-	  };
-
-	  // Determine if at least one element in the object matches a truth test.
-	  // Aliased as `any`.
-	  _.some = _.any = function(obj, predicate, context) {
-	    if (obj == null) return false;
-	    predicate = _.iteratee(predicate, context);
-	    var keys = obj.length !== +obj.length && _.keys(obj),
-	        length = (keys || obj).length,
-	        index, currentKey;
-	    for (index = 0; index < length; index++) {
-	      currentKey = keys ? keys[index] : index;
-	      if (predicate(obj[currentKey], currentKey, obj)) return true;
-	    }
-	    return false;
-	  };
-
-	  // Determine if the array or object contains a given value (using `===`).
-	  // Aliased as `include`.
-	  _.contains = _.include = function(obj, target) {
-	    if (obj == null) return false;
-	    if (obj.length !== +obj.length) obj = _.values(obj);
-	    return _.indexOf(obj, target) >= 0;
-	  };
-
-	  // Invoke a method (with arguments) on every item in a collection.
-	  _.invoke = function(obj, method) {
-	    var args = slice.call(arguments, 2);
-	    var isFunc = _.isFunction(method);
-	    return _.map(obj, function(value) {
-	      return (isFunc ? method : value[method]).apply(value, args);
-	    });
-	  };
-
-	  // Convenience version of a common use case of `map`: fetching a property.
-	  _.pluck = function(obj, key) {
-	    return _.map(obj, _.property(key));
-	  };
-
-	  // Convenience version of a common use case of `filter`: selecting only objects
-	  // containing specific `key:value` pairs.
-	  _.where = function(obj, attrs) {
-	    return _.filter(obj, _.matches(attrs));
-	  };
-
-	  // Convenience version of a common use case of `find`: getting the first object
-	  // containing specific `key:value` pairs.
-	  _.findWhere = function(obj, attrs) {
-	    return _.find(obj, _.matches(attrs));
-	  };
-
-	  // Return the maximum element (or element-based computation).
-	  _.max = function(obj, iteratee, context) {
-	    var result = -Infinity, lastComputed = -Infinity,
-	        value, computed;
-	    if (iteratee == null && obj != null) {
-	      obj = obj.length === +obj.length ? obj : _.values(obj);
-	      for (var i = 0, length = obj.length; i < length; i++) {
-	        value = obj[i];
-	        if (value > result) {
-	          result = value;
-	        }
-	      }
-	    } else {
-	      iteratee = _.iteratee(iteratee, context);
-	      _.each(obj, function(value, index, list) {
-	        computed = iteratee(value, index, list);
-	        if (computed > lastComputed || computed === -Infinity && result === -Infinity) {
-	          result = value;
-	          lastComputed = computed;
-	        }
-	      });
-	    }
-	    return result;
-	  };
-
-	  // Return the minimum element (or element-based computation).
-	  _.min = function(obj, iteratee, context) {
-	    var result = Infinity, lastComputed = Infinity,
-	        value, computed;
-	    if (iteratee == null && obj != null) {
-	      obj = obj.length === +obj.length ? obj : _.values(obj);
-	      for (var i = 0, length = obj.length; i < length; i++) {
-	        value = obj[i];
-	        if (value < result) {
-	          result = value;
-	        }
-	      }
-	    } else {
-	      iteratee = _.iteratee(iteratee, context);
-	      _.each(obj, function(value, index, list) {
-	        computed = iteratee(value, index, list);
-	        if (computed < lastComputed || computed === Infinity && result === Infinity) {
-	          result = value;
-	          lastComputed = computed;
-	        }
-	      });
-	    }
-	    return result;
-	  };
-
-	  // Shuffle a collection, using the modern version of the
-	  // [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
-	  _.shuffle = function(obj) {
-	    var set = obj && obj.length === +obj.length ? obj : _.values(obj);
-	    var length = set.length;
-	    var shuffled = Array(length);
-	    for (var index = 0, rand; index < length; index++) {
-	      rand = _.random(0, index);
-	      if (rand !== index) shuffled[index] = shuffled[rand];
-	      shuffled[rand] = set[index];
-	    }
-	    return shuffled;
-	  };
-
-	  // Sample **n** random values from a collection.
-	  // If **n** is not specified, returns a single random element.
-	  // The internal `guard` argument allows it to work with `map`.
-	  _.sample = function(obj, n, guard) {
-	    if (n == null || guard) {
-	      if (obj.length !== +obj.length) obj = _.values(obj);
-	      return obj[_.random(obj.length - 1)];
-	    }
-	    return _.shuffle(obj).slice(0, Math.max(0, n));
-	  };
-
-	  // Sort the object's values by a criterion produced by an iteratee.
-	  _.sortBy = function(obj, iteratee, context) {
-	    iteratee = _.iteratee(iteratee, context);
-	    return _.pluck(_.map(obj, function(value, index, list) {
-	      return {
-	        value: value,
-	        index: index,
-	        criteria: iteratee(value, index, list)
-	      };
-	    }).sort(function(left, right) {
-	      var a = left.criteria;
-	      var b = right.criteria;
-	      if (a !== b) {
-	        if (a > b || a === void 0) return 1;
-	        if (a < b || b === void 0) return -1;
-	      }
-	      return left.index - right.index;
-	    }), 'value');
-	  };
-
-	  // An internal function used for aggregate "group by" operations.
-	  var group = function(behavior) {
-	    return function(obj, iteratee, context) {
-	      var result = {};
-	      iteratee = _.iteratee(iteratee, context);
-	      _.each(obj, function(value, index) {
-	        var key = iteratee(value, index, obj);
-	        behavior(result, value, key);
-	      });
-	      return result;
-	    };
-	  };
-
-	  // Groups the object's values by a criterion. Pass either a string attribute
-	  // to group by, or a function that returns the criterion.
-	  _.groupBy = group(function(result, value, key) {
-	    if (_.has(result, key)) result[key].push(value); else result[key] = [value];
-	  });
-
-	  // Indexes the object's values by a criterion, similar to `groupBy`, but for
-	  // when you know that your index values will be unique.
-	  _.indexBy = group(function(result, value, key) {
-	    result[key] = value;
-	  });
-
-	  // Counts instances of an object that group by a certain criterion. Pass
-	  // either a string attribute to count by, or a function that returns the
-	  // criterion.
-	  _.countBy = group(function(result, value, key) {
-	    if (_.has(result, key)) result[key]++; else result[key] = 1;
-	  });
-
-	  // Use a comparator function to figure out the smallest index at which
-	  // an object should be inserted so as to maintain order. Uses binary search.
-	  _.sortedIndex = function(array, obj, iteratee, context) {
-	    iteratee = _.iteratee(iteratee, context, 1);
-	    var value = iteratee(obj);
-	    var low = 0, high = array.length;
-	    while (low < high) {
-	      var mid = low + high >>> 1;
-	      if (iteratee(array[mid]) < value) low = mid + 1; else high = mid;
-	    }
-	    return low;
-	  };
-
-	  // Safely create a real, live array from anything iterable.
-	  _.toArray = function(obj) {
-	    if (!obj) return [];
-	    if (_.isArray(obj)) return slice.call(obj);
-	    if (obj.length === +obj.length) return _.map(obj, _.identity);
-	    return _.values(obj);
-	  };
-
-	  // Return the number of elements in an object.
-	  _.size = function(obj) {
-	    if (obj == null) return 0;
-	    return obj.length === +obj.length ? obj.length : _.keys(obj).length;
-	  };
-
-	  // Split a collection into two arrays: one whose elements all satisfy the given
-	  // predicate, and one whose elements all do not satisfy the predicate.
-	  _.partition = function(obj, predicate, context) {
-	    predicate = _.iteratee(predicate, context);
-	    var pass = [], fail = [];
-	    _.each(obj, function(value, key, obj) {
-	      (predicate(value, key, obj) ? pass : fail).push(value);
-	    });
-	    return [pass, fail];
-	  };
-
-	  // Array Functions
-	  // ---------------
-
-	  // Get the first element of an array. Passing **n** will return the first N
-	  // values in the array. Aliased as `head` and `take`. The **guard** check
-	  // allows it to work with `_.map`.
-	  _.first = _.head = _.take = function(array, n, guard) {
-	    if (array == null) return void 0;
-	    if (n == null || guard) return array[0];
-	    if (n < 0) return [];
-	    return slice.call(array, 0, n);
-	  };
-
-	  // Returns everything but the last entry of the array. Especially useful on
-	  // the arguments object. Passing **n** will return all the values in
-	  // the array, excluding the last N. The **guard** check allows it to work with
-	  // `_.map`.
-	  _.initial = function(array, n, guard) {
-	    return slice.call(array, 0, Math.max(0, array.length - (n == null || guard ? 1 : n)));
-	  };
-
-	  // Get the last element of an array. Passing **n** will return the last N
-	  // values in the array. The **guard** check allows it to work with `_.map`.
-	  _.last = function(array, n, guard) {
-	    if (array == null) return void 0;
-	    if (n == null || guard) return array[array.length - 1];
-	    return slice.call(array, Math.max(array.length - n, 0));
-	  };
-
-	  // Returns everything but the first entry of the array. Aliased as `tail` and `drop`.
-	  // Especially useful on the arguments object. Passing an **n** will return
-	  // the rest N values in the array. The **guard**
-	  // check allows it to work with `_.map`.
-	  _.rest = _.tail = _.drop = function(array, n, guard) {
-	    return slice.call(array, n == null || guard ? 1 : n);
-	  };
-
-	  // Trim out all falsy values from an array.
-	  _.compact = function(array) {
-	    return _.filter(array, _.identity);
-	  };
-
-	  // Internal implementation of a recursive `flatten` function.
-	  var flatten = function(input, shallow, strict, output) {
-	    if (shallow && _.every(input, _.isArray)) {
-	      return concat.apply(output, input);
-	    }
-	    for (var i = 0, length = input.length; i < length; i++) {
-	      var value = input[i];
-	      if (!_.isArray(value) && !_.isArguments(value)) {
-	        if (!strict) output.push(value);
-	      } else if (shallow) {
-	        push.apply(output, value);
-	      } else {
-	        flatten(value, shallow, strict, output);
-	      }
-	    }
-	    return output;
-	  };
-
-	  // Flatten out an array, either recursively (by default), or just one level.
-	  _.flatten = function(array, shallow) {
-	    return flatten(array, shallow, false, []);
-	  };
-
-	  // Return a version of the array that does not contain the specified value(s).
-	  _.without = function(array) {
-	    return _.difference(array, slice.call(arguments, 1));
-	  };
-
-	  // Produce a duplicate-free version of the array. If the array has already
-	  // been sorted, you have the option of using a faster algorithm.
-	  // Aliased as `unique`.
-	  _.uniq = _.unique = function(array, isSorted, iteratee, context) {
-	    if (array == null) return [];
-	    if (!_.isBoolean(isSorted)) {
-	      context = iteratee;
-	      iteratee = isSorted;
-	      isSorted = false;
-	    }
-	    if (iteratee != null) iteratee = _.iteratee(iteratee, context);
-	    var result = [];
-	    var seen = [];
-	    for (var i = 0, length = array.length; i < length; i++) {
-	      var value = array[i];
-	      if (isSorted) {
-	        if (!i || seen !== value) result.push(value);
-	        seen = value;
-	      } else if (iteratee) {
-	        var computed = iteratee(value, i, array);
-	        if (_.indexOf(seen, computed) < 0) {
-	          seen.push(computed);
-	          result.push(value);
-	        }
-	      } else if (_.indexOf(result, value) < 0) {
-	        result.push(value);
-	      }
-	    }
-	    return result;
-	  };
-
-	  // Produce an array that contains the union: each distinct element from all of
-	  // the passed-in arrays.
-	  _.union = function() {
-	    return _.uniq(flatten(arguments, true, true, []));
-	  };
-
-	  // Produce an array that contains every item shared between all the
-	  // passed-in arrays.
-	  _.intersection = function(array) {
-	    if (array == null) return [];
-	    var result = [];
-	    var argsLength = arguments.length;
-	    for (var i = 0, length = array.length; i < length; i++) {
-	      var item = array[i];
-	      if (_.contains(result, item)) continue;
-	      for (var j = 1; j < argsLength; j++) {
-	        if (!_.contains(arguments[j], item)) break;
-	      }
-	      if (j === argsLength) result.push(item);
-	    }
-	    return result;
-	  };
-
-	  // Take the difference between one array and a number of other arrays.
-	  // Only the elements present in just the first array will remain.
-	  _.difference = function(array) {
-	    var rest = flatten(slice.call(arguments, 1), true, true, []);
-	    return _.filter(array, function(value){
-	      return !_.contains(rest, value);
-	    });
-	  };
-
-	  // Zip together multiple lists into a single array -- elements that share
-	  // an index go together.
-	  _.zip = function(array) {
-	    if (array == null) return [];
-	    var length = _.max(arguments, 'length').length;
-	    var results = Array(length);
-	    for (var i = 0; i < length; i++) {
-	      results[i] = _.pluck(arguments, i);
-	    }
-	    return results;
-	  };
-
-	  // Converts lists into objects. Pass either a single array of `[key, value]`
-	  // pairs, or two parallel arrays of the same length -- one of keys, and one of
-	  // the corresponding values.
-	  _.object = function(list, values) {
-	    if (list == null) return {};
-	    var result = {};
-	    for (var i = 0, length = list.length; i < length; i++) {
-	      if (values) {
-	        result[list[i]] = values[i];
-	      } else {
-	        result[list[i][0]] = list[i][1];
-	      }
-	    }
-	    return result;
-	  };
-
-	  // Return the position of the first occurrence of an item in an array,
-	  // or -1 if the item is not included in the array.
-	  // If the array is large and already in sort order, pass `true`
-	  // for **isSorted** to use binary search.
-	  _.indexOf = function(array, item, isSorted) {
-	    if (array == null) return -1;
-	    var i = 0, length = array.length;
-	    if (isSorted) {
-	      if (typeof isSorted == 'number') {
-	        i = isSorted < 0 ? Math.max(0, length + isSorted) : isSorted;
-	      } else {
-	        i = _.sortedIndex(array, item);
-	        return array[i] === item ? i : -1;
-	      }
-	    }
-	    for (; i < length; i++) if (array[i] === item) return i;
-	    return -1;
-	  };
-
-	  _.lastIndexOf = function(array, item, from) {
-	    if (array == null) return -1;
-	    var idx = array.length;
-	    if (typeof from == 'number') {
-	      idx = from < 0 ? idx + from + 1 : Math.min(idx, from + 1);
-	    }
-	    while (--idx >= 0) if (array[idx] === item) return idx;
-	    return -1;
-	  };
-
-	  // Generate an integer Array containing an arithmetic progression. A port of
-	  // the native Python `range()` function. See
-	  // [the Python documentation](http://docs.python.org/library/functions.html#range).
-	  _.range = function(start, stop, step) {
-	    if (arguments.length <= 1) {
-	      stop = start || 0;
-	      start = 0;
-	    }
-	    step = step || 1;
-
-	    var length = Math.max(Math.ceil((stop - start) / step), 0);
-	    var range = Array(length);
-
-	    for (var idx = 0; idx < length; idx++, start += step) {
-	      range[idx] = start;
-	    }
-
-	    return range;
-	  };
-
-	  // Function (ahem) Functions
-	  // ------------------
-
-	  // Reusable constructor function for prototype setting.
-	  var Ctor = function(){};
-
-	  // Create a function bound to a given object (assigning `this`, and arguments,
-	  // optionally). Delegates to **ECMAScript 5**'s native `Function.bind` if
-	  // available.
-	  _.bind = function(func, context) {
-	    var args, bound;
-	    if (nativeBind && func.bind === nativeBind) return nativeBind.apply(func, slice.call(arguments, 1));
-	    if (!_.isFunction(func)) throw new TypeError('Bind must be called on a function');
-	    args = slice.call(arguments, 2);
-	    bound = function() {
-	      if (!(this instanceof bound)) return func.apply(context, args.concat(slice.call(arguments)));
-	      Ctor.prototype = func.prototype;
-	      var self = new Ctor;
-	      Ctor.prototype = null;
-	      var result = func.apply(self, args.concat(slice.call(arguments)));
-	      if (_.isObject(result)) return result;
-	      return self;
-	    };
-	    return bound;
-	  };
-
-	  // Partially apply a function by creating a version that has had some of its
-	  // arguments pre-filled, without changing its dynamic `this` context. _ acts
-	  // as a placeholder, allowing any combination of arguments to be pre-filled.
-	  _.partial = function(func) {
-	    var boundArgs = slice.call(arguments, 1);
-	    return function() {
-	      var position = 0;
-	      var args = boundArgs.slice();
-	      for (var i = 0, length = args.length; i < length; i++) {
-	        if (args[i] === _) args[i] = arguments[position++];
-	      }
-	      while (position < arguments.length) args.push(arguments[position++]);
-	      return func.apply(this, args);
-	    };
-	  };
-
-	  // Bind a number of an object's methods to that object. Remaining arguments
-	  // are the method names to be bound. Useful for ensuring that all callbacks
-	  // defined on an object belong to it.
-	  _.bindAll = function(obj) {
-	    var i, length = arguments.length, key;
-	    if (length <= 1) throw new Error('bindAll must be passed function names');
-	    for (i = 1; i < length; i++) {
-	      key = arguments[i];
-	      obj[key] = _.bind(obj[key], obj);
-	    }
-	    return obj;
-	  };
-
-	  // Memoize an expensive function by storing its results.
-	  _.memoize = function(func, hasher) {
-	    var memoize = function(key) {
-	      var cache = memoize.cache;
-	      var address = hasher ? hasher.apply(this, arguments) : key;
-	      if (!_.has(cache, address)) cache[address] = func.apply(this, arguments);
-	      return cache[address];
-	    };
-	    memoize.cache = {};
-	    return memoize;
-	  };
-
-	  // Delays a function for the given number of milliseconds, and then calls
-	  // it with the arguments supplied.
-	  _.delay = function(func, wait) {
-	    var args = slice.call(arguments, 2);
-	    return setTimeout(function(){
-	      return func.apply(null, args);
-	    }, wait);
-	  };
-
-	  // Defers a function, scheduling it to run after the current call stack has
-	  // cleared.
-	  _.defer = function(func) {
-	    return _.delay.apply(_, [func, 1].concat(slice.call(arguments, 1)));
-	  };
-
-	  // Returns a function, that, when invoked, will only be triggered at most once
-	  // during a given window of time. Normally, the throttled function will run
-	  // as much as it can, without ever going more than once per `wait` duration;
-	  // but if you'd like to disable the execution on the leading edge, pass
-	  // `{leading: false}`. To disable execution on the trailing edge, ditto.
-	  _.throttle = function(func, wait, options) {
-	    var context, args, result;
-	    var timeout = null;
-	    var previous = 0;
-	    if (!options) options = {};
-	    var later = function() {
-	      previous = options.leading === false ? 0 : _.now();
-	      timeout = null;
-	      result = func.apply(context, args);
-	      if (!timeout) context = args = null;
-	    };
-	    return function() {
-	      var now = _.now();
-	      if (!previous && options.leading === false) previous = now;
-	      var remaining = wait - (now - previous);
-	      context = this;
-	      args = arguments;
-	      if (remaining <= 0 || remaining > wait) {
-	        clearTimeout(timeout);
-	        timeout = null;
-	        previous = now;
-	        result = func.apply(context, args);
-	        if (!timeout) context = args = null;
-	      } else if (!timeout && options.trailing !== false) {
-	        timeout = setTimeout(later, remaining);
-	      }
-	      return result;
-	    };
-	  };
-
-	  // Returns a function, that, as long as it continues to be invoked, will not
-	  // be triggered. The function will be called after it stops being called for
-	  // N milliseconds. If `immediate` is passed, trigger the function on the
-	  // leading edge, instead of the trailing.
-	  _.debounce = function(func, wait, immediate) {
-	    var timeout, args, context, timestamp, result;
-
-	    var later = function() {
-	      var last = _.now() - timestamp;
-
-	      if (last < wait && last > 0) {
-	        timeout = setTimeout(later, wait - last);
-	      } else {
-	        timeout = null;
-	        if (!immediate) {
-	          result = func.apply(context, args);
-	          if (!timeout) context = args = null;
-	        }
-	      }
-	    };
-
-	    return function() {
-	      context = this;
-	      args = arguments;
-	      timestamp = _.now();
-	      var callNow = immediate && !timeout;
-	      if (!timeout) timeout = setTimeout(later, wait);
-	      if (callNow) {
-	        result = func.apply(context, args);
-	        context = args = null;
-	      }
-
-	      return result;
-	    };
-	  };
-
-	  // Returns the first function passed as an argument to the second,
-	  // allowing you to adjust arguments, run code before and after, and
-	  // conditionally execute the original function.
-	  _.wrap = function(func, wrapper) {
-	    return _.partial(wrapper, func);
-	  };
-
-	  // Returns a negated version of the passed-in predicate.
-	  _.negate = function(predicate) {
-	    return function() {
-	      return !predicate.apply(this, arguments);
-	    };
-	  };
-
-	  // Returns a function that is the composition of a list of functions, each
-	  // consuming the return value of the function that follows.
-	  _.compose = function() {
-	    var args = arguments;
-	    var start = args.length - 1;
-	    return function() {
-	      var i = start;
-	      var result = args[start].apply(this, arguments);
-	      while (i--) result = args[i].call(this, result);
-	      return result;
-	    };
-	  };
-
-	  // Returns a function that will only be executed after being called N times.
-	  _.after = function(times, func) {
-	    return function() {
-	      if (--times < 1) {
-	        return func.apply(this, arguments);
-	      }
-	    };
-	  };
-
-	  // Returns a function that will only be executed before being called N times.
-	  _.before = function(times, func) {
-	    var memo;
-	    return function() {
-	      if (--times > 0) {
-	        memo = func.apply(this, arguments);
-	      } else {
-	        func = null;
-	      }
-	      return memo;
-	    };
-	  };
-
-	  // Returns a function that will be executed at most one time, no matter how
-	  // often you call it. Useful for lazy initialization.
-	  _.once = _.partial(_.before, 2);
-
-	  // Object Functions
-	  // ----------------
-
-	  // Retrieve the names of an object's properties.
-	  // Delegates to **ECMAScript 5**'s native `Object.keys`
-	  _.keys = function(obj) {
-	    if (!_.isObject(obj)) return [];
-	    if (nativeKeys) return nativeKeys(obj);
-	    var keys = [];
-	    for (var key in obj) if (_.has(obj, key)) keys.push(key);
-	    return keys;
-	  };
-
-	  // Retrieve the values of an object's properties.
-	  _.values = function(obj) {
-	    var keys = _.keys(obj);
-	    var length = keys.length;
-	    var values = Array(length);
-	    for (var i = 0; i < length; i++) {
-	      values[i] = obj[keys[i]];
-	    }
-	    return values;
-	  };
-
-	  // Convert an object into a list of `[key, value]` pairs.
-	  _.pairs = function(obj) {
-	    var keys = _.keys(obj);
-	    var length = keys.length;
-	    var pairs = Array(length);
-	    for (var i = 0; i < length; i++) {
-	      pairs[i] = [keys[i], obj[keys[i]]];
-	    }
-	    return pairs;
-	  };
-
-	  // Invert the keys and values of an object. The values must be serializable.
-	  _.invert = function(obj) {
-	    var result = {};
-	    var keys = _.keys(obj);
-	    for (var i = 0, length = keys.length; i < length; i++) {
-	      result[obj[keys[i]]] = keys[i];
-	    }
-	    return result;
-	  };
-
-	  // Return a sorted list of the function names available on the object.
-	  // Aliased as `methods`
-	  _.functions = _.methods = function(obj) {
-	    var names = [];
-	    for (var key in obj) {
-	      if (_.isFunction(obj[key])) names.push(key);
-	    }
-	    return names.sort();
-	  };
-
-	  // Extend a given object with all the properties in passed-in object(s).
-	  _.extend = function(obj) {
-	    if (!_.isObject(obj)) return obj;
-	    var source, prop;
-	    for (var i = 1, length = arguments.length; i < length; i++) {
-	      source = arguments[i];
-	      for (prop in source) {
-	        if (hasOwnProperty.call(source, prop)) {
-	            obj[prop] = source[prop];
-	        }
-	      }
-	    }
-	    return obj;
-	  };
-
-	  // Return a copy of the object only containing the whitelisted properties.
-	  _.pick = function(obj, iteratee, context) {
-	    var result = {}, key;
-	    if (obj == null) return result;
-	    if (_.isFunction(iteratee)) {
-	      iteratee = createCallback(iteratee, context);
-	      for (key in obj) {
-	        var value = obj[key];
-	        if (iteratee(value, key, obj)) result[key] = value;
-	      }
-	    } else {
-	      var keys = concat.apply([], slice.call(arguments, 1));
-	      obj = new Object(obj);
-	      for (var i = 0, length = keys.length; i < length; i++) {
-	        key = keys[i];
-	        if (key in obj) result[key] = obj[key];
-	      }
-	    }
-	    return result;
-	  };
-
-	   // Return a copy of the object without the blacklisted properties.
-	  _.omit = function(obj, iteratee, context) {
-	    if (_.isFunction(iteratee)) {
-	      iteratee = _.negate(iteratee);
-	    } else {
-	      var keys = _.map(concat.apply([], slice.call(arguments, 1)), String);
-	      iteratee = function(value, key) {
-	        return !_.contains(keys, key);
-	      };
-	    }
-	    return _.pick(obj, iteratee, context);
-	  };
-
-	  // Fill in a given object with default properties.
-	  _.defaults = function(obj) {
-	    if (!_.isObject(obj)) return obj;
-	    for (var i = 1, length = arguments.length; i < length; i++) {
-	      var source = arguments[i];
-	      for (var prop in source) {
-	        if (obj[prop] === void 0) obj[prop] = source[prop];
-	      }
-	    }
-	    return obj;
-	  };
-
-	  // Create a (shallow-cloned) duplicate of an object.
-	  _.clone = function(obj) {
-	    if (!_.isObject(obj)) return obj;
-	    return _.isArray(obj) ? obj.slice() : _.extend({}, obj);
-	  };
-
-	  // Invokes interceptor with the obj, and then returns obj.
-	  // The primary purpose of this method is to "tap into" a method chain, in
-	  // order to perform operations on intermediate results within the chain.
-	  _.tap = function(obj, interceptor) {
-	    interceptor(obj);
-	    return obj;
-	  };
-
-	  // Internal recursive comparison function for `isEqual`.
-	  var eq = function(a, b, aStack, bStack) {
-	    // Identical objects are equal. `0 === -0`, but they aren't identical.
-	    // See the [Harmony `egal` proposal](http://wiki.ecmascript.org/doku.php?id=harmony:egal).
-	    if (a === b) return a !== 0 || 1 / a === 1 / b;
-	    // A strict comparison is necessary because `null == undefined`.
-	    if (a == null || b == null) return a === b;
-	    // Unwrap any wrapped objects.
-	    if (a instanceof _) a = a._wrapped;
-	    if (b instanceof _) b = b._wrapped;
-	    // Compare `[[Class]]` names.
-	    var className = toString.call(a);
-	    if (className !== toString.call(b)) return false;
-	    switch (className) {
-	      // Strings, numbers, regular expressions, dates, and booleans are compared by value.
-	      case '[object RegExp]':
-	      // RegExps are coerced to strings for comparison (Note: '' + /a/i === '/a/i')
-	      case '[object String]':
-	        // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
-	        // equivalent to `new String("5")`.
-	        return '' + a === '' + b;
-	      case '[object Number]':
-	        // `NaN`s are equivalent, but non-reflexive.
-	        // Object(NaN) is equivalent to NaN
-	        if (+a !== +a) return +b !== +b;
-	        // An `egal` comparison is performed for other numeric values.
-	        return +a === 0 ? 1 / +a === 1 / b : +a === +b;
-	      case '[object Date]':
-	      case '[object Boolean]':
-	        // Coerce dates and booleans to numeric primitive values. Dates are compared by their
-	        // millisecond representations. Note that invalid dates with millisecond representations
-	        // of `NaN` are not equivalent.
-	        return +a === +b;
-	    }
-	    if (typeof a != 'object' || typeof b != 'object') return false;
-	    // Assume equality for cyclic structures. The algorithm for detecting cyclic
-	    // structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
-	    var length = aStack.length;
-	    while (length--) {
-	      // Linear search. Performance is inversely proportional to the number of
-	      // unique nested structures.
-	      if (aStack[length] === a) return bStack[length] === b;
-	    }
-	    // Objects with different constructors are not equivalent, but `Object`s
-	    // from different frames are.
-	    var aCtor = a.constructor, bCtor = b.constructor;
-	    if (
-	      aCtor !== bCtor &&
-	      // Handle Object.create(x) cases
-	      'constructor' in a && 'constructor' in b &&
-	      !(_.isFunction(aCtor) && aCtor instanceof aCtor &&
-	        _.isFunction(bCtor) && bCtor instanceof bCtor)
-	    ) {
-	      return false;
-	    }
-	    // Add the first object to the stack of traversed objects.
-	    aStack.push(a);
-	    bStack.push(b);
-	    var size, result;
-	    // Recursively compare objects and arrays.
-	    if (className === '[object Array]') {
-	      // Compare array lengths to determine if a deep comparison is necessary.
-	      size = a.length;
-	      result = size === b.length;
-	      if (result) {
-	        // Deep compare the contents, ignoring non-numeric properties.
-	        while (size--) {
-	          if (!(result = eq(a[size], b[size], aStack, bStack))) break;
-	        }
-	      }
-	    } else {
-	      // Deep compare objects.
-	      var keys = _.keys(a), key;
-	      size = keys.length;
-	      // Ensure that both objects contain the same number of properties before comparing deep equality.
-	      result = _.keys(b).length === size;
-	      if (result) {
-	        while (size--) {
-	          // Deep compare each member
-	          key = keys[size];
-	          if (!(result = _.has(b, key) && eq(a[key], b[key], aStack, bStack))) break;
-	        }
-	      }
-	    }
-	    // Remove the first object from the stack of traversed objects.
-	    aStack.pop();
-	    bStack.pop();
-	    return result;
-	  };
-
-	  // Perform a deep comparison to check if two objects are equal.
-	  _.isEqual = function(a, b) {
-	    return eq(a, b, [], []);
-	  };
-
-	  // Is a given array, string, or object empty?
-	  // An "empty" object has no enumerable own-properties.
-	  _.isEmpty = function(obj) {
-	    if (obj == null) return true;
-	    if (_.isArray(obj) || _.isString(obj) || _.isArguments(obj)) return obj.length === 0;
-	    for (var key in obj) if (_.has(obj, key)) return false;
-	    return true;
-	  };
-
-	  // Is a given value a DOM element?
-	  _.isElement = function(obj) {
-	    return !!(obj && obj.nodeType === 1);
-	  };
-
-	  // Is a given value an array?
-	  // Delegates to ECMA5's native Array.isArray
-	  _.isArray = nativeIsArray || function(obj) {
-	    return toString.call(obj) === '[object Array]';
-	  };
-
-	  // Is a given variable an object?
-	  _.isObject = function(obj) {
-	    var type = typeof obj;
-	    return type === 'function' || type === 'object' && !!obj;
-	  };
-
-	  // Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp.
-	  _.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp'], function(name) {
-	    _['is' + name] = function(obj) {
-	      return toString.call(obj) === '[object ' + name + ']';
-	    };
-	  });
-
-	  // Define a fallback version of the method in browsers (ahem, IE), where
-	  // there isn't any inspectable "Arguments" type.
-	  if (!_.isArguments(arguments)) {
-	    _.isArguments = function(obj) {
-	      return _.has(obj, 'callee');
-	    };
-	  }
-
-	  // Optimize `isFunction` if appropriate. Work around an IE 11 bug.
-	  if (true) {
-	    _.isFunction = function(obj) {
-	      return typeof obj == 'function' || false;
-	    };
-	  }
-
-	  // Is a given object a finite number?
-	  _.isFinite = function(obj) {
-	    return isFinite(obj) && !isNaN(parseFloat(obj));
-	  };
-
-	  // Is the given value `NaN`? (NaN is the only number which does not equal itself).
-	  _.isNaN = function(obj) {
-	    return _.isNumber(obj) && obj !== +obj;
-	  };
-
-	  // Is a given value a boolean?
-	  _.isBoolean = function(obj) {
-	    return obj === true || obj === false || toString.call(obj) === '[object Boolean]';
-	  };
-
-	  // Is a given value equal to null?
-	  _.isNull = function(obj) {
-	    return obj === null;
-	  };
-
-	  // Is a given variable undefined?
-	  _.isUndefined = function(obj) {
-	    return obj === void 0;
-	  };
-
-	  // Shortcut function for checking if an object has a given property directly
-	  // on itself (in other words, not on a prototype).
-	  _.has = function(obj, key) {
-	    return obj != null && hasOwnProperty.call(obj, key);
-	  };
-
-	  // Utility Functions
-	  // -----------------
-
-	  // Run Underscore.js in *noConflict* mode, returning the `_` variable to its
-	  // previous owner. Returns a reference to the Underscore object.
-	  _.noConflict = function() {
-	    root._ = previousUnderscore;
-	    return this;
-	  };
-
-	  // Keep the identity function around for default iteratees.
-	  _.identity = function(value) {
-	    return value;
-	  };
-
-	  _.constant = function(value) {
-	    return function() {
-	      return value;
-	    };
-	  };
-
-	  _.noop = function(){};
-
-	  _.property = function(key) {
-	    return function(obj) {
-	      return obj[key];
-	    };
-	  };
-
-	  // Returns a predicate for checking whether an object has a given set of `key:value` pairs.
-	  _.matches = function(attrs) {
-	    var pairs = _.pairs(attrs), length = pairs.length;
-	    return function(obj) {
-	      if (obj == null) return !length;
-	      obj = new Object(obj);
-	      for (var i = 0; i < length; i++) {
-	        var pair = pairs[i], key = pair[0];
-	        if (pair[1] !== obj[key] || !(key in obj)) return false;
-	      }
-	      return true;
-	    };
-	  };
-
-	  // Run a function **n** times.
-	  _.times = function(n, iteratee, context) {
-	    var accum = Array(Math.max(0, n));
-	    iteratee = createCallback(iteratee, context, 1);
-	    for (var i = 0; i < n; i++) accum[i] = iteratee(i);
-	    return accum;
-	  };
-
-	  // Return a random integer between min and max (inclusive).
-	  _.random = function(min, max) {
-	    if (max == null) {
-	      max = min;
-	      min = 0;
-	    }
-	    return min + Math.floor(Math.random() * (max - min + 1));
-	  };
-
-	  // A (possibly faster) way to get the current timestamp as an integer.
-	  _.now = Date.now || function() {
-	    return new Date().getTime();
-	  };
-
-	   // List of HTML entities for escaping.
-	  var escapeMap = {
-	    '&': '&amp;',
-	    '<': '&lt;',
-	    '>': '&gt;',
-	    '"': '&quot;',
-	    "'": '&#x27;',
-	    '`': '&#x60;'
-	  };
-	  var unescapeMap = _.invert(escapeMap);
-
-	  // Functions for escaping and unescaping strings to/from HTML interpolation.
-	  var createEscaper = function(map) {
-	    var escaper = function(match) {
-	      return map[match];
-	    };
-	    // Regexes for identifying a key that needs to be escaped
-	    var source = '(?:' + _.keys(map).join('|') + ')';
-	    var testRegexp = RegExp(source);
-	    var replaceRegexp = RegExp(source, 'g');
-	    return function(string) {
-	      string = string == null ? '' : '' + string;
-	      return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string;
-	    };
-	  };
-	  _.escape = createEscaper(escapeMap);
-	  _.unescape = createEscaper(unescapeMap);
-
-	  // If the value of the named `property` is a function then invoke it with the
-	  // `object` as context; otherwise, return it.
-	  _.result = function(object, property) {
-	    if (object == null) return void 0;
-	    var value = object[property];
-	    return _.isFunction(value) ? object[property]() : value;
-	  };
-
-	  // Generate a unique integer id (unique within the entire client session).
-	  // Useful for temporary DOM ids.
-	  var idCounter = 0;
-	  _.uniqueId = function(prefix) {
-	    var id = ++idCounter + '';
-	    return prefix ? prefix + id : id;
-	  };
-
-	  // By default, Underscore uses ERB-style template delimiters, change the
-	  // following template settings to use alternative delimiters.
-	  _.templateSettings = {
-	    evaluate    : /<%([\s\S]+?)%>/g,
-	    interpolate : /<%=([\s\S]+?)%>/g,
-	    escape      : /<%-([\s\S]+?)%>/g
-	  };
-
-	  // When customizing `templateSettings`, if you don't want to define an
-	  // interpolation, evaluation or escaping regex, we need one that is
-	  // guaranteed not to match.
-	  var noMatch = /(.)^/;
-
-	  // Certain characters need to be escaped so that they can be put into a
-	  // string literal.
-	  var escapes = {
-	    "'":      "'",
-	    '\\':     '\\',
-	    '\r':     'r',
-	    '\n':     'n',
-	    '\u2028': 'u2028',
-	    '\u2029': 'u2029'
-	  };
-
-	  var escaper = /\\|'|\r|\n|\u2028|\u2029/g;
-
-	  var escapeChar = function(match) {
-	    return '\\' + escapes[match];
-	  };
-
-	  // JavaScript micro-templating, similar to John Resig's implementation.
-	  // Underscore templating handles arbitrary delimiters, preserves whitespace,
-	  // and correctly escapes quotes within interpolated code.
-	  // NB: `oldSettings` only exists for backwards compatibility.
-	  _.template = function(text, settings, oldSettings) {
-	    if (!settings && oldSettings) settings = oldSettings;
-	    settings = _.defaults({}, settings, _.templateSettings);
-
-	    // Combine delimiters into one regular expression via alternation.
-	    var matcher = RegExp([
-	      (settings.escape || noMatch).source,
-	      (settings.interpolate || noMatch).source,
-	      (settings.evaluate || noMatch).source
-	    ].join('|') + '|$', 'g');
-
-	    // Compile the template source, escaping string literals appropriately.
-	    var index = 0;
-	    var source = "__p+='";
-	    text.replace(matcher, function(match, escape, interpolate, evaluate, offset) {
-	      source += text.slice(index, offset).replace(escaper, escapeChar);
-	      index = offset + match.length;
-
-	      if (escape) {
-	        source += "'+\n((__t=(" + escape + "))==null?'':_.escape(__t))+\n'";
-	      } else if (interpolate) {
-	        source += "'+\n((__t=(" + interpolate + "))==null?'':__t)+\n'";
-	      } else if (evaluate) {
-	        source += "';\n" + evaluate + "\n__p+='";
-	      }
-
-	      // Adobe VMs need the match returned to produce the correct offest.
-	      return match;
-	    });
-	    source += "';\n";
-
-	    // If a variable is not specified, place data values in local scope.
-	    if (!settings.variable) source = 'with(obj||{}){\n' + source + '}\n';
-
-	    source = "var __t,__p='',__j=Array.prototype.join," +
-	      "print=function(){__p+=__j.call(arguments,'');};\n" +
-	      source + 'return __p;\n';
-
-	    try {
-	      var render = new Function(settings.variable || 'obj', '_', source);
-	    } catch (e) {
-	      e.source = source;
-	      throw e;
-	    }
-
-	    var template = function(data) {
-	      return render.call(this, data, _);
-	    };
-
-	    // Provide the compiled source as a convenience for precompilation.
-	    var argument = settings.variable || 'obj';
-	    template.source = 'function(' + argument + '){\n' + source + '}';
-
-	    return template;
-	  };
-
-	  // Add a "chain" function. Start chaining a wrapped Underscore object.
-	  _.chain = function(obj) {
-	    var instance = _(obj);
-	    instance._chain = true;
-	    return instance;
-	  };
-
-	  // OOP
-	  // ---------------
-	  // If Underscore is called as a function, it returns a wrapped object that
-	  // can be used OO-style. This wrapper holds altered versions of all the
-	  // underscore functions. Wrapped objects may be chained.
-
-	  // Helper function to continue chaining intermediate results.
-	  var result = function(obj) {
-	    return this._chain ? _(obj).chain() : obj;
-	  };
-
-	  // Add your own custom functions to the Underscore object.
-	  _.mixin = function(obj) {
-	    _.each(_.functions(obj), function(name) {
-	      var func = _[name] = obj[name];
-	      _.prototype[name] = function() {
-	        var args = [this._wrapped];
-	        push.apply(args, arguments);
-	        return result.call(this, func.apply(_, args));
-	      };
-	    });
-	  };
-
-	  // Add all of the Underscore functions to the wrapper object.
-	  _.mixin(_);
-
-	  // Add all mutator Array functions to the wrapper.
-	  _.each(['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift'], function(name) {
-	    var method = ArrayProto[name];
-	    _.prototype[name] = function() {
-	      var obj = this._wrapped;
-	      method.apply(obj, arguments);
-	      if ((name === 'shift' || name === 'splice') && obj.length === 0) delete obj[0];
-	      return result.call(this, obj);
-	    };
-	  });
-
-	  // Add all accessor Array functions to the wrapper.
-	  _.each(['concat', 'join', 'slice'], function(name) {
-	    var method = ArrayProto[name];
-	    _.prototype[name] = function() {
-	      return result.call(this, method.apply(this._wrapped, arguments));
-	    };
-	  });
-
-	  // Extracts the result from a wrapped and chained object.
-	  _.prototype.value = function() {
-	    return this._wrapped;
-	  };
-
-	  // AMD registration happens at the end for compatibility with AMD loaders
-	  // that may not enforce next-turn semantics on modules. Even though general
-	  // practice for AMD registration is to be anonymous, underscore registers
-	  // as a named module because, like jQuery, it is a base library that is
-	  // popular enough to be bundled in a third party lib, but not be part of
-	  // an AMD load request. Those cases could generate an error when an
-	  // anonymous define() is called outside of a loader request.
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
-	      return _;
-	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  }
-	}.call(this));
+	/** @jsx React.DOM */module.exports = __webpack_require__(24);
 
 
 /***/ },
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM */(function (root, factory) {
-	   if (true) {
-	      // AMD. Register as an anonymous module.
-	      !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(8),__webpack_require__(7)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, Backbone) {
-	        // Use global variables if the locals are undefined.
-	        return factory(_ || root._, Backbone || root.Backbone);
-	      }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	   } else if (typeof exports === 'object') {
-	     module.exports = factory(require("underscore"), require("backbone"));
-	   } else {
-	      // RequireJS isn't being used. Assume underscore and backbone are loaded in <script> tags
-	      factory(_, Backbone);
-	   }
-	}(this, function(_, Backbone) {
-
-	var queryStringParam = /^\?(.*)/,
-	    optionalParam = /\((.*?)\)/g,
-	    namedParam    = /(\(\?)?:\w+/g,
-	    splatParam    = /\*\w+/g,
-	    escapeRegExp  = /[\-{}\[\]+?.,\\\^$|#\s]/g,
-	    fragmentStrip = /^([^\?]*)/,
-	    namesPattern = /[\:\*]([^\:\?\/]+)/g,
-	    routeStripper = /^[#\/]|\s+$/g,
-	    trailingSlash = /\/$/;
-	Backbone.Router.arrayValueSplit = '|';
-
-	_.extend(Backbone.History.prototype, {
-	  getFragment: function(fragment, forcePushState) {
-	    /*jshint eqnull:true */
-	    if (fragment == null) {
-	      if (this._hasPushState || !this._wantsHashChange || forcePushState) {
-	        fragment = this.location.pathname;
-	        var root = this.root.replace(trailingSlash, '');
-	        var search = this.location.search;
-	        if (!fragment.indexOf(root)) {
-	          fragment = fragment.substr(root.length);
-	        }
-	        if (search && this._hasPushState) {
-	          fragment += search;
-	        }
-	      } else {
-	        fragment = this.getHash();
-	      }
-	    }
-	    return fragment.replace(routeStripper, '');
-	  },
-
-	  // this will not perform custom query param serialization specific to the router
-	  // but will return a map of key/value pairs (the value is a string or array)
-	  getQueryParameters: function(fragment, forcePushState) {
-	    fragment = this.getFragment(fragment, forcePushState);
-	    // if no query string exists, this will still be the original fragment
-	    var queryString = fragment.replace(fragmentStrip, '');
-	    var match = queryString.match(queryStringParam);
-	    if (match) {
-	      queryString = match[1];
-	      var rtn = {};
-	      iterateQueryString(queryString, function(name, value) {
-	        value = parseParams(value);
-
-	        if (!rtn[name]) {
-	          rtn[name] = value;
-	        } else if (_.isString(rtn[name])) {
-	          rtn[name] = [rtn[name], value];
-	        } else {
-	          rtn[name].push(value);
-	        }
-	      });
-	      return rtn;
-	    } else {
-	      // no values
-	      return {};
-	    }
-	  }
-	});
-
-	_.extend(Backbone.Router.prototype, {
-	  initialize: function(options) {
-	    this.encodedSplatParts = options && options.encodedSplatParts;
-	  },
-
-	  _routeToRegExp: function(route) {
-	    var splatMatch = (splatParam.exec(route) || {index: -1}),
-	        namedMatch = (namedParam.exec(route) || {index: -1}),
-	        paramNames = route.match(namesPattern) || [];
-
-	    route = route.replace(escapeRegExp, '\\$&')
-	                 .replace(optionalParam, '(?:$1)?')
-	                 .replace(namedParam, function(match, optional){
-	                   return optional ? match : '([^\\/\\?]+)';
-	                 })
-	                 // `[^??]` is hacking around a regular expression bug under iOS4.
-	                 // If only `[^?]` is used then paths like signin/photos will fail
-	                 // while paths with `?` anywhere, like `signin/photos?`, will succeed.
-	                 .replace(splatParam, '([^??]*?)');
-	    route += '(\\?.*)?';
-	    var rtn = new RegExp('^' + route + '$');
-
-	    // use the rtn value to hold some parameter data
-	    if (splatMatch.index >= 0) {
-	      // there is a splat
-	      if (namedMatch >= 0) {
-	        // negative value will indicate there is a splat match before any named matches
-	        rtn.splatMatch = splatMatch.index - namedMatch.index;
-	      } else {
-	        rtn.splatMatch = -1;
-	      }
-	    }
-		// Map and remove any trailing ')' character that has been caught up in regex matching
-	    rtn.paramNames = _.map(paramNames, function(name) { return name.replace(/\)$/, '').substring(1); });
-	    rtn.namedParameters = this.namedParameters;
-
-	    return rtn;
-	  },
-
-	  /**
-	   * Given a route, and a URL fragment that it matches, return the array of
-	   * extracted parameters.
-	   */
-	  _extractParameters: function(route, fragment) {
-	    var params = route.exec(fragment).slice(1),
-	        namedParams = {};
-	    if (params.length > 0 && !params[params.length - 1]) {
-	      // remove potential invalid data from query params match
-	      params.splice(params.length - 1, 1);
-	    }
-
-	    // do we have an additional query string?
-	    var match = params.length && params[params.length-1] && params[params.length-1].match(queryStringParam);
-	    if (match) {
-	      var queryString = match[1];
-	      var data = {};
-	      if (queryString) {
-	        var self = this;
-	        iterateQueryString(queryString, function(name, value) {
-	          self._setParamValue(name, value, data);
-	        });
-	      }
-	      params[params.length-1] = data;
-	      _.extend(namedParams, data);
-	    }
-
-	    // decode params
-	    var length = params.length;
-	    if (route.splatMatch && this.encodedSplatParts) {
-	      if (route.splatMatch < 0) {
-	        // splat param is first
-	        return params;
-	      } else {
-	        length = length - 1;
-	      }
-	    }
-
-	    for (var i=0; i<length; i++) {
-	      if (_.isString(params[i])) {
-	        params[i] = parseParams(params[i]);
-	        if (route.paramNames && route.paramNames.length >= i-1) {
-	          namedParams[route.paramNames[i]] = params[i];
-	        }
-	      }
-	    }
-
-	    return (Backbone.Router.namedParameters || route.namedParameters) ? [namedParams] : params;
-	  },
-
-	  /**
-	   * Set the parameter value on the data hash
-	   */
-	  _setParamValue: function(key, value, data) {
-	    // use '.' to define hash separators
-	    key = key.replace('[]', '');
-	    key = key.replace('%5B%5D', '');
-	    var parts = key.split('.');
-	    var _data = data;
-	    for (var i=0; i<parts.length; i++) {
-	      var part = parts[i];
-	      if (i === parts.length-1) {
-	        // set the value
-	        _data[part] = this._decodeParamValue(value, _data[part]);
-	      } else {
-	        _data = _data[part] = _data[part] || {};
-	      }
-	    }
-	  },
-
-	  /**
-	   * Decode an individual parameter value (or list of values)
-	   * @param value the complete value
-	   * @param currentValue the currently known value (or list of values)
-	   */
-	  _decodeParamValue: function(value, currentValue) {
-	    // '|' will indicate an array.  Array with 1 value is a=|b - multiple values can be a=b|c
-	    var splitChar = Backbone.Router.arrayValueSplit;
-	    if (splitChar && value.indexOf(splitChar) >= 0) {
-	      var values = value.split(splitChar);
-	      // clean it up
-	      for (var i=values.length-1; i>=0; i--) {
-	        if (!values[i]) {
-	          values.splice(i, 1);
-	        } else {
-	          values[i] = parseParams(values[i]);
-	        }
-	      }
-	      return values;
-	    }
-
-	    value = parseParams(value);
-	    if (!currentValue) {
-	      return value;
-	    } else if (_.isArray(currentValue)) {
-	      currentValue.push(value);
-	      return currentValue;
-	    } else {
-	      return [currentValue, value];
-	    }
-	  },
-
-	  /**
-	   * Return the route fragment with queryParameters serialized to query parameter string
-	   */
-	  toFragment: function(route, queryParameters) {
-	    if (queryParameters) {
-	      if (!_.isString(queryParameters)) {
-	        queryParameters = toQueryString(queryParameters);
-	      }
-	      if(queryParameters) {
-	        route += '?' + queryParameters;
-	      }
-	    }
-	    return route;
-	  }
-	});
-
-
-	/**
-	 * Serialize the val hash to query parameters and return it.  Use the namePrefix to prefix all param names (for recursion)
-	 */
-	function toQueryString(val, namePrefix) {
-	  /*jshint eqnull:true */
-	  var splitChar = Backbone.Router.arrayValueSplit;
-	  function encodeSplit(val) { return String(val).replace(splitChar, encodeURIComponent(splitChar)); }
-
-	  if (!val) {
-	    return '';
-	  }
-
-	  namePrefix = namePrefix || '';
-	  var rtn = [];
-	  _.each(val, function(_val, name) {
-	    name = namePrefix + name;
-
-	    if (_.isString(_val) || _.isNumber(_val) || _.isBoolean(_val) || _.isDate(_val)) {
-	      // primitive type
-	      if (_val != null) {
-	        rtn.push(name + '=' + encodeSplit(encodeURIComponent(_val)));
-	      }
-	    } else if (_.isArray(_val)) {
-	      // arrays use Backbone.Router.arrayValueSplit separator
-	      var str = '';
-	      for (var i = 0; i < _val.length; i++) {
-	        var param = _val[i];
-	        if (param != null) {
-	          str += splitChar + encodeSplit(param);
-	        }
-	      }
-	      if (str) {
-	        rtn.push(name + '=' + str);
-	      }
-	    } else {
-	      // dig into hash
-	      var result = toQueryString(_val, name + '.');
-	      if (result) {
-	        rtn.push(result);
-	      }
-	    }
-	  });
-
-	  return rtn.join('&');
-	}
-
-	function parseParams(value) {
-	  // decodeURIComponent doesn't touch '+'
-	  try {
-	    return decodeURIComponent(value.replace(/\+/g, ' '));
-	  } catch (err) {
-	    // Failover to whatever was passed if we get junk data
-	    return value;
-	  }
-	}
-
-	function iterateQueryString(queryString, callback) {
-	  var keyValues = queryString.split('&');
-	  _.each(keyValues, function(keyValue) {
-	    var arr = keyValue.split('=');
-	    callback(arr.shift(), arr.join('='));
-	  });
-	}
-
-	}));
-
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */module.exports = __webpack_require__(23);
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */module.exports = __webpack_require__(43);
-
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *//*!
-	  * $script.js JS loader & dependency manager
-	  * https://github.com/ded/script.js
-	  * (c) Dustin Diaz 2014 | License MIT
-	  */
-
-	(function (name, definition) {
-	  if (typeof module != 'undefined' && module.exports) module.exports = definition()
-	  else if (true) !(__WEBPACK_AMD_DEFINE_FACTORY__ = (definition), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
-	  else this[name] = definition()
-	})('$script', function () {
-	  var doc = document
-	    , head = doc.getElementsByTagName('head')[0]
-	    , s = 'string'
-	    , f = false
-	    , push = 'push'
-	    , readyState = 'readyState'
-	    , onreadystatechange = 'onreadystatechange'
-	    , list = {}
-	    , ids = {}
-	    , delay = {}
-	    , scripts = {}
-	    , scriptpath
-	    , urlArgs
-
-	  function every(ar, fn) {
-	    for (var i = 0, j = ar.length; i < j; ++i) if (!fn(ar[i])) return f
-	    return 1
-	  }
-	  function each(ar, fn) {
-	    every(ar, function (el) {
-	      return !fn(el)
-	    })
-	  }
-
-	  function $script(paths, idOrDone, optDone) {
-	    paths = paths[push] ? paths : [paths]
-	    var idOrDoneIsDone = idOrDone && idOrDone.call
-	      , done = idOrDoneIsDone ? idOrDone : optDone
-	      , id = idOrDoneIsDone ? paths.join('') : idOrDone
-	      , queue = paths.length
-	    function loopFn(item) {
-	      return item.call ? item() : list[item]
-	    }
-	    function callback() {
-	      if (!--queue) {
-	        list[id] = 1
-	        done && done()
-	        for (var dset in delay) {
-	          every(dset.split('|'), loopFn) && !each(delay[dset], loopFn) && (delay[dset] = [])
-	        }
-	      }
-	    }
-	    setTimeout(function () {
-	      each(paths, function loading(path, force) {
-	        if (path === null) return callback()
-	        path = !force && path.indexOf('.js') === -1 && !/^https?:\/\//.test(path) && scriptpath ? scriptpath + path + '.js' : path
-	        if (scripts[path]) {
-	          if (id) ids[id] = 1
-	          return (scripts[path] == 2) ? callback() : setTimeout(function () { loading(path, true) }, 0)
-	        }
-
-	        scripts[path] = 1
-	        if (id) ids[id] = 1
-	        create(path, callback)
-	      })
-	    }, 0)
-	    return $script
-	  }
-
-	  function create(path, fn) {
-	    var el = doc.createElement('script'), loaded
-	    el.onload = el.onerror = el[onreadystatechange] = function () {
-	      if ((el[readyState] && !(/^c|loade/.test(el[readyState]))) || loaded) return;
-	      el.onload = el[onreadystatechange] = null
-	      loaded = 1
-	      scripts[path] = 2
-	      fn()
-	    }
-	    el.async = 1
-	    el.src = urlArgs ? path + (path.indexOf('?') === -1 ? '?' : '&') + urlArgs : path;
-	    head.insertBefore(el, head.lastChild)
-	  }
-
-	  $script.get = create
-
-	  $script.order = function (scripts, id, done) {
-	    (function callback(s) {
-	      s = scripts.shift()
-	      !scripts.length ? $script(s, id, done) : $script(s, callback)
-	    }())
-	  }
-
-	  $script.path = function (p) {
-	    scriptpath = p
-	  }
-	  $script.urlArgs = function (str) {
-	    urlArgs = str;
-	  }
-	  $script.ready = function (deps, ready, req) {
-	    deps = deps[push] ? deps : [deps]
-	    var missing = [];
-	    !each(deps, function (dep) {
-	      list[dep] || missing[push](dep);
-	    }) && every(deps, function (dep) {return list[dep]}) ?
-	      ready() : !function (key) {
-	      delay[key] = delay[key] || []
-	      delay[key][push](ready)
-	      req && req(missing)
-	    }(deps.join('|'))
-	    return $script
-	  }
-
-	  $script.done = function (idOrDone) {
-	    $script([null], idOrDone)
-	  }
-
-	  return $script
-	});
-
-
-/***/ },
-/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *//*!
@@ -13120,11 +9655,3476 @@
 
 
 /***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *///     Underscore.js 1.7.0
+	//     http://underscorejs.org
+	//     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	//     Underscore may be freely distributed under the MIT license.
+
+	(function() {
+
+	  // Baseline setup
+	  // --------------
+
+	  // Establish the root object, `window` in the browser, or `exports` on the server.
+	  var root = this;
+
+	  // Save the previous value of the `_` variable.
+	  var previousUnderscore = root._;
+
+	  // Save bytes in the minified (but not gzipped) version:
+	  var ArrayProto = Array.prototype, ObjProto = Object.prototype, FuncProto = Function.prototype;
+
+	  // Create quick reference variables for speed access to core prototypes.
+	  var
+	    push             = ArrayProto.push,
+	    slice            = ArrayProto.slice,
+	    concat           = ArrayProto.concat,
+	    toString         = ObjProto.toString,
+	    hasOwnProperty   = ObjProto.hasOwnProperty;
+
+	  // All **ECMAScript 5** native function implementations that we hope to use
+	  // are declared here.
+	  var
+	    nativeIsArray      = Array.isArray,
+	    nativeKeys         = Object.keys,
+	    nativeBind         = FuncProto.bind;
+
+	  // Create a safe reference to the Underscore object for use below.
+	  var _ = function(obj) {
+	    if (obj instanceof _) return obj;
+	    if (!(this instanceof _)) return new _(obj);
+	    this._wrapped = obj;
+	  };
+
+	  // Export the Underscore object for **Node.js**, with
+	  // backwards-compatibility for the old `require()` API. If we're in
+	  // the browser, add `_` as a global object.
+	  if (true) {
+	    if (typeof module !== 'undefined' && module.exports) {
+	      exports = module.exports = _;
+	    }
+	    exports._ = _;
+	  } else {
+	    root._ = _;
+	  }
+
+	  // Current version.
+	  _.VERSION = '1.7.0';
+
+	  // Internal function that returns an efficient (for current engines) version
+	  // of the passed-in callback, to be repeatedly applied in other Underscore
+	  // functions.
+	  var createCallback = function(func, context, argCount) {
+	    if (context === void 0) return func;
+	    switch (argCount == null ? 3 : argCount) {
+	      case 1: return function(value) {
+	        return func.call(context, value);
+	      };
+	      case 2: return function(value, other) {
+	        return func.call(context, value, other);
+	      };
+	      case 3: return function(value, index, collection) {
+	        return func.call(context, value, index, collection);
+	      };
+	      case 4: return function(accumulator, value, index, collection) {
+	        return func.call(context, accumulator, value, index, collection);
+	      };
+	    }
+	    return function() {
+	      return func.apply(context, arguments);
+	    };
+	  };
+
+	  // A mostly-internal function to generate callbacks that can be applied
+	  // to each element in a collection, returning the desired result — either
+	  // identity, an arbitrary callback, a property matcher, or a property accessor.
+	  _.iteratee = function(value, context, argCount) {
+	    if (value == null) return _.identity;
+	    if (_.isFunction(value)) return createCallback(value, context, argCount);
+	    if (_.isObject(value)) return _.matches(value);
+	    return _.property(value);
+	  };
+
+	  // Collection Functions
+	  // --------------------
+
+	  // The cornerstone, an `each` implementation, aka `forEach`.
+	  // Handles raw objects in addition to array-likes. Treats all
+	  // sparse array-likes as if they were dense.
+	  _.each = _.forEach = function(obj, iteratee, context) {
+	    if (obj == null) return obj;
+	    iteratee = createCallback(iteratee, context);
+	    var i, length = obj.length;
+	    if (length === +length) {
+	      for (i = 0; i < length; i++) {
+	        iteratee(obj[i], i, obj);
+	      }
+	    } else {
+	      var keys = _.keys(obj);
+	      for (i = 0, length = keys.length; i < length; i++) {
+	        iteratee(obj[keys[i]], keys[i], obj);
+	      }
+	    }
+	    return obj;
+	  };
+
+	  // Return the results of applying the iteratee to each element.
+	  _.map = _.collect = function(obj, iteratee, context) {
+	    if (obj == null) return [];
+	    iteratee = _.iteratee(iteratee, context);
+	    var keys = obj.length !== +obj.length && _.keys(obj),
+	        length = (keys || obj).length,
+	        results = Array(length),
+	        currentKey;
+	    for (var index = 0; index < length; index++) {
+	      currentKey = keys ? keys[index] : index;
+	      results[index] = iteratee(obj[currentKey], currentKey, obj);
+	    }
+	    return results;
+	  };
+
+	  var reduceError = 'Reduce of empty array with no initial value';
+
+	  // **Reduce** builds up a single result from a list of values, aka `inject`,
+	  // or `foldl`.
+	  _.reduce = _.foldl = _.inject = function(obj, iteratee, memo, context) {
+	    if (obj == null) obj = [];
+	    iteratee = createCallback(iteratee, context, 4);
+	    var keys = obj.length !== +obj.length && _.keys(obj),
+	        length = (keys || obj).length,
+	        index = 0, currentKey;
+	    if (arguments.length < 3) {
+	      if (!length) throw new TypeError(reduceError);
+	      memo = obj[keys ? keys[index++] : index++];
+	    }
+	    for (; index < length; index++) {
+	      currentKey = keys ? keys[index] : index;
+	      memo = iteratee(memo, obj[currentKey], currentKey, obj);
+	    }
+	    return memo;
+	  };
+
+	  // The right-associative version of reduce, also known as `foldr`.
+	  _.reduceRight = _.foldr = function(obj, iteratee, memo, context) {
+	    if (obj == null) obj = [];
+	    iteratee = createCallback(iteratee, context, 4);
+	    var keys = obj.length !== + obj.length && _.keys(obj),
+	        index = (keys || obj).length,
+	        currentKey;
+	    if (arguments.length < 3) {
+	      if (!index) throw new TypeError(reduceError);
+	      memo = obj[keys ? keys[--index] : --index];
+	    }
+	    while (index--) {
+	      currentKey = keys ? keys[index] : index;
+	      memo = iteratee(memo, obj[currentKey], currentKey, obj);
+	    }
+	    return memo;
+	  };
+
+	  // Return the first value which passes a truth test. Aliased as `detect`.
+	  _.find = _.detect = function(obj, predicate, context) {
+	    var result;
+	    predicate = _.iteratee(predicate, context);
+	    _.some(obj, function(value, index, list) {
+	      if (predicate(value, index, list)) {
+	        result = value;
+	        return true;
+	      }
+	    });
+	    return result;
+	  };
+
+	  // Return all the elements that pass a truth test.
+	  // Aliased as `select`.
+	  _.filter = _.select = function(obj, predicate, context) {
+	    var results = [];
+	    if (obj == null) return results;
+	    predicate = _.iteratee(predicate, context);
+	    _.each(obj, function(value, index, list) {
+	      if (predicate(value, index, list)) results.push(value);
+	    });
+	    return results;
+	  };
+
+	  // Return all the elements for which a truth test fails.
+	  _.reject = function(obj, predicate, context) {
+	    return _.filter(obj, _.negate(_.iteratee(predicate)), context);
+	  };
+
+	  // Determine whether all of the elements match a truth test.
+	  // Aliased as `all`.
+	  _.every = _.all = function(obj, predicate, context) {
+	    if (obj == null) return true;
+	    predicate = _.iteratee(predicate, context);
+	    var keys = obj.length !== +obj.length && _.keys(obj),
+	        length = (keys || obj).length,
+	        index, currentKey;
+	    for (index = 0; index < length; index++) {
+	      currentKey = keys ? keys[index] : index;
+	      if (!predicate(obj[currentKey], currentKey, obj)) return false;
+	    }
+	    return true;
+	  };
+
+	  // Determine if at least one element in the object matches a truth test.
+	  // Aliased as `any`.
+	  _.some = _.any = function(obj, predicate, context) {
+	    if (obj == null) return false;
+	    predicate = _.iteratee(predicate, context);
+	    var keys = obj.length !== +obj.length && _.keys(obj),
+	        length = (keys || obj).length,
+	        index, currentKey;
+	    for (index = 0; index < length; index++) {
+	      currentKey = keys ? keys[index] : index;
+	      if (predicate(obj[currentKey], currentKey, obj)) return true;
+	    }
+	    return false;
+	  };
+
+	  // Determine if the array or object contains a given value (using `===`).
+	  // Aliased as `include`.
+	  _.contains = _.include = function(obj, target) {
+	    if (obj == null) return false;
+	    if (obj.length !== +obj.length) obj = _.values(obj);
+	    return _.indexOf(obj, target) >= 0;
+	  };
+
+	  // Invoke a method (with arguments) on every item in a collection.
+	  _.invoke = function(obj, method) {
+	    var args = slice.call(arguments, 2);
+	    var isFunc = _.isFunction(method);
+	    return _.map(obj, function(value) {
+	      return (isFunc ? method : value[method]).apply(value, args);
+	    });
+	  };
+
+	  // Convenience version of a common use case of `map`: fetching a property.
+	  _.pluck = function(obj, key) {
+	    return _.map(obj, _.property(key));
+	  };
+
+	  // Convenience version of a common use case of `filter`: selecting only objects
+	  // containing specific `key:value` pairs.
+	  _.where = function(obj, attrs) {
+	    return _.filter(obj, _.matches(attrs));
+	  };
+
+	  // Convenience version of a common use case of `find`: getting the first object
+	  // containing specific `key:value` pairs.
+	  _.findWhere = function(obj, attrs) {
+	    return _.find(obj, _.matches(attrs));
+	  };
+
+	  // Return the maximum element (or element-based computation).
+	  _.max = function(obj, iteratee, context) {
+	    var result = -Infinity, lastComputed = -Infinity,
+	        value, computed;
+	    if (iteratee == null && obj != null) {
+	      obj = obj.length === +obj.length ? obj : _.values(obj);
+	      for (var i = 0, length = obj.length; i < length; i++) {
+	        value = obj[i];
+	        if (value > result) {
+	          result = value;
+	        }
+	      }
+	    } else {
+	      iteratee = _.iteratee(iteratee, context);
+	      _.each(obj, function(value, index, list) {
+	        computed = iteratee(value, index, list);
+	        if (computed > lastComputed || computed === -Infinity && result === -Infinity) {
+	          result = value;
+	          lastComputed = computed;
+	        }
+	      });
+	    }
+	    return result;
+	  };
+
+	  // Return the minimum element (or element-based computation).
+	  _.min = function(obj, iteratee, context) {
+	    var result = Infinity, lastComputed = Infinity,
+	        value, computed;
+	    if (iteratee == null && obj != null) {
+	      obj = obj.length === +obj.length ? obj : _.values(obj);
+	      for (var i = 0, length = obj.length; i < length; i++) {
+	        value = obj[i];
+	        if (value < result) {
+	          result = value;
+	        }
+	      }
+	    } else {
+	      iteratee = _.iteratee(iteratee, context);
+	      _.each(obj, function(value, index, list) {
+	        computed = iteratee(value, index, list);
+	        if (computed < lastComputed || computed === Infinity && result === Infinity) {
+	          result = value;
+	          lastComputed = computed;
+	        }
+	      });
+	    }
+	    return result;
+	  };
+
+	  // Shuffle a collection, using the modern version of the
+	  // [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
+	  _.shuffle = function(obj) {
+	    var set = obj && obj.length === +obj.length ? obj : _.values(obj);
+	    var length = set.length;
+	    var shuffled = Array(length);
+	    for (var index = 0, rand; index < length; index++) {
+	      rand = _.random(0, index);
+	      if (rand !== index) shuffled[index] = shuffled[rand];
+	      shuffled[rand] = set[index];
+	    }
+	    return shuffled;
+	  };
+
+	  // Sample **n** random values from a collection.
+	  // If **n** is not specified, returns a single random element.
+	  // The internal `guard` argument allows it to work with `map`.
+	  _.sample = function(obj, n, guard) {
+	    if (n == null || guard) {
+	      if (obj.length !== +obj.length) obj = _.values(obj);
+	      return obj[_.random(obj.length - 1)];
+	    }
+	    return _.shuffle(obj).slice(0, Math.max(0, n));
+	  };
+
+	  // Sort the object's values by a criterion produced by an iteratee.
+	  _.sortBy = function(obj, iteratee, context) {
+	    iteratee = _.iteratee(iteratee, context);
+	    return _.pluck(_.map(obj, function(value, index, list) {
+	      return {
+	        value: value,
+	        index: index,
+	        criteria: iteratee(value, index, list)
+	      };
+	    }).sort(function(left, right) {
+	      var a = left.criteria;
+	      var b = right.criteria;
+	      if (a !== b) {
+	        if (a > b || a === void 0) return 1;
+	        if (a < b || b === void 0) return -1;
+	      }
+	      return left.index - right.index;
+	    }), 'value');
+	  };
+
+	  // An internal function used for aggregate "group by" operations.
+	  var group = function(behavior) {
+	    return function(obj, iteratee, context) {
+	      var result = {};
+	      iteratee = _.iteratee(iteratee, context);
+	      _.each(obj, function(value, index) {
+	        var key = iteratee(value, index, obj);
+	        behavior(result, value, key);
+	      });
+	      return result;
+	    };
+	  };
+
+	  // Groups the object's values by a criterion. Pass either a string attribute
+	  // to group by, or a function that returns the criterion.
+	  _.groupBy = group(function(result, value, key) {
+	    if (_.has(result, key)) result[key].push(value); else result[key] = [value];
+	  });
+
+	  // Indexes the object's values by a criterion, similar to `groupBy`, but for
+	  // when you know that your index values will be unique.
+	  _.indexBy = group(function(result, value, key) {
+	    result[key] = value;
+	  });
+
+	  // Counts instances of an object that group by a certain criterion. Pass
+	  // either a string attribute to count by, or a function that returns the
+	  // criterion.
+	  _.countBy = group(function(result, value, key) {
+	    if (_.has(result, key)) result[key]++; else result[key] = 1;
+	  });
+
+	  // Use a comparator function to figure out the smallest index at which
+	  // an object should be inserted so as to maintain order. Uses binary search.
+	  _.sortedIndex = function(array, obj, iteratee, context) {
+	    iteratee = _.iteratee(iteratee, context, 1);
+	    var value = iteratee(obj);
+	    var low = 0, high = array.length;
+	    while (low < high) {
+	      var mid = low + high >>> 1;
+	      if (iteratee(array[mid]) < value) low = mid + 1; else high = mid;
+	    }
+	    return low;
+	  };
+
+	  // Safely create a real, live array from anything iterable.
+	  _.toArray = function(obj) {
+	    if (!obj) return [];
+	    if (_.isArray(obj)) return slice.call(obj);
+	    if (obj.length === +obj.length) return _.map(obj, _.identity);
+	    return _.values(obj);
+	  };
+
+	  // Return the number of elements in an object.
+	  _.size = function(obj) {
+	    if (obj == null) return 0;
+	    return obj.length === +obj.length ? obj.length : _.keys(obj).length;
+	  };
+
+	  // Split a collection into two arrays: one whose elements all satisfy the given
+	  // predicate, and one whose elements all do not satisfy the predicate.
+	  _.partition = function(obj, predicate, context) {
+	    predicate = _.iteratee(predicate, context);
+	    var pass = [], fail = [];
+	    _.each(obj, function(value, key, obj) {
+	      (predicate(value, key, obj) ? pass : fail).push(value);
+	    });
+	    return [pass, fail];
+	  };
+
+	  // Array Functions
+	  // ---------------
+
+	  // Get the first element of an array. Passing **n** will return the first N
+	  // values in the array. Aliased as `head` and `take`. The **guard** check
+	  // allows it to work with `_.map`.
+	  _.first = _.head = _.take = function(array, n, guard) {
+	    if (array == null) return void 0;
+	    if (n == null || guard) return array[0];
+	    if (n < 0) return [];
+	    return slice.call(array, 0, n);
+	  };
+
+	  // Returns everything but the last entry of the array. Especially useful on
+	  // the arguments object. Passing **n** will return all the values in
+	  // the array, excluding the last N. The **guard** check allows it to work with
+	  // `_.map`.
+	  _.initial = function(array, n, guard) {
+	    return slice.call(array, 0, Math.max(0, array.length - (n == null || guard ? 1 : n)));
+	  };
+
+	  // Get the last element of an array. Passing **n** will return the last N
+	  // values in the array. The **guard** check allows it to work with `_.map`.
+	  _.last = function(array, n, guard) {
+	    if (array == null) return void 0;
+	    if (n == null || guard) return array[array.length - 1];
+	    return slice.call(array, Math.max(array.length - n, 0));
+	  };
+
+	  // Returns everything but the first entry of the array. Aliased as `tail` and `drop`.
+	  // Especially useful on the arguments object. Passing an **n** will return
+	  // the rest N values in the array. The **guard**
+	  // check allows it to work with `_.map`.
+	  _.rest = _.tail = _.drop = function(array, n, guard) {
+	    return slice.call(array, n == null || guard ? 1 : n);
+	  };
+
+	  // Trim out all falsy values from an array.
+	  _.compact = function(array) {
+	    return _.filter(array, _.identity);
+	  };
+
+	  // Internal implementation of a recursive `flatten` function.
+	  var flatten = function(input, shallow, strict, output) {
+	    if (shallow && _.every(input, _.isArray)) {
+	      return concat.apply(output, input);
+	    }
+	    for (var i = 0, length = input.length; i < length; i++) {
+	      var value = input[i];
+	      if (!_.isArray(value) && !_.isArguments(value)) {
+	        if (!strict) output.push(value);
+	      } else if (shallow) {
+	        push.apply(output, value);
+	      } else {
+	        flatten(value, shallow, strict, output);
+	      }
+	    }
+	    return output;
+	  };
+
+	  // Flatten out an array, either recursively (by default), or just one level.
+	  _.flatten = function(array, shallow) {
+	    return flatten(array, shallow, false, []);
+	  };
+
+	  // Return a version of the array that does not contain the specified value(s).
+	  _.without = function(array) {
+	    return _.difference(array, slice.call(arguments, 1));
+	  };
+
+	  // Produce a duplicate-free version of the array. If the array has already
+	  // been sorted, you have the option of using a faster algorithm.
+	  // Aliased as `unique`.
+	  _.uniq = _.unique = function(array, isSorted, iteratee, context) {
+	    if (array == null) return [];
+	    if (!_.isBoolean(isSorted)) {
+	      context = iteratee;
+	      iteratee = isSorted;
+	      isSorted = false;
+	    }
+	    if (iteratee != null) iteratee = _.iteratee(iteratee, context);
+	    var result = [];
+	    var seen = [];
+	    for (var i = 0, length = array.length; i < length; i++) {
+	      var value = array[i];
+	      if (isSorted) {
+	        if (!i || seen !== value) result.push(value);
+	        seen = value;
+	      } else if (iteratee) {
+	        var computed = iteratee(value, i, array);
+	        if (_.indexOf(seen, computed) < 0) {
+	          seen.push(computed);
+	          result.push(value);
+	        }
+	      } else if (_.indexOf(result, value) < 0) {
+	        result.push(value);
+	      }
+	    }
+	    return result;
+	  };
+
+	  // Produce an array that contains the union: each distinct element from all of
+	  // the passed-in arrays.
+	  _.union = function() {
+	    return _.uniq(flatten(arguments, true, true, []));
+	  };
+
+	  // Produce an array that contains every item shared between all the
+	  // passed-in arrays.
+	  _.intersection = function(array) {
+	    if (array == null) return [];
+	    var result = [];
+	    var argsLength = arguments.length;
+	    for (var i = 0, length = array.length; i < length; i++) {
+	      var item = array[i];
+	      if (_.contains(result, item)) continue;
+	      for (var j = 1; j < argsLength; j++) {
+	        if (!_.contains(arguments[j], item)) break;
+	      }
+	      if (j === argsLength) result.push(item);
+	    }
+	    return result;
+	  };
+
+	  // Take the difference between one array and a number of other arrays.
+	  // Only the elements present in just the first array will remain.
+	  _.difference = function(array) {
+	    var rest = flatten(slice.call(arguments, 1), true, true, []);
+	    return _.filter(array, function(value){
+	      return !_.contains(rest, value);
+	    });
+	  };
+
+	  // Zip together multiple lists into a single array -- elements that share
+	  // an index go together.
+	  _.zip = function(array) {
+	    if (array == null) return [];
+	    var length = _.max(arguments, 'length').length;
+	    var results = Array(length);
+	    for (var i = 0; i < length; i++) {
+	      results[i] = _.pluck(arguments, i);
+	    }
+	    return results;
+	  };
+
+	  // Converts lists into objects. Pass either a single array of `[key, value]`
+	  // pairs, or two parallel arrays of the same length -- one of keys, and one of
+	  // the corresponding values.
+	  _.object = function(list, values) {
+	    if (list == null) return {};
+	    var result = {};
+	    for (var i = 0, length = list.length; i < length; i++) {
+	      if (values) {
+	        result[list[i]] = values[i];
+	      } else {
+	        result[list[i][0]] = list[i][1];
+	      }
+	    }
+	    return result;
+	  };
+
+	  // Return the position of the first occurrence of an item in an array,
+	  // or -1 if the item is not included in the array.
+	  // If the array is large and already in sort order, pass `true`
+	  // for **isSorted** to use binary search.
+	  _.indexOf = function(array, item, isSorted) {
+	    if (array == null) return -1;
+	    var i = 0, length = array.length;
+	    if (isSorted) {
+	      if (typeof isSorted == 'number') {
+	        i = isSorted < 0 ? Math.max(0, length + isSorted) : isSorted;
+	      } else {
+	        i = _.sortedIndex(array, item);
+	        return array[i] === item ? i : -1;
+	      }
+	    }
+	    for (; i < length; i++) if (array[i] === item) return i;
+	    return -1;
+	  };
+
+	  _.lastIndexOf = function(array, item, from) {
+	    if (array == null) return -1;
+	    var idx = array.length;
+	    if (typeof from == 'number') {
+	      idx = from < 0 ? idx + from + 1 : Math.min(idx, from + 1);
+	    }
+	    while (--idx >= 0) if (array[idx] === item) return idx;
+	    return -1;
+	  };
+
+	  // Generate an integer Array containing an arithmetic progression. A port of
+	  // the native Python `range()` function. See
+	  // [the Python documentation](http://docs.python.org/library/functions.html#range).
+	  _.range = function(start, stop, step) {
+	    if (arguments.length <= 1) {
+	      stop = start || 0;
+	      start = 0;
+	    }
+	    step = step || 1;
+
+	    var length = Math.max(Math.ceil((stop - start) / step), 0);
+	    var range = Array(length);
+
+	    for (var idx = 0; idx < length; idx++, start += step) {
+	      range[idx] = start;
+	    }
+
+	    return range;
+	  };
+
+	  // Function (ahem) Functions
+	  // ------------------
+
+	  // Reusable constructor function for prototype setting.
+	  var Ctor = function(){};
+
+	  // Create a function bound to a given object (assigning `this`, and arguments,
+	  // optionally). Delegates to **ECMAScript 5**'s native `Function.bind` if
+	  // available.
+	  _.bind = function(func, context) {
+	    var args, bound;
+	    if (nativeBind && func.bind === nativeBind) return nativeBind.apply(func, slice.call(arguments, 1));
+	    if (!_.isFunction(func)) throw new TypeError('Bind must be called on a function');
+	    args = slice.call(arguments, 2);
+	    bound = function() {
+	      if (!(this instanceof bound)) return func.apply(context, args.concat(slice.call(arguments)));
+	      Ctor.prototype = func.prototype;
+	      var self = new Ctor;
+	      Ctor.prototype = null;
+	      var result = func.apply(self, args.concat(slice.call(arguments)));
+	      if (_.isObject(result)) return result;
+	      return self;
+	    };
+	    return bound;
+	  };
+
+	  // Partially apply a function by creating a version that has had some of its
+	  // arguments pre-filled, without changing its dynamic `this` context. _ acts
+	  // as a placeholder, allowing any combination of arguments to be pre-filled.
+	  _.partial = function(func) {
+	    var boundArgs = slice.call(arguments, 1);
+	    return function() {
+	      var position = 0;
+	      var args = boundArgs.slice();
+	      for (var i = 0, length = args.length; i < length; i++) {
+	        if (args[i] === _) args[i] = arguments[position++];
+	      }
+	      while (position < arguments.length) args.push(arguments[position++]);
+	      return func.apply(this, args);
+	    };
+	  };
+
+	  // Bind a number of an object's methods to that object. Remaining arguments
+	  // are the method names to be bound. Useful for ensuring that all callbacks
+	  // defined on an object belong to it.
+	  _.bindAll = function(obj) {
+	    var i, length = arguments.length, key;
+	    if (length <= 1) throw new Error('bindAll must be passed function names');
+	    for (i = 1; i < length; i++) {
+	      key = arguments[i];
+	      obj[key] = _.bind(obj[key], obj);
+	    }
+	    return obj;
+	  };
+
+	  // Memoize an expensive function by storing its results.
+	  _.memoize = function(func, hasher) {
+	    var memoize = function(key) {
+	      var cache = memoize.cache;
+	      var address = hasher ? hasher.apply(this, arguments) : key;
+	      if (!_.has(cache, address)) cache[address] = func.apply(this, arguments);
+	      return cache[address];
+	    };
+	    memoize.cache = {};
+	    return memoize;
+	  };
+
+	  // Delays a function for the given number of milliseconds, and then calls
+	  // it with the arguments supplied.
+	  _.delay = function(func, wait) {
+	    var args = slice.call(arguments, 2);
+	    return setTimeout(function(){
+	      return func.apply(null, args);
+	    }, wait);
+	  };
+
+	  // Defers a function, scheduling it to run after the current call stack has
+	  // cleared.
+	  _.defer = function(func) {
+	    return _.delay.apply(_, [func, 1].concat(slice.call(arguments, 1)));
+	  };
+
+	  // Returns a function, that, when invoked, will only be triggered at most once
+	  // during a given window of time. Normally, the throttled function will run
+	  // as much as it can, without ever going more than once per `wait` duration;
+	  // but if you'd like to disable the execution on the leading edge, pass
+	  // `{leading: false}`. To disable execution on the trailing edge, ditto.
+	  _.throttle = function(func, wait, options) {
+	    var context, args, result;
+	    var timeout = null;
+	    var previous = 0;
+	    if (!options) options = {};
+	    var later = function() {
+	      previous = options.leading === false ? 0 : _.now();
+	      timeout = null;
+	      result = func.apply(context, args);
+	      if (!timeout) context = args = null;
+	    };
+	    return function() {
+	      var now = _.now();
+	      if (!previous && options.leading === false) previous = now;
+	      var remaining = wait - (now - previous);
+	      context = this;
+	      args = arguments;
+	      if (remaining <= 0 || remaining > wait) {
+	        clearTimeout(timeout);
+	        timeout = null;
+	        previous = now;
+	        result = func.apply(context, args);
+	        if (!timeout) context = args = null;
+	      } else if (!timeout && options.trailing !== false) {
+	        timeout = setTimeout(later, remaining);
+	      }
+	      return result;
+	    };
+	  };
+
+	  // Returns a function, that, as long as it continues to be invoked, will not
+	  // be triggered. The function will be called after it stops being called for
+	  // N milliseconds. If `immediate` is passed, trigger the function on the
+	  // leading edge, instead of the trailing.
+	  _.debounce = function(func, wait, immediate) {
+	    var timeout, args, context, timestamp, result;
+
+	    var later = function() {
+	      var last = _.now() - timestamp;
+
+	      if (last < wait && last > 0) {
+	        timeout = setTimeout(later, wait - last);
+	      } else {
+	        timeout = null;
+	        if (!immediate) {
+	          result = func.apply(context, args);
+	          if (!timeout) context = args = null;
+	        }
+	      }
+	    };
+
+	    return function() {
+	      context = this;
+	      args = arguments;
+	      timestamp = _.now();
+	      var callNow = immediate && !timeout;
+	      if (!timeout) timeout = setTimeout(later, wait);
+	      if (callNow) {
+	        result = func.apply(context, args);
+	        context = args = null;
+	      }
+
+	      return result;
+	    };
+	  };
+
+	  // Returns the first function passed as an argument to the second,
+	  // allowing you to adjust arguments, run code before and after, and
+	  // conditionally execute the original function.
+	  _.wrap = function(func, wrapper) {
+	    return _.partial(wrapper, func);
+	  };
+
+	  // Returns a negated version of the passed-in predicate.
+	  _.negate = function(predicate) {
+	    return function() {
+	      return !predicate.apply(this, arguments);
+	    };
+	  };
+
+	  // Returns a function that is the composition of a list of functions, each
+	  // consuming the return value of the function that follows.
+	  _.compose = function() {
+	    var args = arguments;
+	    var start = args.length - 1;
+	    return function() {
+	      var i = start;
+	      var result = args[start].apply(this, arguments);
+	      while (i--) result = args[i].call(this, result);
+	      return result;
+	    };
+	  };
+
+	  // Returns a function that will only be executed after being called N times.
+	  _.after = function(times, func) {
+	    return function() {
+	      if (--times < 1) {
+	        return func.apply(this, arguments);
+	      }
+	    };
+	  };
+
+	  // Returns a function that will only be executed before being called N times.
+	  _.before = function(times, func) {
+	    var memo;
+	    return function() {
+	      if (--times > 0) {
+	        memo = func.apply(this, arguments);
+	      } else {
+	        func = null;
+	      }
+	      return memo;
+	    };
+	  };
+
+	  // Returns a function that will be executed at most one time, no matter how
+	  // often you call it. Useful for lazy initialization.
+	  _.once = _.partial(_.before, 2);
+
+	  // Object Functions
+	  // ----------------
+
+	  // Retrieve the names of an object's properties.
+	  // Delegates to **ECMAScript 5**'s native `Object.keys`
+	  _.keys = function(obj) {
+	    if (!_.isObject(obj)) return [];
+	    if (nativeKeys) return nativeKeys(obj);
+	    var keys = [];
+	    for (var key in obj) if (_.has(obj, key)) keys.push(key);
+	    return keys;
+	  };
+
+	  // Retrieve the values of an object's properties.
+	  _.values = function(obj) {
+	    var keys = _.keys(obj);
+	    var length = keys.length;
+	    var values = Array(length);
+	    for (var i = 0; i < length; i++) {
+	      values[i] = obj[keys[i]];
+	    }
+	    return values;
+	  };
+
+	  // Convert an object into a list of `[key, value]` pairs.
+	  _.pairs = function(obj) {
+	    var keys = _.keys(obj);
+	    var length = keys.length;
+	    var pairs = Array(length);
+	    for (var i = 0; i < length; i++) {
+	      pairs[i] = [keys[i], obj[keys[i]]];
+	    }
+	    return pairs;
+	  };
+
+	  // Invert the keys and values of an object. The values must be serializable.
+	  _.invert = function(obj) {
+	    var result = {};
+	    var keys = _.keys(obj);
+	    for (var i = 0, length = keys.length; i < length; i++) {
+	      result[obj[keys[i]]] = keys[i];
+	    }
+	    return result;
+	  };
+
+	  // Return a sorted list of the function names available on the object.
+	  // Aliased as `methods`
+	  _.functions = _.methods = function(obj) {
+	    var names = [];
+	    for (var key in obj) {
+	      if (_.isFunction(obj[key])) names.push(key);
+	    }
+	    return names.sort();
+	  };
+
+	  // Extend a given object with all the properties in passed-in object(s).
+	  _.extend = function(obj) {
+	    if (!_.isObject(obj)) return obj;
+	    var source, prop;
+	    for (var i = 1, length = arguments.length; i < length; i++) {
+	      source = arguments[i];
+	      for (prop in source) {
+	        if (hasOwnProperty.call(source, prop)) {
+	            obj[prop] = source[prop];
+	        }
+	      }
+	    }
+	    return obj;
+	  };
+
+	  // Return a copy of the object only containing the whitelisted properties.
+	  _.pick = function(obj, iteratee, context) {
+	    var result = {}, key;
+	    if (obj == null) return result;
+	    if (_.isFunction(iteratee)) {
+	      iteratee = createCallback(iteratee, context);
+	      for (key in obj) {
+	        var value = obj[key];
+	        if (iteratee(value, key, obj)) result[key] = value;
+	      }
+	    } else {
+	      var keys = concat.apply([], slice.call(arguments, 1));
+	      obj = new Object(obj);
+	      for (var i = 0, length = keys.length; i < length; i++) {
+	        key = keys[i];
+	        if (key in obj) result[key] = obj[key];
+	      }
+	    }
+	    return result;
+	  };
+
+	   // Return a copy of the object without the blacklisted properties.
+	  _.omit = function(obj, iteratee, context) {
+	    if (_.isFunction(iteratee)) {
+	      iteratee = _.negate(iteratee);
+	    } else {
+	      var keys = _.map(concat.apply([], slice.call(arguments, 1)), String);
+	      iteratee = function(value, key) {
+	        return !_.contains(keys, key);
+	      };
+	    }
+	    return _.pick(obj, iteratee, context);
+	  };
+
+	  // Fill in a given object with default properties.
+	  _.defaults = function(obj) {
+	    if (!_.isObject(obj)) return obj;
+	    for (var i = 1, length = arguments.length; i < length; i++) {
+	      var source = arguments[i];
+	      for (var prop in source) {
+	        if (obj[prop] === void 0) obj[prop] = source[prop];
+	      }
+	    }
+	    return obj;
+	  };
+
+	  // Create a (shallow-cloned) duplicate of an object.
+	  _.clone = function(obj) {
+	    if (!_.isObject(obj)) return obj;
+	    return _.isArray(obj) ? obj.slice() : _.extend({}, obj);
+	  };
+
+	  // Invokes interceptor with the obj, and then returns obj.
+	  // The primary purpose of this method is to "tap into" a method chain, in
+	  // order to perform operations on intermediate results within the chain.
+	  _.tap = function(obj, interceptor) {
+	    interceptor(obj);
+	    return obj;
+	  };
+
+	  // Internal recursive comparison function for `isEqual`.
+	  var eq = function(a, b, aStack, bStack) {
+	    // Identical objects are equal. `0 === -0`, but they aren't identical.
+	    // See the [Harmony `egal` proposal](http://wiki.ecmascript.org/doku.php?id=harmony:egal).
+	    if (a === b) return a !== 0 || 1 / a === 1 / b;
+	    // A strict comparison is necessary because `null == undefined`.
+	    if (a == null || b == null) return a === b;
+	    // Unwrap any wrapped objects.
+	    if (a instanceof _) a = a._wrapped;
+	    if (b instanceof _) b = b._wrapped;
+	    // Compare `[[Class]]` names.
+	    var className = toString.call(a);
+	    if (className !== toString.call(b)) return false;
+	    switch (className) {
+	      // Strings, numbers, regular expressions, dates, and booleans are compared by value.
+	      case '[object RegExp]':
+	      // RegExps are coerced to strings for comparison (Note: '' + /a/i === '/a/i')
+	      case '[object String]':
+	        // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
+	        // equivalent to `new String("5")`.
+	        return '' + a === '' + b;
+	      case '[object Number]':
+	        // `NaN`s are equivalent, but non-reflexive.
+	        // Object(NaN) is equivalent to NaN
+	        if (+a !== +a) return +b !== +b;
+	        // An `egal` comparison is performed for other numeric values.
+	        return +a === 0 ? 1 / +a === 1 / b : +a === +b;
+	      case '[object Date]':
+	      case '[object Boolean]':
+	        // Coerce dates and booleans to numeric primitive values. Dates are compared by their
+	        // millisecond representations. Note that invalid dates with millisecond representations
+	        // of `NaN` are not equivalent.
+	        return +a === +b;
+	    }
+	    if (typeof a != 'object' || typeof b != 'object') return false;
+	    // Assume equality for cyclic structures. The algorithm for detecting cyclic
+	    // structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
+	    var length = aStack.length;
+	    while (length--) {
+	      // Linear search. Performance is inversely proportional to the number of
+	      // unique nested structures.
+	      if (aStack[length] === a) return bStack[length] === b;
+	    }
+	    // Objects with different constructors are not equivalent, but `Object`s
+	    // from different frames are.
+	    var aCtor = a.constructor, bCtor = b.constructor;
+	    if (
+	      aCtor !== bCtor &&
+	      // Handle Object.create(x) cases
+	      'constructor' in a && 'constructor' in b &&
+	      !(_.isFunction(aCtor) && aCtor instanceof aCtor &&
+	        _.isFunction(bCtor) && bCtor instanceof bCtor)
+	    ) {
+	      return false;
+	    }
+	    // Add the first object to the stack of traversed objects.
+	    aStack.push(a);
+	    bStack.push(b);
+	    var size, result;
+	    // Recursively compare objects and arrays.
+	    if (className === '[object Array]') {
+	      // Compare array lengths to determine if a deep comparison is necessary.
+	      size = a.length;
+	      result = size === b.length;
+	      if (result) {
+	        // Deep compare the contents, ignoring non-numeric properties.
+	        while (size--) {
+	          if (!(result = eq(a[size], b[size], aStack, bStack))) break;
+	        }
+	      }
+	    } else {
+	      // Deep compare objects.
+	      var keys = _.keys(a), key;
+	      size = keys.length;
+	      // Ensure that both objects contain the same number of properties before comparing deep equality.
+	      result = _.keys(b).length === size;
+	      if (result) {
+	        while (size--) {
+	          // Deep compare each member
+	          key = keys[size];
+	          if (!(result = _.has(b, key) && eq(a[key], b[key], aStack, bStack))) break;
+	        }
+	      }
+	    }
+	    // Remove the first object from the stack of traversed objects.
+	    aStack.pop();
+	    bStack.pop();
+	    return result;
+	  };
+
+	  // Perform a deep comparison to check if two objects are equal.
+	  _.isEqual = function(a, b) {
+	    return eq(a, b, [], []);
+	  };
+
+	  // Is a given array, string, or object empty?
+	  // An "empty" object has no enumerable own-properties.
+	  _.isEmpty = function(obj) {
+	    if (obj == null) return true;
+	    if (_.isArray(obj) || _.isString(obj) || _.isArguments(obj)) return obj.length === 0;
+	    for (var key in obj) if (_.has(obj, key)) return false;
+	    return true;
+	  };
+
+	  // Is a given value a DOM element?
+	  _.isElement = function(obj) {
+	    return !!(obj && obj.nodeType === 1);
+	  };
+
+	  // Is a given value an array?
+	  // Delegates to ECMA5's native Array.isArray
+	  _.isArray = nativeIsArray || function(obj) {
+	    return toString.call(obj) === '[object Array]';
+	  };
+
+	  // Is a given variable an object?
+	  _.isObject = function(obj) {
+	    var type = typeof obj;
+	    return type === 'function' || type === 'object' && !!obj;
+	  };
+
+	  // Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp.
+	  _.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp'], function(name) {
+	    _['is' + name] = function(obj) {
+	      return toString.call(obj) === '[object ' + name + ']';
+	    };
+	  });
+
+	  // Define a fallback version of the method in browsers (ahem, IE), where
+	  // there isn't any inspectable "Arguments" type.
+	  if (!_.isArguments(arguments)) {
+	    _.isArguments = function(obj) {
+	      return _.has(obj, 'callee');
+	    };
+	  }
+
+	  // Optimize `isFunction` if appropriate. Work around an IE 11 bug.
+	  if (typeof /./ !== 'function') {
+	    _.isFunction = function(obj) {
+	      return typeof obj == 'function' || false;
+	    };
+	  }
+
+	  // Is a given object a finite number?
+	  _.isFinite = function(obj) {
+	    return isFinite(obj) && !isNaN(parseFloat(obj));
+	  };
+
+	  // Is the given value `NaN`? (NaN is the only number which does not equal itself).
+	  _.isNaN = function(obj) {
+	    return _.isNumber(obj) && obj !== +obj;
+	  };
+
+	  // Is a given value a boolean?
+	  _.isBoolean = function(obj) {
+	    return obj === true || obj === false || toString.call(obj) === '[object Boolean]';
+	  };
+
+	  // Is a given value equal to null?
+	  _.isNull = function(obj) {
+	    return obj === null;
+	  };
+
+	  // Is a given variable undefined?
+	  _.isUndefined = function(obj) {
+	    return obj === void 0;
+	  };
+
+	  // Shortcut function for checking if an object has a given property directly
+	  // on itself (in other words, not on a prototype).
+	  _.has = function(obj, key) {
+	    return obj != null && hasOwnProperty.call(obj, key);
+	  };
+
+	  // Utility Functions
+	  // -----------------
+
+	  // Run Underscore.js in *noConflict* mode, returning the `_` variable to its
+	  // previous owner. Returns a reference to the Underscore object.
+	  _.noConflict = function() {
+	    root._ = previousUnderscore;
+	    return this;
+	  };
+
+	  // Keep the identity function around for default iteratees.
+	  _.identity = function(value) {
+	    return value;
+	  };
+
+	  _.constant = function(value) {
+	    return function() {
+	      return value;
+	    };
+	  };
+
+	  _.noop = function(){};
+
+	  _.property = function(key) {
+	    return function(obj) {
+	      return obj[key];
+	    };
+	  };
+
+	  // Returns a predicate for checking whether an object has a given set of `key:value` pairs.
+	  _.matches = function(attrs) {
+	    var pairs = _.pairs(attrs), length = pairs.length;
+	    return function(obj) {
+	      if (obj == null) return !length;
+	      obj = new Object(obj);
+	      for (var i = 0; i < length; i++) {
+	        var pair = pairs[i], key = pair[0];
+	        if (pair[1] !== obj[key] || !(key in obj)) return false;
+	      }
+	      return true;
+	    };
+	  };
+
+	  // Run a function **n** times.
+	  _.times = function(n, iteratee, context) {
+	    var accum = Array(Math.max(0, n));
+	    iteratee = createCallback(iteratee, context, 1);
+	    for (var i = 0; i < n; i++) accum[i] = iteratee(i);
+	    return accum;
+	  };
+
+	  // Return a random integer between min and max (inclusive).
+	  _.random = function(min, max) {
+	    if (max == null) {
+	      max = min;
+	      min = 0;
+	    }
+	    return min + Math.floor(Math.random() * (max - min + 1));
+	  };
+
+	  // A (possibly faster) way to get the current timestamp as an integer.
+	  _.now = Date.now || function() {
+	    return new Date().getTime();
+	  };
+
+	   // List of HTML entities for escaping.
+	  var escapeMap = {
+	    '&': '&amp;',
+	    '<': '&lt;',
+	    '>': '&gt;',
+	    '"': '&quot;',
+	    "'": '&#x27;',
+	    '`': '&#x60;'
+	  };
+	  var unescapeMap = _.invert(escapeMap);
+
+	  // Functions for escaping and unescaping strings to/from HTML interpolation.
+	  var createEscaper = function(map) {
+	    var escaper = function(match) {
+	      return map[match];
+	    };
+	    // Regexes for identifying a key that needs to be escaped
+	    var source = '(?:' + _.keys(map).join('|') + ')';
+	    var testRegexp = RegExp(source);
+	    var replaceRegexp = RegExp(source, 'g');
+	    return function(string) {
+	      string = string == null ? '' : '' + string;
+	      return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string;
+	    };
+	  };
+	  _.escape = createEscaper(escapeMap);
+	  _.unescape = createEscaper(unescapeMap);
+
+	  // If the value of the named `property` is a function then invoke it with the
+	  // `object` as context; otherwise, return it.
+	  _.result = function(object, property) {
+	    if (object == null) return void 0;
+	    var value = object[property];
+	    return _.isFunction(value) ? object[property]() : value;
+	  };
+
+	  // Generate a unique integer id (unique within the entire client session).
+	  // Useful for temporary DOM ids.
+	  var idCounter = 0;
+	  _.uniqueId = function(prefix) {
+	    var id = ++idCounter + '';
+	    return prefix ? prefix + id : id;
+	  };
+
+	  // By default, Underscore uses ERB-style template delimiters, change the
+	  // following template settings to use alternative delimiters.
+	  _.templateSettings = {
+	    evaluate    : /<%([\s\S]+?)%>/g,
+	    interpolate : /<%=([\s\S]+?)%>/g,
+	    escape      : /<%-([\s\S]+?)%>/g
+	  };
+
+	  // When customizing `templateSettings`, if you don't want to define an
+	  // interpolation, evaluation or escaping regex, we need one that is
+	  // guaranteed not to match.
+	  var noMatch = /(.)^/;
+
+	  // Certain characters need to be escaped so that they can be put into a
+	  // string literal.
+	  var escapes = {
+	    "'":      "'",
+	    '\\':     '\\',
+	    '\r':     'r',
+	    '\n':     'n',
+	    '\u2028': 'u2028',
+	    '\u2029': 'u2029'
+	  };
+
+	  var escaper = /\\|'|\r|\n|\u2028|\u2029/g;
+
+	  var escapeChar = function(match) {
+	    return '\\' + escapes[match];
+	  };
+
+	  // JavaScript micro-templating, similar to John Resig's implementation.
+	  // Underscore templating handles arbitrary delimiters, preserves whitespace,
+	  // and correctly escapes quotes within interpolated code.
+	  // NB: `oldSettings` only exists for backwards compatibility.
+	  _.template = function(text, settings, oldSettings) {
+	    if (!settings && oldSettings) settings = oldSettings;
+	    settings = _.defaults({}, settings, _.templateSettings);
+
+	    // Combine delimiters into one regular expression via alternation.
+	    var matcher = RegExp([
+	      (settings.escape || noMatch).source,
+	      (settings.interpolate || noMatch).source,
+	      (settings.evaluate || noMatch).source
+	    ].join('|') + '|$', 'g');
+
+	    // Compile the template source, escaping string literals appropriately.
+	    var index = 0;
+	    var source = "__p+='";
+	    text.replace(matcher, function(match, escape, interpolate, evaluate, offset) {
+	      source += text.slice(index, offset).replace(escaper, escapeChar);
+	      index = offset + match.length;
+
+	      if (escape) {
+	        source += "'+\n((__t=(" + escape + "))==null?'':_.escape(__t))+\n'";
+	      } else if (interpolate) {
+	        source += "'+\n((__t=(" + interpolate + "))==null?'':__t)+\n'";
+	      } else if (evaluate) {
+	        source += "';\n" + evaluate + "\n__p+='";
+	      }
+
+	      // Adobe VMs need the match returned to produce the correct offest.
+	      return match;
+	    });
+	    source += "';\n";
+
+	    // If a variable is not specified, place data values in local scope.
+	    if (!settings.variable) source = 'with(obj||{}){\n' + source + '}\n';
+
+	    source = "var __t,__p='',__j=Array.prototype.join," +
+	      "print=function(){__p+=__j.call(arguments,'');};\n" +
+	      source + 'return __p;\n';
+
+	    try {
+	      var render = new Function(settings.variable || 'obj', '_', source);
+	    } catch (e) {
+	      e.source = source;
+	      throw e;
+	    }
+
+	    var template = function(data) {
+	      return render.call(this, data, _);
+	    };
+
+	    // Provide the compiled source as a convenience for precompilation.
+	    var argument = settings.variable || 'obj';
+	    template.source = 'function(' + argument + '){\n' + source + '}';
+
+	    return template;
+	  };
+
+	  // Add a "chain" function. Start chaining a wrapped Underscore object.
+	  _.chain = function(obj) {
+	    var instance = _(obj);
+	    instance._chain = true;
+	    return instance;
+	  };
+
+	  // OOP
+	  // ---------------
+	  // If Underscore is called as a function, it returns a wrapped object that
+	  // can be used OO-style. This wrapper holds altered versions of all the
+	  // underscore functions. Wrapped objects may be chained.
+
+	  // Helper function to continue chaining intermediate results.
+	  var result = function(obj) {
+	    return this._chain ? _(obj).chain() : obj;
+	  };
+
+	  // Add your own custom functions to the Underscore object.
+	  _.mixin = function(obj) {
+	    _.each(_.functions(obj), function(name) {
+	      var func = _[name] = obj[name];
+	      _.prototype[name] = function() {
+	        var args = [this._wrapped];
+	        push.apply(args, arguments);
+	        return result.call(this, func.apply(_, args));
+	      };
+	    });
+	  };
+
+	  // Add all of the Underscore functions to the wrapper object.
+	  _.mixin(_);
+
+	  // Add all mutator Array functions to the wrapper.
+	  _.each(['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift'], function(name) {
+	    var method = ArrayProto[name];
+	    _.prototype[name] = function() {
+	      var obj = this._wrapped;
+	      method.apply(obj, arguments);
+	      if ((name === 'shift' || name === 'splice') && obj.length === 0) delete obj[0];
+	      return result.call(this, obj);
+	    };
+	  });
+
+	  // Add all accessor Array functions to the wrapper.
+	  _.each(['concat', 'join', 'slice'], function(name) {
+	    var method = ArrayProto[name];
+	    _.prototype[name] = function() {
+	      return result.call(this, method.apply(this._wrapped, arguments));
+	    };
+	  });
+
+	  // Extracts the result from a wrapped and chained object.
+	  _.prototype.value = function() {
+	    return this._wrapped;
+	  };
+
+	  // AMD registration happens at the end for compatibility with AMD loaders
+	  // that may not enforce next-turn semantics on modules. Even though general
+	  // practice for AMD registration is to be anonymous, underscore registers
+	  // as a named module because, like jQuery, it is a base library that is
+	  // popular enough to be bundled in a third party lib, but not be part of
+	  // an AMD load request. Those cases could generate an error when an
+	  // anonymous define() is called outside of a loader request.
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
+	      return _;
+	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  }
+	}.call(this));
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *///     Backbone.js 1.1.2
+
+	//     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	//     Backbone may be freely distributed under the MIT license.
+	//     For all details and documentation:
+	//     http://backbonejs.org
+
+	(function(root, factory) {
+
+	  // Set up Backbone appropriately for the environment. Start with AMD.
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(45), __webpack_require__(9), exports], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, $, exports) {
+	      // Export global even in AMD case in case this script is loaded with
+	      // others that may still expect a global Backbone.
+	      root.Backbone = factory(root, exports, _, $);
+	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+	  // Next for Node.js or CommonJS. jQuery may not be needed as a module.
+	  } else if (typeof exports !== 'undefined') {
+	    var _ = require('underscore');
+	    factory(root, exports, _);
+
+	  // Finally, as a browser global.
+	  } else {
+	    root.Backbone = factory(root, {}, root._, (root.jQuery || root.Zepto || root.ender || root.$));
+	  }
+
+	}(this, function(root, Backbone, _, $) {
+
+	  // Initial Setup
+	  // -------------
+
+	  // Save the previous value of the `Backbone` variable, so that it can be
+	  // restored later on, if `noConflict` is used.
+	  var previousBackbone = root.Backbone;
+
+	  // Create local references to array methods we'll want to use later.
+	  var array = [];
+	  var push = array.push;
+	  var slice = array.slice;
+	  var splice = array.splice;
+
+	  // Current version of the library. Keep in sync with `package.json`.
+	  Backbone.VERSION = '1.1.2';
+
+	  // For Backbone's purposes, jQuery, Zepto, Ender, or My Library (kidding) owns
+	  // the `$` variable.
+	  Backbone.$ = $;
+
+	  // Runs Backbone.js in *noConflict* mode, returning the `Backbone` variable
+	  // to its previous owner. Returns a reference to this Backbone object.
+	  Backbone.noConflict = function() {
+	    root.Backbone = previousBackbone;
+	    return this;
+	  };
+
+	  // Turn on `emulateHTTP` to support legacy HTTP servers. Setting this option
+	  // will fake `"PATCH"`, `"PUT"` and `"DELETE"` requests via the `_method` parameter and
+	  // set a `X-Http-Method-Override` header.
+	  Backbone.emulateHTTP = false;
+
+	  // Turn on `emulateJSON` to support legacy servers that can't deal with direct
+	  // `application/json` requests ... will encode the body as
+	  // `application/x-www-form-urlencoded` instead and will send the model in a
+	  // form param named `model`.
+	  Backbone.emulateJSON = false;
+
+	  // Backbone.Events
+	  // ---------------
+
+	  // A module that can be mixed in to *any object* in order to provide it with
+	  // custom events. You may bind with `on` or remove with `off` callback
+	  // functions to an event; `trigger`-ing an event fires all callbacks in
+	  // succession.
+	  //
+	  //     var object = {};
+	  //     _.extend(object, Backbone.Events);
+	  //     object.on('expand', function(){ alert('expanded'); });
+	  //     object.trigger('expand');
+	  //
+	  var Events = Backbone.Events = {
+
+	    // Bind an event to a `callback` function. Passing `"all"` will bind
+	    // the callback to all events fired.
+	    on: function(name, callback, context) {
+	      if (!eventsApi(this, 'on', name, [callback, context]) || !callback) return this;
+	      this._events || (this._events = {});
+	      var events = this._events[name] || (this._events[name] = []);
+	      events.push({callback: callback, context: context, ctx: context || this});
+	      return this;
+	    },
+
+	    // Bind an event to only be triggered a single time. After the first time
+	    // the callback is invoked, it will be removed.
+	    once: function(name, callback, context) {
+	      if (!eventsApi(this, 'once', name, [callback, context]) || !callback) return this;
+	      var self = this;
+	      var once = _.once(function() {
+	        self.off(name, once);
+	        callback.apply(this, arguments);
+	      });
+	      once._callback = callback;
+	      return this.on(name, once, context);
+	    },
+
+	    // Remove one or many callbacks. If `context` is null, removes all
+	    // callbacks with that function. If `callback` is null, removes all
+	    // callbacks for the event. If `name` is null, removes all bound
+	    // callbacks for all events.
+	    off: function(name, callback, context) {
+	      var retain, ev, events, names, i, l, j, k;
+	      if (!this._events || !eventsApi(this, 'off', name, [callback, context])) return this;
+	      if (!name && !callback && !context) {
+	        this._events = void 0;
+	        return this;
+	      }
+	      names = name ? [name] : _.keys(this._events);
+	      for (i = 0, l = names.length; i < l; i++) {
+	        name = names[i];
+	        if (events = this._events[name]) {
+	          this._events[name] = retain = [];
+	          if (callback || context) {
+	            for (j = 0, k = events.length; j < k; j++) {
+	              ev = events[j];
+	              if ((callback && callback !== ev.callback && callback !== ev.callback._callback) ||
+	                  (context && context !== ev.context)) {
+	                retain.push(ev);
+	              }
+	            }
+	          }
+	          if (!retain.length) delete this._events[name];
+	        }
+	      }
+
+	      return this;
+	    },
+
+	    // Trigger one or many events, firing all bound callbacks. Callbacks are
+	    // passed the same arguments as `trigger` is, apart from the event name
+	    // (unless you're listening on `"all"`, which will cause your callback to
+	    // receive the true name of the event as the first argument).
+	    trigger: function(name) {
+	      if (!this._events) return this;
+	      var args = slice.call(arguments, 1);
+	      if (!eventsApi(this, 'trigger', name, args)) return this;
+	      var events = this._events[name];
+	      var allEvents = this._events.all;
+	      if (events) triggerEvents(events, args);
+	      if (allEvents) triggerEvents(allEvents, arguments);
+	      return this;
+	    },
+
+	    // Tell this object to stop listening to either specific events ... or
+	    // to every object it's currently listening to.
+	    stopListening: function(obj, name, callback) {
+	      var listeningTo = this._listeningTo;
+	      if (!listeningTo) return this;
+	      var remove = !name && !callback;
+	      if (!callback && typeof name === 'object') callback = this;
+	      if (obj) (listeningTo = {})[obj._listenId] = obj;
+	      for (var id in listeningTo) {
+	        obj = listeningTo[id];
+	        obj.off(name, callback, this);
+	        if (remove || _.isEmpty(obj._events)) delete this._listeningTo[id];
+	      }
+	      return this;
+	    }
+
+	  };
+
+	  // Regular expression used to split event strings.
+	  var eventSplitter = /\s+/;
+
+	  // Implement fancy features of the Events API such as multiple event
+	  // names `"change blur"` and jQuery-style event maps `{change: action}`
+	  // in terms of the existing API.
+	  var eventsApi = function(obj, action, name, rest) {
+	    if (!name) return true;
+
+	    // Handle event maps.
+	    if (typeof name === 'object') {
+	      for (var key in name) {
+	        obj[action].apply(obj, [key, name[key]].concat(rest));
+	      }
+	      return false;
+	    }
+
+	    // Handle space separated event names.
+	    if (eventSplitter.test(name)) {
+	      var names = name.split(eventSplitter);
+	      for (var i = 0, l = names.length; i < l; i++) {
+	        obj[action].apply(obj, [names[i]].concat(rest));
+	      }
+	      return false;
+	    }
+
+	    return true;
+	  };
+
+	  // A difficult-to-believe, but optimized internal dispatch function for
+	  // triggering events. Tries to keep the usual cases speedy (most internal
+	  // Backbone events have 3 arguments).
+	  var triggerEvents = function(events, args) {
+	    var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2];
+	    switch (args.length) {
+	      case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx); return;
+	      case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1); return;
+	      case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2); return;
+	      case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2, a3); return;
+	      default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args); return;
+	    }
+	  };
+
+	  var listenMethods = {listenTo: 'on', listenToOnce: 'once'};
+
+	  // Inversion-of-control versions of `on` and `once`. Tell *this* object to
+	  // listen to an event in another object ... keeping track of what it's
+	  // listening to.
+	  _.each(listenMethods, function(implementation, method) {
+	    Events[method] = function(obj, name, callback) {
+	      var listeningTo = this._listeningTo || (this._listeningTo = {});
+	      var id = obj._listenId || (obj._listenId = _.uniqueId('l'));
+	      listeningTo[id] = obj;
+	      if (!callback && typeof name === 'object') callback = this;
+	      obj[implementation](name, callback, this);
+	      return this;
+	    };
+	  });
+
+	  // Aliases for backwards compatibility.
+	  Events.bind   = Events.on;
+	  Events.unbind = Events.off;
+
+	  // Allow the `Backbone` object to serve as a global event bus, for folks who
+	  // want global "pubsub" in a convenient place.
+	  _.extend(Backbone, Events);
+
+	  // Backbone.Model
+	  // --------------
+
+	  // Backbone **Models** are the basic data object in the framework --
+	  // frequently representing a row in a table in a database on your server.
+	  // A discrete chunk of data and a bunch of useful, related methods for
+	  // performing computations and transformations on that data.
+
+	  // Create a new model with the specified attributes. A client id (`cid`)
+	  // is automatically generated and assigned for you.
+	  var Model = Backbone.Model = function(attributes, options) {
+	    var attrs = attributes || {};
+	    options || (options = {});
+	    this.cid = _.uniqueId('c');
+	    this.attributes = {};
+	    if (options.collection) this.collection = options.collection;
+	    if (options.parse) attrs = this.parse(attrs, options) || {};
+	    attrs = _.defaults({}, attrs, _.result(this, 'defaults'));
+	    this.set(attrs, options);
+	    this.changed = {};
+	    this.initialize.apply(this, arguments);
+	  };
+
+	  // Attach all inheritable methods to the Model prototype.
+	  _.extend(Model.prototype, Events, {
+
+	    // A hash of attributes whose current and previous value differ.
+	    changed: null,
+
+	    // The value returned during the last failed validation.
+	    validationError: null,
+
+	    // The default name for the JSON `id` attribute is `"id"`. MongoDB and
+	    // CouchDB users may want to set this to `"_id"`.
+	    idAttribute: 'id',
+
+	    // Initialize is an empty function by default. Override it with your own
+	    // initialization logic.
+	    initialize: function(){},
+
+	    // Return a copy of the model's `attributes` object.
+	    toJSON: function(options) {
+	      return _.clone(this.attributes);
+	    },
+
+	    // Proxy `Backbone.sync` by default -- but override this if you need
+	    // custom syncing semantics for *this* particular model.
+	    sync: function() {
+	      return Backbone.sync.apply(this, arguments);
+	    },
+
+	    // Get the value of an attribute.
+	    get: function(attr) {
+	      return this.attributes[attr];
+	    },
+
+	    // Get the HTML-escaped value of an attribute.
+	    escape: function(attr) {
+	      return _.escape(this.get(attr));
+	    },
+
+	    // Returns `true` if the attribute contains a value that is not null
+	    // or undefined.
+	    has: function(attr) {
+	      return this.get(attr) != null;
+	    },
+
+	    // Set a hash of model attributes on the object, firing `"change"`. This is
+	    // the core primitive operation of a model, updating the data and notifying
+	    // anyone who needs to know about the change in state. The heart of the beast.
+	    set: function(key, val, options) {
+	      var attr, attrs, unset, changes, silent, changing, prev, current;
+	      if (key == null) return this;
+
+	      // Handle both `"key", value` and `{key: value}` -style arguments.
+	      if (typeof key === 'object') {
+	        attrs = key;
+	        options = val;
+	      } else {
+	        (attrs = {})[key] = val;
+	      }
+
+	      options || (options = {});
+
+	      // Run validation.
+	      if (!this._validate(attrs, options)) return false;
+
+	      // Extract attributes and options.
+	      unset           = options.unset;
+	      silent          = options.silent;
+	      changes         = [];
+	      changing        = this._changing;
+	      this._changing  = true;
+
+	      if (!changing) {
+	        this._previousAttributes = _.clone(this.attributes);
+	        this.changed = {};
+	      }
+	      current = this.attributes, prev = this._previousAttributes;
+
+	      // Check for changes of `id`.
+	      if (this.idAttribute in attrs) this.id = attrs[this.idAttribute];
+
+	      // For each `set` attribute, update or delete the current value.
+	      for (attr in attrs) {
+	        val = attrs[attr];
+	        if (!_.isEqual(current[attr], val)) changes.push(attr);
+	        if (!_.isEqual(prev[attr], val)) {
+	          this.changed[attr] = val;
+	        } else {
+	          delete this.changed[attr];
+	        }
+	        unset ? delete current[attr] : current[attr] = val;
+	      }
+
+	      // Trigger all relevant attribute changes.
+	      if (!silent) {
+	        if (changes.length) this._pending = options;
+	        for (var i = 0, l = changes.length; i < l; i++) {
+	          this.trigger('change:' + changes[i], this, current[changes[i]], options);
+	        }
+	      }
+
+	      // You might be wondering why there's a `while` loop here. Changes can
+	      // be recursively nested within `"change"` events.
+	      if (changing) return this;
+	      if (!silent) {
+	        while (this._pending) {
+	          options = this._pending;
+	          this._pending = false;
+	          this.trigger('change', this, options);
+	        }
+	      }
+	      this._pending = false;
+	      this._changing = false;
+	      return this;
+	    },
+
+	    // Remove an attribute from the model, firing `"change"`. `unset` is a noop
+	    // if the attribute doesn't exist.
+	    unset: function(attr, options) {
+	      return this.set(attr, void 0, _.extend({}, options, {unset: true}));
+	    },
+
+	    // Clear all attributes on the model, firing `"change"`.
+	    clear: function(options) {
+	      var attrs = {};
+	      for (var key in this.attributes) attrs[key] = void 0;
+	      return this.set(attrs, _.extend({}, options, {unset: true}));
+	    },
+
+	    // Determine if the model has changed since the last `"change"` event.
+	    // If you specify an attribute name, determine if that attribute has changed.
+	    hasChanged: function(attr) {
+	      if (attr == null) return !_.isEmpty(this.changed);
+	      return _.has(this.changed, attr);
+	    },
+
+	    // Return an object containing all the attributes that have changed, or
+	    // false if there are no changed attributes. Useful for determining what
+	    // parts of a view need to be updated and/or what attributes need to be
+	    // persisted to the server. Unset attributes will be set to undefined.
+	    // You can also pass an attributes object to diff against the model,
+	    // determining if there *would be* a change.
+	    changedAttributes: function(diff) {
+	      if (!diff) return this.hasChanged() ? _.clone(this.changed) : false;
+	      var val, changed = false;
+	      var old = this._changing ? this._previousAttributes : this.attributes;
+	      for (var attr in diff) {
+	        if (_.isEqual(old[attr], (val = diff[attr]))) continue;
+	        (changed || (changed = {}))[attr] = val;
+	      }
+	      return changed;
+	    },
+
+	    // Get the previous value of an attribute, recorded at the time the last
+	    // `"change"` event was fired.
+	    previous: function(attr) {
+	      if (attr == null || !this._previousAttributes) return null;
+	      return this._previousAttributes[attr];
+	    },
+
+	    // Get all of the attributes of the model at the time of the previous
+	    // `"change"` event.
+	    previousAttributes: function() {
+	      return _.clone(this._previousAttributes);
+	    },
+
+	    // Fetch the model from the server. If the server's representation of the
+	    // model differs from its current attributes, they will be overridden,
+	    // triggering a `"change"` event.
+	    fetch: function(options) {
+	      options = options ? _.clone(options) : {};
+	      if (options.parse === void 0) options.parse = true;
+	      var model = this;
+	      var success = options.success;
+	      options.success = function(resp) {
+	        if (!model.set(model.parse(resp, options), options)) return false;
+	        if (success) success(model, resp, options);
+	        model.trigger('sync', model, resp, options);
+	      };
+	      wrapError(this, options);
+	      return this.sync('read', this, options);
+	    },
+
+	    // Set a hash of model attributes, and sync the model to the server.
+	    // If the server returns an attributes hash that differs, the model's
+	    // state will be `set` again.
+	    save: function(key, val, options) {
+	      var attrs, method, xhr, attributes = this.attributes;
+
+	      // Handle both `"key", value` and `{key: value}` -style arguments.
+	      if (key == null || typeof key === 'object') {
+	        attrs = key;
+	        options = val;
+	      } else {
+	        (attrs = {})[key] = val;
+	      }
+
+	      options = _.extend({validate: true}, options);
+
+	      // If we're not waiting and attributes exist, save acts as
+	      // `set(attr).save(null, opts)` with validation. Otherwise, check if
+	      // the model will be valid when the attributes, if any, are set.
+	      if (attrs && !options.wait) {
+	        if (!this.set(attrs, options)) return false;
+	      } else {
+	        if (!this._validate(attrs, options)) return false;
+	      }
+
+	      // Set temporary attributes if `{wait: true}`.
+	      if (attrs && options.wait) {
+	        this.attributes = _.extend({}, attributes, attrs);
+	      }
+
+	      // After a successful server-side save, the client is (optionally)
+	      // updated with the server-side state.
+	      if (options.parse === void 0) options.parse = true;
+	      var model = this;
+	      var success = options.success;
+	      options.success = function(resp) {
+	        // Ensure attributes are restored during synchronous saves.
+	        model.attributes = attributes;
+	        var serverAttrs = model.parse(resp, options);
+	        if (options.wait) serverAttrs = _.extend(attrs || {}, serverAttrs);
+	        if (_.isObject(serverAttrs) && !model.set(serverAttrs, options)) {
+	          return false;
+	        }
+	        if (success) success(model, resp, options);
+	        model.trigger('sync', model, resp, options);
+	      };
+	      wrapError(this, options);
+
+	      method = this.isNew() ? 'create' : (options.patch ? 'patch' : 'update');
+	      if (method === 'patch') options.attrs = attrs;
+	      xhr = this.sync(method, this, options);
+
+	      // Restore attributes.
+	      if (attrs && options.wait) this.attributes = attributes;
+
+	      return xhr;
+	    },
+
+	    // Destroy this model on the server if it was already persisted.
+	    // Optimistically removes the model from its collection, if it has one.
+	    // If `wait: true` is passed, waits for the server to respond before removal.
+	    destroy: function(options) {
+	      options = options ? _.clone(options) : {};
+	      var model = this;
+	      var success = options.success;
+
+	      var destroy = function() {
+	        model.trigger('destroy', model, model.collection, options);
+	      };
+
+	      options.success = function(resp) {
+	        if (options.wait || model.isNew()) destroy();
+	        if (success) success(model, resp, options);
+	        if (!model.isNew()) model.trigger('sync', model, resp, options);
+	      };
+
+	      if (this.isNew()) {
+	        options.success();
+	        return false;
+	      }
+	      wrapError(this, options);
+
+	      var xhr = this.sync('delete', this, options);
+	      if (!options.wait) destroy();
+	      return xhr;
+	    },
+
+	    // Default URL for the model's representation on the server -- if you're
+	    // using Backbone's restful methods, override this to change the endpoint
+	    // that will be called.
+	    url: function() {
+	      var base =
+	        _.result(this, 'urlRoot') ||
+	        _.result(this.collection, 'url') ||
+	        urlError();
+	      if (this.isNew()) return base;
+	      return base.replace(/([^\/])$/, '$1/') + encodeURIComponent(this.id);
+	    },
+
+	    // **parse** converts a response into the hash of attributes to be `set` on
+	    // the model. The default implementation is just to pass the response along.
+	    parse: function(resp, options) {
+	      return resp;
+	    },
+
+	    // Create a new model with identical attributes to this one.
+	    clone: function() {
+	      return new this.constructor(this.attributes);
+	    },
+
+	    // A model is new if it has never been saved to the server, and lacks an id.
+	    isNew: function() {
+	      return !this.has(this.idAttribute);
+	    },
+
+	    // Check if the model is currently in a valid state.
+	    isValid: function(options) {
+	      return this._validate({}, _.extend(options || {}, { validate: true }));
+	    },
+
+	    // Run validation against the next complete set of model attributes,
+	    // returning `true` if all is well. Otherwise, fire an `"invalid"` event.
+	    _validate: function(attrs, options) {
+	      if (!options.validate || !this.validate) return true;
+	      attrs = _.extend({}, this.attributes, attrs);
+	      var error = this.validationError = this.validate(attrs, options) || null;
+	      if (!error) return true;
+	      this.trigger('invalid', this, error, _.extend(options, {validationError: error}));
+	      return false;
+	    }
+
+	  });
+
+	  // Underscore methods that we want to implement on the Model.
+	  var modelMethods = ['keys', 'values', 'pairs', 'invert', 'pick', 'omit'];
+
+	  // Mix in each Underscore method as a proxy to `Model#attributes`.
+	  _.each(modelMethods, function(method) {
+	    Model.prototype[method] = function() {
+	      var args = slice.call(arguments);
+	      args.unshift(this.attributes);
+	      return _[method].apply(_, args);
+	    };
+	  });
+
+	  // Backbone.Collection
+	  // -------------------
+
+	  // If models tend to represent a single row of data, a Backbone Collection is
+	  // more analagous to a table full of data ... or a small slice or page of that
+	  // table, or a collection of rows that belong together for a particular reason
+	  // -- all of the messages in this particular folder, all of the documents
+	  // belonging to this particular author, and so on. Collections maintain
+	  // indexes of their models, both in order, and for lookup by `id`.
+
+	  // Create a new **Collection**, perhaps to contain a specific type of `model`.
+	  // If a `comparator` is specified, the Collection will maintain
+	  // its models in sort order, as they're added and removed.
+	  var Collection = Backbone.Collection = function(models, options) {
+	    options || (options = {});
+	    if (options.model) this.model = options.model;
+	    if (options.comparator !== void 0) this.comparator = options.comparator;
+	    this._reset();
+	    this.initialize.apply(this, arguments);
+	    if (models) this.reset(models, _.extend({silent: true}, options));
+	  };
+
+	  // Default options for `Collection#set`.
+	  var setOptions = {add: true, remove: true, merge: true};
+	  var addOptions = {add: true, remove: false};
+
+	  // Define the Collection's inheritable methods.
+	  _.extend(Collection.prototype, Events, {
+
+	    // The default model for a collection is just a **Backbone.Model**.
+	    // This should be overridden in most cases.
+	    model: Model,
+
+	    // Initialize is an empty function by default. Override it with your own
+	    // initialization logic.
+	    initialize: function(){},
+
+	    // The JSON representation of a Collection is an array of the
+	    // models' attributes.
+	    toJSON: function(options) {
+	      return this.map(function(model){ return model.toJSON(options); });
+	    },
+
+	    // Proxy `Backbone.sync` by default.
+	    sync: function() {
+	      return Backbone.sync.apply(this, arguments);
+	    },
+
+	    // Add a model, or list of models to the set.
+	    add: function(models, options) {
+	      return this.set(models, _.extend({merge: false}, options, addOptions));
+	    },
+
+	    // Remove a model, or a list of models from the set.
+	    remove: function(models, options) {
+	      var singular = !_.isArray(models);
+	      models = singular ? [models] : _.clone(models);
+	      options || (options = {});
+	      var i, l, index, model;
+	      for (i = 0, l = models.length; i < l; i++) {
+	        model = models[i] = this.get(models[i]);
+	        if (!model) continue;
+	        delete this._byId[model.id];
+	        delete this._byId[model.cid];
+	        index = this.indexOf(model);
+	        this.models.splice(index, 1);
+	        this.length--;
+	        if (!options.silent) {
+	          options.index = index;
+	          model.trigger('remove', model, this, options);
+	        }
+	        this._removeReference(model, options);
+	      }
+	      return singular ? models[0] : models;
+	    },
+
+	    // Update a collection by `set`-ing a new list of models, adding new ones,
+	    // removing models that are no longer present, and merging models that
+	    // already exist in the collection, as necessary. Similar to **Model#set**,
+	    // the core operation for updating the data contained by the collection.
+	    set: function(models, options) {
+	      options = _.defaults({}, options, setOptions);
+	      if (options.parse) models = this.parse(models, options);
+	      var singular = !_.isArray(models);
+	      models = singular ? (models ? [models] : []) : _.clone(models);
+	      var i, l, id, model, attrs, existing, sort;
+	      var at = options.at;
+	      var targetModel = this.model;
+	      var sortable = this.comparator && (at == null) && options.sort !== false;
+	      var sortAttr = _.isString(this.comparator) ? this.comparator : null;
+	      var toAdd = [], toRemove = [], modelMap = {};
+	      var add = options.add, merge = options.merge, remove = options.remove;
+	      var order = !sortable && add && remove ? [] : false;
+
+	      // Turn bare objects into model references, and prevent invalid models
+	      // from being added.
+	      for (i = 0, l = models.length; i < l; i++) {
+	        attrs = models[i] || {};
+	        if (attrs instanceof Model) {
+	          id = model = attrs;
+	        } else {
+	          id = attrs[targetModel.prototype.idAttribute || 'id'];
+	        }
+
+	        // If a duplicate is found, prevent it from being added and
+	        // optionally merge it into the existing model.
+	        if (existing = this.get(id)) {
+	          if (remove) modelMap[existing.cid] = true;
+	          if (merge) {
+	            attrs = attrs === model ? model.attributes : attrs;
+	            if (options.parse) attrs = existing.parse(attrs, options);
+	            existing.set(attrs, options);
+	            if (sortable && !sort && existing.hasChanged(sortAttr)) sort = true;
+	          }
+	          models[i] = existing;
+
+	        // If this is a new, valid model, push it to the `toAdd` list.
+	        } else if (add) {
+	          model = models[i] = this._prepareModel(attrs, options);
+	          if (!model) continue;
+	          toAdd.push(model);
+	          this._addReference(model, options);
+	        }
+
+	        // Do not add multiple models with the same `id`.
+	        model = existing || model;
+	        if (order && (model.isNew() || !modelMap[model.id])) order.push(model);
+	        modelMap[model.id] = true;
+	      }
+
+	      // Remove nonexistent models if appropriate.
+	      if (remove) {
+	        for (i = 0, l = this.length; i < l; ++i) {
+	          if (!modelMap[(model = this.models[i]).cid]) toRemove.push(model);
+	        }
+	        if (toRemove.length) this.remove(toRemove, options);
+	      }
+
+	      // See if sorting is needed, update `length` and splice in new models.
+	      if (toAdd.length || (order && order.length)) {
+	        if (sortable) sort = true;
+	        this.length += toAdd.length;
+	        if (at != null) {
+	          for (i = 0, l = toAdd.length; i < l; i++) {
+	            this.models.splice(at + i, 0, toAdd[i]);
+	          }
+	        } else {
+	          if (order) this.models.length = 0;
+	          var orderedModels = order || toAdd;
+	          for (i = 0, l = orderedModels.length; i < l; i++) {
+	            this.models.push(orderedModels[i]);
+	          }
+	        }
+	      }
+
+	      // Silently sort the collection if appropriate.
+	      if (sort) this.sort({silent: true});
+
+	      // Unless silenced, it's time to fire all appropriate add/sort events.
+	      if (!options.silent) {
+	        for (i = 0, l = toAdd.length; i < l; i++) {
+	          (model = toAdd[i]).trigger('add', model, this, options);
+	        }
+	        if (sort || (order && order.length)) this.trigger('sort', this, options);
+	      }
+
+	      // Return the added (or merged) model (or models).
+	      return singular ? models[0] : models;
+	    },
+
+	    // When you have more items than you want to add or remove individually,
+	    // you can reset the entire set with a new list of models, without firing
+	    // any granular `add` or `remove` events. Fires `reset` when finished.
+	    // Useful for bulk operations and optimizations.
+	    reset: function(models, options) {
+	      options || (options = {});
+	      for (var i = 0, l = this.models.length; i < l; i++) {
+	        this._removeReference(this.models[i], options);
+	      }
+	      options.previousModels = this.models;
+	      this._reset();
+	      models = this.add(models, _.extend({silent: true}, options));
+	      if (!options.silent) this.trigger('reset', this, options);
+	      return models;
+	    },
+
+	    // Add a model to the end of the collection.
+	    push: function(model, options) {
+	      return this.add(model, _.extend({at: this.length}, options));
+	    },
+
+	    // Remove a model from the end of the collection.
+	    pop: function(options) {
+	      var model = this.at(this.length - 1);
+	      this.remove(model, options);
+	      return model;
+	    },
+
+	    // Add a model to the beginning of the collection.
+	    unshift: function(model, options) {
+	      return this.add(model, _.extend({at: 0}, options));
+	    },
+
+	    // Remove a model from the beginning of the collection.
+	    shift: function(options) {
+	      var model = this.at(0);
+	      this.remove(model, options);
+	      return model;
+	    },
+
+	    // Slice out a sub-array of models from the collection.
+	    slice: function() {
+	      return slice.apply(this.models, arguments);
+	    },
+
+	    // Get a model from the set by id.
+	    get: function(obj) {
+	      if (obj == null) return void 0;
+	      return this._byId[obj] || this._byId[obj.id] || this._byId[obj.cid];
+	    },
+
+	    // Get the model at the given index.
+	    at: function(index) {
+	      return this.models[index];
+	    },
+
+	    // Return models with matching attributes. Useful for simple cases of
+	    // `filter`.
+	    where: function(attrs, first) {
+	      if (_.isEmpty(attrs)) return first ? void 0 : [];
+	      return this[first ? 'find' : 'filter'](function(model) {
+	        for (var key in attrs) {
+	          if (attrs[key] !== model.get(key)) return false;
+	        }
+	        return true;
+	      });
+	    },
+
+	    // Return the first model with matching attributes. Useful for simple cases
+	    // of `find`.
+	    findWhere: function(attrs) {
+	      return this.where(attrs, true);
+	    },
+
+	    // Force the collection to re-sort itself. You don't need to call this under
+	    // normal circumstances, as the set will maintain sort order as each item
+	    // is added.
+	    sort: function(options) {
+	      if (!this.comparator) throw new Error('Cannot sort a set without a comparator');
+	      options || (options = {});
+
+	      // Run sort based on type of `comparator`.
+	      if (_.isString(this.comparator) || this.comparator.length === 1) {
+	        this.models = this.sortBy(this.comparator, this);
+	      } else {
+	        this.models.sort(_.bind(this.comparator, this));
+	      }
+
+	      if (!options.silent) this.trigger('sort', this, options);
+	      return this;
+	    },
+
+	    // Pluck an attribute from each model in the collection.
+	    pluck: function(attr) {
+	      return _.invoke(this.models, 'get', attr);
+	    },
+
+	    // Fetch the default set of models for this collection, resetting the
+	    // collection when they arrive. If `reset: true` is passed, the response
+	    // data will be passed through the `reset` method instead of `set`.
+	    fetch: function(options) {
+	      options = options ? _.clone(options) : {};
+	      if (options.parse === void 0) options.parse = true;
+	      var success = options.success;
+	      var collection = this;
+	      options.success = function(resp) {
+	        var method = options.reset ? 'reset' : 'set';
+	        collection[method](resp, options);
+	        if (success) success(collection, resp, options);
+	        collection.trigger('sync', collection, resp, options);
+	      };
+	      wrapError(this, options);
+	      return this.sync('read', this, options);
+	    },
+
+	    // Create a new instance of a model in this collection. Add the model to the
+	    // collection immediately, unless `wait: true` is passed, in which case we
+	    // wait for the server to agree.
+	    create: function(model, options) {
+	      options = options ? _.clone(options) : {};
+	      if (!(model = this._prepareModel(model, options))) return false;
+	      if (!options.wait) this.add(model, options);
+	      var collection = this;
+	      var success = options.success;
+	      options.success = function(model, resp) {
+	        if (options.wait) collection.add(model, options);
+	        if (success) success(model, resp, options);
+	      };
+	      model.save(null, options);
+	      return model;
+	    },
+
+	    // **parse** converts a response into a list of models to be added to the
+	    // collection. The default implementation is just to pass it through.
+	    parse: function(resp, options) {
+	      return resp;
+	    },
+
+	    // Create a new collection with an identical list of models as this one.
+	    clone: function() {
+	      return new this.constructor(this.models);
+	    },
+
+	    // Private method to reset all internal state. Called when the collection
+	    // is first initialized or reset.
+	    _reset: function() {
+	      this.length = 0;
+	      this.models = [];
+	      this._byId  = {};
+	    },
+
+	    // Prepare a hash of attributes (or other model) to be added to this
+	    // collection.
+	    _prepareModel: function(attrs, options) {
+	      if (attrs instanceof Model) return attrs;
+	      options = options ? _.clone(options) : {};
+	      options.collection = this;
+	      var model = new this.model(attrs, options);
+	      if (!model.validationError) return model;
+	      this.trigger('invalid', this, model.validationError, options);
+	      return false;
+	    },
+
+	    // Internal method to create a model's ties to a collection.
+	    _addReference: function(model, options) {
+	      this._byId[model.cid] = model;
+	      if (model.id != null) this._byId[model.id] = model;
+	      if (!model.collection) model.collection = this;
+	      model.on('all', this._onModelEvent, this);
+	    },
+
+	    // Internal method to sever a model's ties to a collection.
+	    _removeReference: function(model, options) {
+	      if (this === model.collection) delete model.collection;
+	      model.off('all', this._onModelEvent, this);
+	    },
+
+	    // Internal method called every time a model in the set fires an event.
+	    // Sets need to update their indexes when models change ids. All other
+	    // events simply proxy through. "add" and "remove" events that originate
+	    // in other collections are ignored.
+	    _onModelEvent: function(event, model, collection, options) {
+	      if ((event === 'add' || event === 'remove') && collection !== this) return;
+	      if (event === 'destroy') this.remove(model, options);
+	      if (model && event === 'change:' + model.idAttribute) {
+	        delete this._byId[model.previous(model.idAttribute)];
+	        if (model.id != null) this._byId[model.id] = model;
+	      }
+	      this.trigger.apply(this, arguments);
+	    }
+
+	  });
+
+	  // Underscore methods that we want to implement on the Collection.
+	  // 90% of the core usefulness of Backbone Collections is actually implemented
+	  // right here:
+	  var methods = ['forEach', 'each', 'map', 'collect', 'reduce', 'foldl',
+	    'inject', 'reduceRight', 'foldr', 'find', 'detect', 'filter', 'select',
+	    'reject', 'every', 'all', 'some', 'any', 'include', 'contains', 'invoke',
+	    'max', 'min', 'toArray', 'size', 'first', 'head', 'take', 'initial', 'rest',
+	    'tail', 'drop', 'last', 'without', 'difference', 'indexOf', 'shuffle',
+	    'lastIndexOf', 'isEmpty', 'chain', 'sample'];
+
+	  // Mix in each Underscore method as a proxy to `Collection#models`.
+	  _.each(methods, function(method) {
+	    Collection.prototype[method] = function() {
+	      var args = slice.call(arguments);
+	      args.unshift(this.models);
+	      return _[method].apply(_, args);
+	    };
+	  });
+
+	  // Underscore methods that take a property name as an argument.
+	  var attributeMethods = ['groupBy', 'countBy', 'sortBy', 'indexBy'];
+
+	  // Use attributes instead of properties.
+	  _.each(attributeMethods, function(method) {
+	    Collection.prototype[method] = function(value, context) {
+	      var iterator = _.isFunction(value) ? value : function(model) {
+	        return model.get(value);
+	      };
+	      return _[method](this.models, iterator, context);
+	    };
+	  });
+
+	  // Backbone.View
+	  // -------------
+
+	  // Backbone Views are almost more convention than they are actual code. A View
+	  // is simply a JavaScript object that represents a logical chunk of UI in the
+	  // DOM. This might be a single item, an entire list, a sidebar or panel, or
+	  // even the surrounding frame which wraps your whole app. Defining a chunk of
+	  // UI as a **View** allows you to define your DOM events declaratively, without
+	  // having to worry about render order ... and makes it easy for the view to
+	  // react to specific changes in the state of your models.
+
+	  // Creating a Backbone.View creates its initial element outside of the DOM,
+	  // if an existing element is not provided...
+	  var View = Backbone.View = function(options) {
+	    this.cid = _.uniqueId('view');
+	    options || (options = {});
+	    _.extend(this, _.pick(options, viewOptions));
+	    this._ensureElement();
+	    this.initialize.apply(this, arguments);
+	    this.delegateEvents();
+	  };
+
+	  // Cached regex to split keys for `delegate`.
+	  var delegateEventSplitter = /^(\S+)\s*(.*)$/;
+
+	  // List of view options to be merged as properties.
+	  var viewOptions = ['model', 'collection', 'el', 'id', 'attributes', 'className', 'tagName', 'events'];
+
+	  // Set up all inheritable **Backbone.View** properties and methods.
+	  _.extend(View.prototype, Events, {
+
+	    // The default `tagName` of a View's element is `"div"`.
+	    tagName: 'div',
+
+	    // jQuery delegate for element lookup, scoped to DOM elements within the
+	    // current view. This should be preferred to global lookups where possible.
+	    $: function(selector) {
+	      return this.$el.find(selector);
+	    },
+
+	    // Initialize is an empty function by default. Override it with your own
+	    // initialization logic.
+	    initialize: function(){},
+
+	    // **render** is the core function that your view should override, in order
+	    // to populate its element (`this.el`), with the appropriate HTML. The
+	    // convention is for **render** to always return `this`.
+	    render: function() {
+	      return this;
+	    },
+
+	    // Remove this view by taking the element out of the DOM, and removing any
+	    // applicable Backbone.Events listeners.
+	    remove: function() {
+	      this.$el.remove();
+	      this.stopListening();
+	      return this;
+	    },
+
+	    // Change the view's element (`this.el` property), including event
+	    // re-delegation.
+	    setElement: function(element, delegate) {
+	      if (this.$el) this.undelegateEvents();
+	      this.$el = element instanceof Backbone.$ ? element : Backbone.$(element);
+	      this.el = this.$el[0];
+	      if (delegate !== false) this.delegateEvents();
+	      return this;
+	    },
+
+	    // Set callbacks, where `this.events` is a hash of
+	    //
+	    // *{"event selector": "callback"}*
+	    //
+	    //     {
+	    //       'mousedown .title':  'edit',
+	    //       'click .button':     'save',
+	    //       'click .open':       function(e) { ... }
+	    //     }
+	    //
+	    // pairs. Callbacks will be bound to the view, with `this` set properly.
+	    // Uses event delegation for efficiency.
+	    // Omitting the selector binds the event to `this.el`.
+	    // This only works for delegate-able events: not `focus`, `blur`, and
+	    // not `change`, `submit`, and `reset` in Internet Explorer.
+	    delegateEvents: function(events) {
+	      if (!(events || (events = _.result(this, 'events')))) return this;
+	      this.undelegateEvents();
+	      for (var key in events) {
+	        var method = events[key];
+	        if (!_.isFunction(method)) method = this[events[key]];
+	        if (!method) continue;
+
+	        var match = key.match(delegateEventSplitter);
+	        var eventName = match[1], selector = match[2];
+	        method = _.bind(method, this);
+	        eventName += '.delegateEvents' + this.cid;
+	        if (selector === '') {
+	          this.$el.on(eventName, method);
+	        } else {
+	          this.$el.on(eventName, selector, method);
+	        }
+	      }
+	      return this;
+	    },
+
+	    // Clears all callbacks previously bound to the view with `delegateEvents`.
+	    // You usually don't need to use this, but may wish to if you have multiple
+	    // Backbone views attached to the same DOM element.
+	    undelegateEvents: function() {
+	      this.$el.off('.delegateEvents' + this.cid);
+	      return this;
+	    },
+
+	    // Ensure that the View has a DOM element to render into.
+	    // If `this.el` is a string, pass it through `$()`, take the first
+	    // matching element, and re-assign it to `el`. Otherwise, create
+	    // an element from the `id`, `className` and `tagName` properties.
+	    _ensureElement: function() {
+	      if (!this.el) {
+	        var attrs = _.extend({}, _.result(this, 'attributes'));
+	        if (this.id) attrs.id = _.result(this, 'id');
+	        if (this.className) attrs['class'] = _.result(this, 'className');
+	        var $el = Backbone.$('<' + _.result(this, 'tagName') + '>').attr(attrs);
+	        this.setElement($el, false);
+	      } else {
+	        this.setElement(_.result(this, 'el'), false);
+	      }
+	    }
+
+	  });
+
+	  // Backbone.sync
+	  // -------------
+
+	  // Override this function to change the manner in which Backbone persists
+	  // models to the server. You will be passed the type of request, and the
+	  // model in question. By default, makes a RESTful Ajax request
+	  // to the model's `url()`. Some possible customizations could be:
+	  //
+	  // * Use `setTimeout` to batch rapid-fire updates into a single request.
+	  // * Send up the models as XML instead of JSON.
+	  // * Persist models via WebSockets instead of Ajax.
+	  //
+	  // Turn on `Backbone.emulateHTTP` in order to send `PUT` and `DELETE` requests
+	  // as `POST`, with a `_method` parameter containing the true HTTP method,
+	  // as well as all requests with the body as `application/x-www-form-urlencoded`
+	  // instead of `application/json` with the model in a param named `model`.
+	  // Useful when interfacing with server-side languages like **PHP** that make
+	  // it difficult to read the body of `PUT` requests.
+	  Backbone.sync = function(method, model, options) {
+	    var type = methodMap[method];
+
+	    // Default options, unless specified.
+	    _.defaults(options || (options = {}), {
+	      emulateHTTP: Backbone.emulateHTTP,
+	      emulateJSON: Backbone.emulateJSON
+	    });
+
+	    // Default JSON-request options.
+	    var params = {type: type, dataType: 'json'};
+
+	    // Ensure that we have a URL.
+	    if (!options.url) {
+	      params.url = _.result(model, 'url') || urlError();
+	    }
+
+	    // Ensure that we have the appropriate request data.
+	    if (options.data == null && model && (method === 'create' || method === 'update' || method === 'patch')) {
+	      params.contentType = 'application/json';
+	      params.data = JSON.stringify(options.attrs || model.toJSON(options));
+	    }
+
+	    // For older servers, emulate JSON by encoding the request into an HTML-form.
+	    if (options.emulateJSON) {
+	      params.contentType = 'application/x-www-form-urlencoded';
+	      params.data = params.data ? {model: params.data} : {};
+	    }
+
+	    // For older servers, emulate HTTP by mimicking the HTTP method with `_method`
+	    // And an `X-HTTP-Method-Override` header.
+	    if (options.emulateHTTP && (type === 'PUT' || type === 'DELETE' || type === 'PATCH')) {
+	      params.type = 'POST';
+	      if (options.emulateJSON) params.data._method = type;
+	      var beforeSend = options.beforeSend;
+	      options.beforeSend = function(xhr) {
+	        xhr.setRequestHeader('X-HTTP-Method-Override', type);
+	        if (beforeSend) return beforeSend.apply(this, arguments);
+	      };
+	    }
+
+	    // Don't process data on a non-GET request.
+	    if (params.type !== 'GET' && !options.emulateJSON) {
+	      params.processData = false;
+	    }
+
+	    // If we're sending a `PATCH` request, and we're in an old Internet Explorer
+	    // that still has ActiveX enabled by default, override jQuery to use that
+	    // for XHR instead. Remove this line when jQuery supports `PATCH` on IE8.
+	    if (params.type === 'PATCH' && noXhrPatch) {
+	      params.xhr = function() {
+	        return new ActiveXObject("Microsoft.XMLHTTP");
+	      };
+	    }
+
+	    // Make the request, allowing the user to override any Ajax options.
+	    var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
+	    model.trigger('request', model, xhr, options);
+	    return xhr;
+	  };
+
+	  var noXhrPatch =
+	    typeof window !== 'undefined' && !!window.ActiveXObject &&
+	      !(window.XMLHttpRequest && (new XMLHttpRequest).dispatchEvent);
+
+	  // Map from CRUD to HTTP for our default `Backbone.sync` implementation.
+	  var methodMap = {
+	    'create': 'POST',
+	    'update': 'PUT',
+	    'patch':  'PATCH',
+	    'delete': 'DELETE',
+	    'read':   'GET'
+	  };
+
+	  // Set the default implementation of `Backbone.ajax` to proxy through to `$`.
+	  // Override this if you'd like to use a different library.
+	  Backbone.ajax = function() {
+	    return Backbone.$.ajax.apply(Backbone.$, arguments);
+	  };
+
+	  // Backbone.Router
+	  // ---------------
+
+	  // Routers map faux-URLs to actions, and fire events when routes are
+	  // matched. Creating a new one sets its `routes` hash, if not set statically.
+	  var Router = Backbone.Router = function(options) {
+	    options || (options = {});
+	    if (options.routes) this.routes = options.routes;
+	    this._bindRoutes();
+	    this.initialize.apply(this, arguments);
+	  };
+
+	  // Cached regular expressions for matching named param parts and splatted
+	  // parts of route strings.
+	  var optionalParam = /\((.*?)\)/g;
+	  var namedParam    = /(\(\?)?:\w+/g;
+	  var splatParam    = /\*\w+/g;
+	  var escapeRegExp  = /[\-{}\[\]+?.,\\\^$|#\s]/g;
+
+	  // Set up all inheritable **Backbone.Router** properties and methods.
+	  _.extend(Router.prototype, Events, {
+
+	    // Initialize is an empty function by default. Override it with your own
+	    // initialization logic.
+	    initialize: function(){},
+
+	    // Manually bind a single named route to a callback. For example:
+	    //
+	    //     this.route('search/:query/p:num', 'search', function(query, num) {
+	    //       ...
+	    //     });
+	    //
+	    route: function(route, name, callback) {
+	      if (!_.isRegExp(route)) route = this._routeToRegExp(route);
+	      if (_.isFunction(name)) {
+	        callback = name;
+	        name = '';
+	      }
+	      if (!callback) callback = this[name];
+	      var router = this;
+	      Backbone.history.route(route, function(fragment) {
+	        var args = router._extractParameters(route, fragment);
+	        router.execute(callback, args);
+	        router.trigger.apply(router, ['route:' + name].concat(args));
+	        router.trigger('route', name, args);
+	        Backbone.history.trigger('route', router, name, args);
+	      });
+	      return this;
+	    },
+
+	    // Execute a route handler with the provided parameters.  This is an
+	    // excellent place to do pre-route setup or post-route cleanup.
+	    execute: function(callback, args) {
+	      if (callback) callback.apply(this, args);
+	    },
+
+	    // Simple proxy to `Backbone.history` to save a fragment into the history.
+	    navigate: function(fragment, options) {
+	      Backbone.history.navigate(fragment, options);
+	      return this;
+	    },
+
+	    // Bind all defined routes to `Backbone.history`. We have to reverse the
+	    // order of the routes here to support behavior where the most general
+	    // routes can be defined at the bottom of the route map.
+	    _bindRoutes: function() {
+	      if (!this.routes) return;
+	      this.routes = _.result(this, 'routes');
+	      var route, routes = _.keys(this.routes);
+	      while ((route = routes.pop()) != null) {
+	        this.route(route, this.routes[route]);
+	      }
+	    },
+
+	    // Convert a route string into a regular expression, suitable for matching
+	    // against the current location hash.
+	    _routeToRegExp: function(route) {
+	      route = route.replace(escapeRegExp, '\\$&')
+	                   .replace(optionalParam, '(?:$1)?')
+	                   .replace(namedParam, function(match, optional) {
+	                     return optional ? match : '([^/?]+)';
+	                   })
+	                   .replace(splatParam, '([^?]*?)');
+	      return new RegExp('^' + route + '(?:\\?([\\s\\S]*))?$');
+	    },
+
+	    // Given a route, and a URL fragment that it matches, return the array of
+	    // extracted decoded parameters. Empty or unmatched parameters will be
+	    // treated as `null` to normalize cross-browser behavior.
+	    _extractParameters: function(route, fragment) {
+	      var params = route.exec(fragment).slice(1);
+	      return _.map(params, function(param, i) {
+	        // Don't decode the search params.
+	        if (i === params.length - 1) return param || null;
+	        return param ? decodeURIComponent(param) : null;
+	      });
+	    }
+
+	  });
+
+	  // Backbone.History
+	  // ----------------
+
+	  // Handles cross-browser history management, based on either
+	  // [pushState](http://diveintohtml5.info/history.html) and real URLs, or
+	  // [onhashchange](https://developer.mozilla.org/en-US/docs/DOM/window.onhashchange)
+	  // and URL fragments. If the browser supports neither (old IE, natch),
+	  // falls back to polling.
+	  var History = Backbone.History = function() {
+	    this.handlers = [];
+	    _.bindAll(this, 'checkUrl');
+
+	    // Ensure that `History` can be used outside of the browser.
+	    if (typeof window !== 'undefined') {
+	      this.location = window.location;
+	      this.history = window.history;
+	    }
+	  };
+
+	  // Cached regex for stripping a leading hash/slash and trailing space.
+	  var routeStripper = /^[#\/]|\s+$/g;
+
+	  // Cached regex for stripping leading and trailing slashes.
+	  var rootStripper = /^\/+|\/+$/g;
+
+	  // Cached regex for detecting MSIE.
+	  var isExplorer = /msie [\w.]+/;
+
+	  // Cached regex for removing a trailing slash.
+	  var trailingSlash = /\/$/;
+
+	  // Cached regex for stripping urls of hash.
+	  var pathStripper = /#.*$/;
+
+	  // Has the history handling already been started?
+	  History.started = false;
+
+	  // Set up all inheritable **Backbone.History** properties and methods.
+	  _.extend(History.prototype, Events, {
+
+	    // The default interval to poll for hash changes, if necessary, is
+	    // twenty times a second.
+	    interval: 50,
+
+	    // Are we at the app root?
+	    atRoot: function() {
+	      return this.location.pathname.replace(/[^\/]$/, '$&/') === this.root;
+	    },
+
+	    // Gets the true hash value. Cannot use location.hash directly due to bug
+	    // in Firefox where location.hash will always be decoded.
+	    getHash: function(window) {
+	      var match = (window || this).location.href.match(/#(.*)$/);
+	      return match ? match[1] : '';
+	    },
+
+	    // Get the cross-browser normalized URL fragment, either from the URL,
+	    // the hash, or the override.
+	    getFragment: function(fragment, forcePushState) {
+	      if (fragment == null) {
+	        if (this._hasPushState || !this._wantsHashChange || forcePushState) {
+	          fragment = decodeURI(this.location.pathname + this.location.search);
+	          var root = this.root.replace(trailingSlash, '');
+	          if (!fragment.indexOf(root)) fragment = fragment.slice(root.length);
+	        } else {
+	          fragment = this.getHash();
+	        }
+	      }
+	      return fragment.replace(routeStripper, '');
+	    },
+
+	    // Start the hash change handling, returning `true` if the current URL matches
+	    // an existing route, and `false` otherwise.
+	    start: function(options) {
+	      if (History.started) throw new Error("Backbone.history has already been started");
+	      History.started = true;
+
+	      // Figure out the initial configuration. Do we need an iframe?
+	      // Is pushState desired ... is it available?
+	      this.options          = _.extend({root: '/'}, this.options, options);
+	      this.root             = this.options.root;
+	      this._wantsHashChange = this.options.hashChange !== false;
+	      this._wantsPushState  = !!this.options.pushState;
+	      this._hasPushState    = !!(this.options.pushState && this.history && this.history.pushState);
+	      var fragment          = this.getFragment();
+	      var docMode           = document.documentMode;
+	      var oldIE             = (isExplorer.exec(navigator.userAgent.toLowerCase()) && (!docMode || docMode <= 7));
+
+	      // Normalize root to always include a leading and trailing slash.
+	      this.root = ('/' + this.root + '/').replace(rootStripper, '/');
+
+	      if (oldIE && this._wantsHashChange) {
+	        var frame = Backbone.$('<iframe src="javascript:0" tabindex="-1">');
+	        this.iframe = frame.hide().appendTo('body')[0].contentWindow;
+	        this.navigate(fragment);
+	      }
+
+	      // Depending on whether we're using pushState or hashes, and whether
+	      // 'onhashchange' is supported, determine how we check the URL state.
+	      if (this._hasPushState) {
+	        Backbone.$(window).on('popstate', this.checkUrl);
+	      } else if (this._wantsHashChange && ('onhashchange' in window) && !oldIE) {
+	        Backbone.$(window).on('hashchange', this.checkUrl);
+	      } else if (this._wantsHashChange) {
+	        this._checkUrlInterval = setInterval(this.checkUrl, this.interval);
+	      }
+
+	      // Determine if we need to change the base url, for a pushState link
+	      // opened by a non-pushState browser.
+	      this.fragment = fragment;
+	      var loc = this.location;
+
+	      // Transition from hashChange to pushState or vice versa if both are
+	      // requested.
+	      if (this._wantsHashChange && this._wantsPushState) {
+
+	        // If we've started off with a route from a `pushState`-enabled
+	        // browser, but we're currently in a browser that doesn't support it...
+	        if (!this._hasPushState && !this.atRoot()) {
+	          this.fragment = this.getFragment(null, true);
+	          this.location.replace(this.root + '#' + this.fragment);
+	          // Return immediately as browser will do redirect to new url
+	          return true;
+
+	        // Or if we've started out with a hash-based route, but we're currently
+	        // in a browser where it could be `pushState`-based instead...
+	        } else if (this._hasPushState && this.atRoot() && loc.hash) {
+	          this.fragment = this.getHash().replace(routeStripper, '');
+	          this.history.replaceState({}, document.title, this.root + this.fragment);
+	        }
+
+	      }
+
+	      if (!this.options.silent) return this.loadUrl();
+	    },
+
+	    // Disable Backbone.history, perhaps temporarily. Not useful in a real app,
+	    // but possibly useful for unit testing Routers.
+	    stop: function() {
+	      Backbone.$(window).off('popstate', this.checkUrl).off('hashchange', this.checkUrl);
+	      if (this._checkUrlInterval) clearInterval(this._checkUrlInterval);
+	      History.started = false;
+	    },
+
+	    // Add a route to be tested when the fragment changes. Routes added later
+	    // may override previous routes.
+	    route: function(route, callback) {
+	      this.handlers.unshift({route: route, callback: callback});
+	    },
+
+	    // Checks the current URL to see if it has changed, and if it has,
+	    // calls `loadUrl`, normalizing across the hidden iframe.
+	    checkUrl: function(e) {
+	      var current = this.getFragment();
+	      if (current === this.fragment && this.iframe) {
+	        current = this.getFragment(this.getHash(this.iframe));
+	      }
+	      if (current === this.fragment) return false;
+	      if (this.iframe) this.navigate(current);
+	      this.loadUrl();
+	    },
+
+	    // Attempt to load the current URL fragment. If a route succeeds with a
+	    // match, returns `true`. If no defined routes matches the fragment,
+	    // returns `false`.
+	    loadUrl: function(fragment) {
+	      fragment = this.fragment = this.getFragment(fragment);
+	      return _.any(this.handlers, function(handler) {
+	        if (handler.route.test(fragment)) {
+	          handler.callback(fragment);
+	          return true;
+	        }
+	      });
+	    },
+
+	    // Save a fragment into the hash history, or replace the URL state if the
+	    // 'replace' option is passed. You are responsible for properly URL-encoding
+	    // the fragment in advance.
+	    //
+	    // The options object can contain `trigger: true` if you wish to have the
+	    // route callback be fired (not usually desirable), or `replace: true`, if
+	    // you wish to modify the current URL without adding an entry to the history.
+	    navigate: function(fragment, options) {
+	      if (!History.started) return false;
+	      if (!options || options === true) options = {trigger: !!options};
+
+	      var url = this.root + (fragment = this.getFragment(fragment || ''));
+
+	      // Strip the hash for matching.
+	      fragment = fragment.replace(pathStripper, '');
+
+	      if (this.fragment === fragment) return;
+	      this.fragment = fragment;
+
+	      // Don't include a trailing slash on the root.
+	      if (fragment === '' && url !== '/') url = url.slice(0, -1);
+
+	      // If pushState is available, we use it to set the fragment as a real URL.
+	      if (this._hasPushState) {
+	        this.history[options.replace ? 'replaceState' : 'pushState']({}, document.title, url);
+
+	      // If hash changes haven't been explicitly disabled, update the hash
+	      // fragment to store history.
+	      } else if (this._wantsHashChange) {
+	        this._updateHash(this.location, fragment, options.replace);
+	        if (this.iframe && (fragment !== this.getFragment(this.getHash(this.iframe)))) {
+	          // Opening and closing the iframe tricks IE7 and earlier to push a
+	          // history entry on hash-tag change.  When replace is true, we don't
+	          // want this.
+	          if(!options.replace) this.iframe.document.open().close();
+	          this._updateHash(this.iframe.location, fragment, options.replace);
+	        }
+
+	      // If you've told us that you explicitly don't want fallback hashchange-
+	      // based history, then `navigate` becomes a page refresh.
+	      } else {
+	        return this.location.assign(url);
+	      }
+	      if (options.trigger) return this.loadUrl(fragment);
+	    },
+
+	    // Update the hash location, either replacing the current entry, or adding
+	    // a new one to the browser history.
+	    _updateHash: function(location, fragment, replace) {
+	      if (replace) {
+	        var href = location.href.replace(/(javascript:|#).*$/, '');
+	        location.replace(href + '#' + fragment);
+	      } else {
+	        // Some browsers require that `hash` contains a leading #.
+	        location.hash = '#' + fragment;
+	      }
+	    }
+
+	  });
+
+	  // Create the default Backbone.history.
+	  Backbone.history = new History;
+
+	  // Helpers
+	  // -------
+
+	  // Helper function to correctly set up the prototype chain, for subclasses.
+	  // Similar to `goog.inherits`, but uses a hash of prototype properties and
+	  // class properties to be extended.
+	  var extend = function(protoProps, staticProps) {
+	    var parent = this;
+	    var child;
+
+	    // The constructor function for the new subclass is either defined by you
+	    // (the "constructor" property in your `extend` definition), or defaulted
+	    // by us to simply call the parent's constructor.
+	    if (protoProps && _.has(protoProps, 'constructor')) {
+	      child = protoProps.constructor;
+	    } else {
+	      child = function(){ return parent.apply(this, arguments); };
+	    }
+
+	    // Add static properties to the constructor function, if supplied.
+	    _.extend(child, parent, staticProps);
+
+	    // Set the prototype chain to inherit from `parent`, without calling
+	    // `parent`'s constructor function.
+	    var Surrogate = function(){ this.constructor = child; };
+	    Surrogate.prototype = parent.prototype;
+	    child.prototype = new Surrogate;
+
+	    // Add prototype properties (instance properties) to the subclass,
+	    // if supplied.
+	    if (protoProps) _.extend(child.prototype, protoProps);
+
+	    // Set a convenience property in case the parent's prototype is needed
+	    // later.
+	    child.__super__ = parent.prototype;
+
+	    return child;
+	  };
+
+	  // Set up inheritance for the model, collection, router, view and history.
+	  Model.extend = Collection.extend = Router.extend = View.extend = History.extend = extend;
+
+	  // Throw an error when a URL is needed, and none is supplied.
+	  var urlError = function() {
+	    throw new Error('A "url" property or function must be specified');
+	  };
+
+	  // Wrap an optional error callback with a fallback error event.
+	  var wrapError = function(model, options) {
+	    var error = options.error;
+	    options.error = function(resp) {
+	      if (error) error(model, resp, options);
+	      model.trigger('error', model, resp, options);
+	    };
+	  };
+
+	  return Backbone;
+
+	}));
+
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *//*!
+	  * $script.js JS loader & dependency manager
+	  * https://github.com/ded/script.js
+	  * (c) Dustin Diaz 2014 | License MIT
+	  */
+
+	(function (name, definition) {
+	  if (typeof module != 'undefined' && module.exports) module.exports = definition()
+	  else if (true) !(__WEBPACK_AMD_DEFINE_FACTORY__ = (definition), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
+	  else this[name] = definition()
+	})('$script', function () {
+	  var doc = document
+	    , head = doc.getElementsByTagName('head')[0]
+	    , s = 'string'
+	    , f = false
+	    , push = 'push'
+	    , readyState = 'readyState'
+	    , onreadystatechange = 'onreadystatechange'
+	    , list = {}
+	    , ids = {}
+	    , delay = {}
+	    , scripts = {}
+	    , scriptpath
+	    , urlArgs
+
+	  function every(ar, fn) {
+	    for (var i = 0, j = ar.length; i < j; ++i) if (!fn(ar[i])) return f
+	    return 1
+	  }
+	  function each(ar, fn) {
+	    every(ar, function (el) {
+	      return !fn(el)
+	    })
+	  }
+
+	  function $script(paths, idOrDone, optDone) {
+	    paths = paths[push] ? paths : [paths]
+	    var idOrDoneIsDone = idOrDone && idOrDone.call
+	      , done = idOrDoneIsDone ? idOrDone : optDone
+	      , id = idOrDoneIsDone ? paths.join('') : idOrDone
+	      , queue = paths.length
+	    function loopFn(item) {
+	      return item.call ? item() : list[item]
+	    }
+	    function callback() {
+	      if (!--queue) {
+	        list[id] = 1
+	        done && done()
+	        for (var dset in delay) {
+	          every(dset.split('|'), loopFn) && !each(delay[dset], loopFn) && (delay[dset] = [])
+	        }
+	      }
+	    }
+	    setTimeout(function () {
+	      each(paths, function loading(path, force) {
+	        if (path === null) return callback()
+	        path = !force && path.indexOf('.js') === -1 && !/^https?:\/\//.test(path) && scriptpath ? scriptpath + path + '.js' : path
+	        if (scripts[path]) {
+	          if (id) ids[id] = 1
+	          return (scripts[path] == 2) ? callback() : setTimeout(function () { loading(path, true) }, 0)
+	        }
+
+	        scripts[path] = 1
+	        if (id) ids[id] = 1
+	        create(path, callback)
+	      })
+	    }, 0)
+	    return $script
+	  }
+
+	  function create(path, fn) {
+	    var el = doc.createElement('script'), loaded
+	    el.onload = el.onerror = el[onreadystatechange] = function () {
+	      if ((el[readyState] && !(/^c|loade/.test(el[readyState]))) || loaded) return;
+	      el.onload = el[onreadystatechange] = null
+	      loaded = 1
+	      scripts[path] = 2
+	      fn()
+	    }
+	    el.async = 1
+	    el.src = urlArgs ? path + (path.indexOf('?') === -1 ? '?' : '&') + urlArgs : path;
+	    head.insertBefore(el, head.lastChild)
+	  }
+
+	  $script.get = create
+
+	  $script.order = function (scripts, id, done) {
+	    (function callback(s) {
+	      s = scripts.shift()
+	      !scripts.length ? $script(s, id, done) : $script(s, callback)
+	    }())
+	  }
+
+	  $script.path = function (p) {
+	    scriptpath = p
+	  }
+	  $script.urlArgs = function (str) {
+	    urlArgs = str;
+	  }
+	  $script.ready = function (deps, ready, req) {
+	    deps = deps[push] ? deps : [deps]
+	    var missing = [];
+	    !each(deps, function (dep) {
+	      list[dep] || missing[push](dep);
+	    }) && every(deps, function (dep) {return list[dep]}) ?
+	      ready() : !function (key) {
+	      delay[key] = delay[key] || []
+	      delay[key][push](ready)
+	      req && req(missing)
+	    }(deps.join('|'))
+	    return $script
+	  }
+
+	  $script.done = function (idOrDone) {
+	    $script([null], idOrDone)
+	  }
+
+	  return $script
+	});
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM */(function (root, factory) {
+	   if (true) {
+	      // AMD. Register as an anonymous module.
+	      !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(10),__webpack_require__(11)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, Backbone) {
+	        // Use global variables if the locals are undefined.
+	        return factory(_ || root._, Backbone || root.Backbone);
+	      }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	   } else if (typeof exports === 'object') {
+	     module.exports = factory(require("underscore"), require("backbone"));
+	   } else {
+	      // RequireJS isn't being used. Assume underscore and backbone are loaded in <script> tags
+	      factory(_, Backbone);
+	   }
+	}(this, function(_, Backbone) {
+
+	var queryStringParam = /^\?(.*)/,
+	    optionalParam = /\((.*?)\)/g,
+	    namedParam    = /(\(\?)?:\w+/g,
+	    splatParam    = /\*\w+/g,
+	    escapeRegExp  = /[\-{}\[\]+?.,\\\^$|#\s]/g,
+	    fragmentStrip = /^([^\?]*)/,
+	    namesPattern = /[\:\*]([^\:\?\/]+)/g,
+	    routeStripper = /^[#\/]|\s+$/g,
+	    trailingSlash = /\/$/;
+	Backbone.Router.arrayValueSplit = '|';
+
+	_.extend(Backbone.History.prototype, {
+	  getFragment: function(fragment, forcePushState) {
+	    /*jshint eqnull:true */
+	    if (fragment == null) {
+	      if (this._hasPushState || !this._wantsHashChange || forcePushState) {
+	        fragment = this.location.pathname;
+	        var root = this.root.replace(trailingSlash, '');
+	        var search = this.location.search;
+	        if (!fragment.indexOf(root)) {
+	          fragment = fragment.substr(root.length);
+	        }
+	        if (search && this._hasPushState) {
+	          fragment += search;
+	        }
+	      } else {
+	        fragment = this.getHash();
+	      }
+	    }
+	    return fragment.replace(routeStripper, '');
+	  },
+
+	  // this will not perform custom query param serialization specific to the router
+	  // but will return a map of key/value pairs (the value is a string or array)
+	  getQueryParameters: function(fragment, forcePushState) {
+	    fragment = this.getFragment(fragment, forcePushState);
+	    // if no query string exists, this will still be the original fragment
+	    var queryString = fragment.replace(fragmentStrip, '');
+	    var match = queryString.match(queryStringParam);
+	    if (match) {
+	      queryString = match[1];
+	      var rtn = {};
+	      iterateQueryString(queryString, function(name, value) {
+	        value = parseParams(value);
+
+	        if (!rtn[name]) {
+	          rtn[name] = value;
+	        } else if (_.isString(rtn[name])) {
+	          rtn[name] = [rtn[name], value];
+	        } else {
+	          rtn[name].push(value);
+	        }
+	      });
+	      return rtn;
+	    } else {
+	      // no values
+	      return {};
+	    }
+	  }
+	});
+
+	_.extend(Backbone.Router.prototype, {
+	  initialize: function(options) {
+	    this.encodedSplatParts = options && options.encodedSplatParts;
+	  },
+
+	  _routeToRegExp: function(route) {
+	    var splatMatch = (splatParam.exec(route) || {index: -1}),
+	        namedMatch = (namedParam.exec(route) || {index: -1}),
+	        paramNames = route.match(namesPattern) || [];
+
+	    route = route.replace(escapeRegExp, '\\$&')
+	                 .replace(optionalParam, '(?:$1)?')
+	                 .replace(namedParam, function(match, optional){
+	                   return optional ? match : '([^\\/\\?]+)';
+	                 })
+	                 // `[^??]` is hacking around a regular expression bug under iOS4.
+	                 // If only `[^?]` is used then paths like signin/photos will fail
+	                 // while paths with `?` anywhere, like `signin/photos?`, will succeed.
+	                 .replace(splatParam, '([^??]*?)');
+	    route += '(\\?.*)?';
+	    var rtn = new RegExp('^' + route + '$');
+
+	    // use the rtn value to hold some parameter data
+	    if (splatMatch.index >= 0) {
+	      // there is a splat
+	      if (namedMatch >= 0) {
+	        // negative value will indicate there is a splat match before any named matches
+	        rtn.splatMatch = splatMatch.index - namedMatch.index;
+	      } else {
+	        rtn.splatMatch = -1;
+	      }
+	    }
+		// Map and remove any trailing ')' character that has been caught up in regex matching
+	    rtn.paramNames = _.map(paramNames, function(name) { return name.replace(/\)$/, '').substring(1); });
+	    rtn.namedParameters = this.namedParameters;
+
+	    return rtn;
+	  },
+
+	  /**
+	   * Given a route, and a URL fragment that it matches, return the array of
+	   * extracted parameters.
+	   */
+	  _extractParameters: function(route, fragment) {
+	    var params = route.exec(fragment).slice(1),
+	        namedParams = {};
+	    if (params.length > 0 && !params[params.length - 1]) {
+	      // remove potential invalid data from query params match
+	      params.splice(params.length - 1, 1);
+	    }
+
+	    // do we have an additional query string?
+	    var match = params.length && params[params.length-1] && params[params.length-1].match(queryStringParam);
+	    if (match) {
+	      var queryString = match[1];
+	      var data = {};
+	      if (queryString) {
+	        var self = this;
+	        iterateQueryString(queryString, function(name, value) {
+	          self._setParamValue(name, value, data);
+	        });
+	      }
+	      params[params.length-1] = data;
+	      _.extend(namedParams, data);
+	    }
+
+	    // decode params
+	    var length = params.length;
+	    if (route.splatMatch && this.encodedSplatParts) {
+	      if (route.splatMatch < 0) {
+	        // splat param is first
+	        return params;
+	      } else {
+	        length = length - 1;
+	      }
+	    }
+
+	    for (var i=0; i<length; i++) {
+	      if (_.isString(params[i])) {
+	        params[i] = parseParams(params[i]);
+	        if (route.paramNames && route.paramNames.length >= i-1) {
+	          namedParams[route.paramNames[i]] = params[i];
+	        }
+	      }
+	    }
+
+	    return (Backbone.Router.namedParameters || route.namedParameters) ? [namedParams] : params;
+	  },
+
+	  /**
+	   * Set the parameter value on the data hash
+	   */
+	  _setParamValue: function(key, value, data) {
+	    // use '.' to define hash separators
+	    key = key.replace('[]', '');
+	    key = key.replace('%5B%5D', '');
+	    var parts = key.split('.');
+	    var _data = data;
+	    for (var i=0; i<parts.length; i++) {
+	      var part = parts[i];
+	      if (i === parts.length-1) {
+	        // set the value
+	        _data[part] = this._decodeParamValue(value, _data[part]);
+	      } else {
+	        _data = _data[part] = _data[part] || {};
+	      }
+	    }
+	  },
+
+	  /**
+	   * Decode an individual parameter value (or list of values)
+	   * @param value the complete value
+	   * @param currentValue the currently known value (or list of values)
+	   */
+	  _decodeParamValue: function(value, currentValue) {
+	    // '|' will indicate an array.  Array with 1 value is a=|b - multiple values can be a=b|c
+	    var splitChar = Backbone.Router.arrayValueSplit;
+	    if (splitChar && value.indexOf(splitChar) >= 0) {
+	      var values = value.split(splitChar);
+	      // clean it up
+	      for (var i=values.length-1; i>=0; i--) {
+	        if (!values[i]) {
+	          values.splice(i, 1);
+	        } else {
+	          values[i] = parseParams(values[i]);
+	        }
+	      }
+	      return values;
+	    }
+
+	    value = parseParams(value);
+	    if (!currentValue) {
+	      return value;
+	    } else if (_.isArray(currentValue)) {
+	      currentValue.push(value);
+	      return currentValue;
+	    } else {
+	      return [currentValue, value];
+	    }
+	  },
+
+	  /**
+	   * Return the route fragment with queryParameters serialized to query parameter string
+	   */
+	  toFragment: function(route, queryParameters) {
+	    if (queryParameters) {
+	      if (!_.isString(queryParameters)) {
+	        queryParameters = toQueryString(queryParameters);
+	      }
+	      if(queryParameters) {
+	        route += '?' + queryParameters;
+	      }
+	    }
+	    return route;
+	  }
+	});
+
+
+	/**
+	 * Serialize the val hash to query parameters and return it.  Use the namePrefix to prefix all param names (for recursion)
+	 */
+	function toQueryString(val, namePrefix) {
+	  /*jshint eqnull:true */
+	  var splitChar = Backbone.Router.arrayValueSplit;
+	  function encodeSplit(val) { return String(val).replace(splitChar, encodeURIComponent(splitChar)); }
+
+	  if (!val) {
+	    return '';
+	  }
+
+	  namePrefix = namePrefix || '';
+	  var rtn = [];
+	  _.each(val, function(_val, name) {
+	    name = namePrefix + name;
+
+	    if (_.isString(_val) || _.isNumber(_val) || _.isBoolean(_val) || _.isDate(_val)) {
+	      // primitive type
+	      if (_val != null) {
+	        rtn.push(name + '=' + encodeSplit(encodeURIComponent(_val)));
+	      }
+	    } else if (_.isArray(_val)) {
+	      // arrays use Backbone.Router.arrayValueSplit separator
+	      var str = '';
+	      for (var i = 0; i < _val.length; i++) {
+	        var param = _val[i];
+	        if (param != null) {
+	          str += splitChar + encodeSplit(param);
+	        }
+	      }
+	      if (str) {
+	        rtn.push(name + '=' + str);
+	      }
+	    } else {
+	      // dig into hash
+	      var result = toQueryString(_val, name + '.');
+	      if (result) {
+	        rtn.push(result);
+	      }
+	    }
+	  });
+
+	  return rtn.join('&');
+	}
+
+	function parseParams(value) {
+	  // decodeURIComponent doesn't touch '+'
+	  try {
+	    return decodeURIComponent(value.replace(/\+/g, ' '));
+	  } catch (err) {
+	    // Failover to whatever was passed if we get junk data
+	    return value;
+	  }
+	}
+
+	function iterateQueryString(queryString, callback) {
+	  var keyValues = queryString.split('&');
+	  _.each(keyValues, function(keyValue) {
+	    var arr = keyValue.split('=');
+	    callback(arr.shift(), arr.join('='));
+	  });
+	}
+
+	}));
+
+
+/***/ },
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {/** @jsx React.DOM */var Project = __webpack_require__(35);
-	var ProjectCollection = __webpack_require__(36);
+	/* WEBPACK VAR INJECTION */(function(global) {/** @jsx React.DOM */var Project = __webpack_require__(33);
+	var ProjectCollection = __webpack_require__(34);
 	var projects = new ProjectCollection();
 	var nextId;
 	var lastImport;
@@ -13308,98 +13308,61 @@
 /* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM */
-	module.exports = {
-	  snippets: {
-	    package: function(pkg, project) {
-	      var PackageWrapperView = __webpack_require__(30);
-	      var PackageView = __webpack_require__(31);      
-	      return new PackageWrapperView({model: pkg, project: project}, new PackageView({model: pkg}));
-	    },
-	    method: function(method, project) {
-	      var PackageWrapperView = __webpack_require__(30);
-	      var MethodView = __webpack_require__(32);
-	      return new PackageWrapperView({model: method.parent, project: project, showPackageDetails: true}, new MethodView({model: method}));
-	    },
-	    api: function(api, project) {
-	      var APIView = __webpack_require__(24);
-	      var ProjectWrapperView = __webpack_require__(33);
-	      return new ProjectWrapperView({model: api, title: api.project.get('title'), project: project}, new APIView({model: api}));
-	    },
-	    section: function(section, project) {
-	      var SectionView = __webpack_require__(25);
-	      var ProjectWrapperView = __webpack_require__(33);
-	      return new ProjectWrapperView({model: section, title: section.project.get('title'), project: project},
-	        new SectionView({model: section, topLevel: true}));
-	    },
-	    summary: function(project, parentProject) {
-	      var SummaryView = __webpack_require__(34);
-	      var ProjectWrapperView = __webpack_require__(33);
-	      return new ProjectWrapperView({model: section, title: project.get('title'), project: parentProject},
-	        new SummaryView({model: project}));
-	    },
-	    project: function(project, parentProject) {
-	      var ProjectView = __webpack_require__(26);
-	      var ProjectWrapperView = __webpack_require__(33);
-	      return new ProjectWrapperView({model: project, title: project.get('title'), project: parentProject},
-	        new ProjectView({model: project}));
-	    },
-	  },
+	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	  jumpTo: function(model, self) {
-	    return function(e) {
-	      e.preventDefault();
-	      var viewState = self.props.viewState;
-	      var url = model.viewUrl(true, true);
-	      if (viewState) {
-	        url = viewState.toUrl(url);
-	      }
-	      Backbone.history.navigate(url, {replace: false, trigger: false});
+	var SideNavHeader = __webpack_require__(31);
 
-	      self.props.onJumpTo(model);
-	    };
-	  },
-
-	  snippetTo: function(type, model, self) {
-	    return function(e) {
-	      e.preventDefault();
-	      var viewState = self.props.viewState;
-	      var url = model.viewUrl(true, false);
-	      if (viewState) {
-	        url = viewState.toUrl(url);
-	      }
-	      Backbone.history.navigate(url, {replace: false, trigger: false});
-	      self.props.onSnippetTo(type, model);
-	    };
-	  },
-	  domIdify: function(id) {
-	    return encodeURIComponent(id).replace(/[%\.\{\}]/g, '_');
-	  },
-
-	  collectify: function(data, collection, parent, project) {
-	    project = project || parent.project;
-	    var Model = collection.model || Backbone.Model;
-	    var models = _.map(data, function(value, name) {
-	      var data = _.defaults({
-	        name: name
-	      }, value);
-	      var model = new Model();
-	      model.parent = parent;
-	      model.project = project;
-	      model.set(model.parse(data));
-	      return model;
-	    });
-	    collection.reset(models);
-	    collection.project = project;
-	  },
-
-	  getParameter: function(name) {
-	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-	        results = regex.exec(location.search);
-	    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-	  }
+	var FOCUS_MAP = {
+	  outline: __webpack_require__(40),
+	  packages: __webpack_require__(41),
+	  methods: __webpack_require__(42),
+	  projects: __webpack_require__(43),
 	};
+
+	module.exports = React.createClass({displayName: 'exports',
+	  mixins: ['modelChangeAware', 'events'],
+
+	  events: {
+	    'ref:header:focus': 'onFocus'
+	  },
+
+	  getInitialState: function() {
+	    return {
+	      viewState: this.props.viewState
+	    };
+	  },
+
+	  render: function() {
+	    var project = this.getModel();
+	    var viewState = this.state.viewState;
+	    var focus = viewState.focus;
+	    if (!focus) {
+	      focus = SideNavHeader.defaultFocus(project);
+	      viewState.updateFocus(focus);
+	    }
+
+	    var content = new FOCUS_MAP[focus]({
+	      ref: 'body',
+	      model: project,
+	      viewState: viewState,
+	      onJumpTo: this.props.onJumpTo,
+	      onSnippetTo: this.props.onSnippetTo
+	    });
+
+	    return (
+	      React.DOM.div({className: "sidebar", key: "nav"}, 
+	        SideNavHeader({key: focus, ref: "header", viewState: this.state.viewState, model: project, onNavSelection: this.props.onNavSelection}), 
+	        React.DOM.div({className: "project-nav"}, 
+	          content
+	        )
+	      )
+	    );
+	  },
+
+	  onFocus: function(focus) {
+	    this.props.onFocusChange(focus);
+	  }
+	});
 
 
 /***/ },
@@ -13408,15 +13371,15 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(37);
-	var SideNav = __webpack_require__(19);
-	var navUtil = __webpack_require__(27);
-	var SnippetView = __webpack_require__(28);
-	var APIView = __webpack_require__(24);
-	var SectionView = __webpack_require__(25);
-	var ProjectPage = __webpack_require__(26);
-	var util = __webpack_require__(15);
-	var SideNavHeadr = __webpack_require__(29);
+	var Markdown = __webpack_require__(25);
+	var SideNav = __webpack_require__(15);
+	var navUtil = __webpack_require__(26);
+	var SnippetView = __webpack_require__(27);
+	var APIView = __webpack_require__(28);
+	var SectionView = __webpack_require__(29);
+	var ProjectPage = __webpack_require__(30);
+	var util = __webpack_require__(19);
+	var SideNavHeadr = __webpack_require__(31);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelChangeAware'],
@@ -13631,7 +13594,7 @@
 	    var text = this.refs.input.getDOMNode().value.trim();
 	    if (text) {
 	      try {
-	        var parsed = __webpack_require__(42)(text);
+	        var parsed = __webpack_require__(32)(text);
 	        this.setState({parsed: parsed});
 	      } catch (e) {
 	        console.error(e);
@@ -13725,61 +13688,98 @@
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM *//** @jsx React.DOM */
-
-	var SideNavHeader = __webpack_require__(29);
-
-	var FOCUS_MAP = {
-	  outline: __webpack_require__(38),
-	  packages: __webpack_require__(39),
-	  methods: __webpack_require__(40),
-	  projects: __webpack_require__(41),
-	};
-
-	module.exports = React.createClass({displayName: 'exports',
-	  mixins: ['modelChangeAware', 'events'],
-
-	  events: {
-	    'ref:header:focus': 'onFocus'
+	/** @jsx React.DOM */
+	module.exports = {
+	  snippets: {
+	    package: function(pkg, project) {
+	      var PackageWrapperView = __webpack_require__(35);
+	      var PackageView = __webpack_require__(36);      
+	      return new PackageWrapperView({model: pkg, project: project}, new PackageView({model: pkg}));
+	    },
+	    method: function(method, project) {
+	      var PackageWrapperView = __webpack_require__(35);
+	      var MethodView = __webpack_require__(37);
+	      return new PackageWrapperView({model: method.parent, project: project, showPackageDetails: true}, new MethodView({model: method}));
+	    },
+	    api: function(api, project) {
+	      var APIView = __webpack_require__(28);
+	      var ProjectWrapperView = __webpack_require__(38);
+	      return new ProjectWrapperView({model: api, title: api.project.get('title'), project: project}, new APIView({model: api}));
+	    },
+	    section: function(section, project) {
+	      var SectionView = __webpack_require__(29);
+	      var ProjectWrapperView = __webpack_require__(38);
+	      return new ProjectWrapperView({model: section, title: section.project.get('title'), project: project},
+	        new SectionView({model: section, topLevel: true}));
+	    },
+	    summary: function(project, parentProject) {
+	      var SummaryView = __webpack_require__(39);
+	      var ProjectWrapperView = __webpack_require__(38);
+	      return new ProjectWrapperView({model: section, title: project.get('title'), project: parentProject},
+	        new SummaryView({model: project}));
+	    },
+	    project: function(project, parentProject) {
+	      var ProjectView = __webpack_require__(30);
+	      var ProjectWrapperView = __webpack_require__(38);
+	      return new ProjectWrapperView({model: project, title: project.get('title'), project: parentProject},
+	        new ProjectView({model: project}));
+	    },
 	  },
 
-	  getInitialState: function() {
-	    return {
-	      viewState: this.props.viewState
+	  jumpTo: function(model, self) {
+	    return function(e) {
+	      e.preventDefault();
+	      var viewState = self.props.viewState;
+	      var url = model.viewUrl(true, true);
+	      if (viewState) {
+	        url = viewState.toUrl(url);
+	      }
+	      Backbone.history.navigate(url, {replace: false, trigger: false});
+
+	      self.props.onJumpTo(model);
 	    };
 	  },
 
-	  render: function() {
-	    var project = this.getModel();
-	    var viewState = this.state.viewState;
-	    var focus = viewState.focus;
-	    if (!focus) {
-	      focus = SideNavHeader.defaultFocus(project);
-	      viewState.updateFocus(focus);
-	    }
-
-	    var content = new FOCUS_MAP[focus]({
-	      ref: 'body',
-	      model: project,
-	      viewState: viewState,
-	      onJumpTo: this.props.onJumpTo,
-	      onSnippetTo: this.props.onSnippetTo
-	    });
-
-	    return (
-	      React.DOM.div({className: "sidebar", key: "nav"}, 
-	        SideNavHeader({key: focus, ref: "header", viewState: this.state.viewState, model: project, onNavSelection: this.props.onNavSelection}), 
-	        React.DOM.div({className: "project-nav"}, 
-	          content
-	        )
-	      )
-	    );
+	  snippetTo: function(type, model, self) {
+	    return function(e) {
+	      e.preventDefault();
+	      var viewState = self.props.viewState;
+	      var url = model.viewUrl(true, false);
+	      if (viewState) {
+	        url = viewState.toUrl(url);
+	      }
+	      Backbone.history.navigate(url, {replace: false, trigger: false});
+	      self.props.onSnippetTo(type, model);
+	    };
+	  },
+	  domIdify: function(id) {
+	    return encodeURIComponent(id).replace(/[%\.\{\}]/g, '_');
 	  },
 
-	  onFocus: function(focus) {
-	    this.props.onFocusChange(focus);
+	  collectify: function(data, collection, parent, project) {
+	    project = project || parent.project;
+	    var Model = collection.model || Backbone.Model;
+	    var models = _.map(data, function(value, name) {
+	      var data = _.defaults({
+	        name: name
+	      }, value);
+	      var model = new Model();
+	      model.parent = parent;
+	      model.project = project;
+	      model.set(model.parse(data));
+	      return model;
+	    });
+	    collection.reset(models);
+	    collection.project = project;
+	  },
+
+	  getParameter: function(name) {
+	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	        results = regex.exec(location.search);
+	    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	  }
-	});
+	};
 
 
 /***/ },
@@ -13812,7 +13812,7 @@
 	 */
 	(function (main) {
 	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(7), __webpack_require__(8)], __WEBPACK_AMD_DEFINE_RESULT__ = function (Backbone, _) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(11), __webpack_require__(10)], __WEBPACK_AMD_DEFINE_RESULT__ = function (Backbone, _) {
 	      main(Backbone, _);
 	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (typeof exports !== 'undefined' && typeof require !== 'undefined') {
@@ -14047,6 +14047,292 @@
 
 /***/ },
 /* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *//*!
+	 * react-mixin-manager v0.8.0
+	 * https://github.com/jhudson8/react-mixin-manager
+	 *
+	 *
+	 * Copyright (c) 2014 Joe Hudson<joehud_AT_gmail.com>
+	 *
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:
+	 *
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 *
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 */
+	 (function(main) {
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(44)], __WEBPACK_AMD_DEFINE_FACTORY__ = (main), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports !== 'undefined' && typeof require !== 'undefined') {
+	    module.exports = function(React) {
+	      main(React);
+	    };
+	  } else {
+	    main(React);
+	  }
+	})(function(React) {
+
+	  /**
+	   * return the normalized mixin list
+	   * @param values {Array} list of mixin entries
+	   * @param index {Object} hash which contains a truthy value for all named mixins that have been added
+	   * @param initiatedOnce {Object} hash which collects mixins and their parameters that should be initiated once
+	   * @param rtn {Array} the normalized return array
+	   */
+	  function get(values, index, initiatedOnce, rtn) {
+
+	    /**
+	     * add the named mixin and all un-added dependencies to the return array
+	     * @param the mixin name
+	     */
+	    function addTo(name) {
+	      var indexName = name,
+	          match = name.match(/^([^\(]*)\s*\(([^\)]*)\)\s*/),
+	          params = match && match[2];
+	      name = match && match[1] || name;
+
+	      if (!index[indexName]) {
+	        if (params) {
+	          // there can be no function calls here because of the regex match
+	          params = eval('[' + params + ']');
+	        }
+	        var mixin = React.mixins._mixins[name],
+	            checkAgain = false,
+	            skip = false;
+
+	        if (mixin) {
+	          if (typeof mixin === 'function') {
+	            if (React.mixins._initiatedOnce[name]){
+	              initiatedOnce[name] = (initiatedOnce[name] || []);
+	              initiatedOnce[name].push(params);
+	              skip = true;
+	            } else {
+	              mixin = mixin.apply(this, params || []);
+	              checkAgain = true;
+	            }
+	          } else if (params) {
+	            throw new Error('the mixin "' + name + '" does not support parameters');
+	          }
+	          get(React.mixins._dependsOn[name], index, initiatedOnce, rtn);
+	          get(React.mixins._dependsInjected[name], index, initiatedOnce, rtn);
+
+	          index[indexName] = true;
+	          if (checkAgain) {
+	            get([mixin], index, initiatedOnce, rtn);
+	          } else if (!skip) {
+	            rtn.push(mixin);
+	          }
+
+	        } else {
+	          throw new Error('invalid mixin "' + name + '"');
+	        }
+	      }
+	    }
+
+	    function handleMixin(mixin) {
+	      if (mixin) {
+	        if (Array.isArray(mixin)) {
+	          // flatten it out
+	          get(mixin, index, initiatedOnce, rtn);
+	        } else if (typeof mixin === 'string') {
+	          // add the named mixin and all of it's dependencies
+	          addTo(mixin);
+	        } else {
+	          // just add the mixin normally
+	          rtn.push(mixin);
+	        }
+	      }
+	    }
+
+	    if (Array.isArray(values)) {
+	      for (var i=0; i<values.length; i++) {
+	        handleMixin(values[i]);
+	      }
+	    } else {
+	      handleMixin(values);
+	    }
+	  }
+
+	  /**
+	   * add the mixins that should be once initiated to the normalized mixin list
+	   * @param mixins {Object} hash of mixins keys and list of its parameters
+	   * @param rtn {Array} the normalized return array
+	   */
+	  function getInitiatedOnce(mixins, rtn) {
+
+	    /**
+	      * added once initiated mixins to return array
+	      */
+	    function addInitiatedOnce(mixin, params){
+	      mixin = mixin.apply(this, params || []);
+	        rtn.push(mixin);
+	      }
+
+	      for (var m in mixins){
+	        if (mixins.hasOwnProperty(m)){
+	          addInitiatedOnce(React.mixins._mixins[m], mixins[m]);
+	        }
+	      }
+	  }
+
+	  // allow for registered mixins to be extract just by using the standard React.createClass
+	  var _createClass = React.createClass;
+	  React.createClass = function(spec) {
+	    if (spec.mixins) {
+	      spec.mixins = React.mixins.get(spec.mixins);
+	    }
+	    return _createClass.apply(React, arguments);
+	  };
+
+	  function addMixin(name, mixin, depends, override, initiatedOnce) {
+	    var mixins = React.mixins;
+	    if (!override && mixins._mixins[name]) {
+	      return;
+	    }
+	    mixins._dependsOn[name] = depends.length && depends;
+	    mixins._mixins[name] = mixin;
+
+	    if (initiatedOnce){
+	      mixins._initiatedOnce[name] = true;
+	    }
+	  }
+
+	  function GROUP() {
+	    // empty function which is used only as a placeholder to list dependencies
+	  }
+
+	  function mixinParams(args, override) {
+	    var name,
+	        options = args[0],
+	        initiatedOnce = false;
+
+	    if (typeof(options) === 'object'){
+	      name = options.name;
+	      initiatedOnce = options.initiatedOnce;
+	    } else {
+	      name = options;
+	    }
+
+	    if (!name || !name.length){
+	        throw new Error('the mixin name hasn\'t been specified');
+	    }
+
+	    if (Array.isArray(args[1])) {
+	      return [name, args[1][0], Array.prototype.slice.call(args[1], 1), override, initiatedOnce];
+	    } else {
+	      return [name, args[1], Array.prototype.slice.call(args, 2), override, initiatedOnce]
+	    }
+	  }
+
+	  React.mixins = {
+	    /**
+	     * return the normalized mixins.  there can be N arguments with each argument being
+	     * - an array: will be flattened out to the parent list of mixins
+	     * - a string: will match against any registered mixins and append the correct mixin
+	     * - an object: will be treated as a standard mixin and returned in the list of mixins
+	     * any string arguments that are provided will cause any dependent mixins to be included
+	     * in the return list as well
+	     */
+	    get: function() {
+	      var rtn = [],
+	          index = {},
+	          initiatedOnce = {};
+
+	      get(Array.prototype.slice.call(arguments), index, initiatedOnce, rtn);
+	      getInitiatedOnce(initiatedOnce, rtn);
+	      return rtn;
+	    },
+
+	    /**
+	     * Inject dependencies that were not originally defined when a mixin was registered
+	     * @param name {string} the main mixin name
+	     * @param (any additional) {string} dependencies that should be registered against the mixin
+	     */
+	    inject: function(name) {
+	      var l = this._dependsInjected[name];
+	      if (!l) {
+	        l = this._dependsInjected[name] = [];
+	      }
+	      l.push(Array.prototype.slice.call(arguments, 1));
+	    },
+
+	    alias: function(name) {
+	      addMixin(name, GROUP, Array.prototype.slice.call(arguments, 1), false);
+	    },
+
+	    add: function(options, mixin) {
+	      addMixin.apply(this, mixinParams(arguments, false));
+	    },
+
+	    replace: function(options, mixin) {
+	      addMixin.apply(this, mixinParams(arguments, true));
+	    },
+
+	    exists: function(name) {
+	      return this._mixins[name] || false;
+	    },
+
+	    _dependsOn: {},
+	    _dependsInjected: {},
+	    _mixins: {},
+	    _initiatedOnce: {}
+	  };
+
+	  /**
+	   * mixin that exposes a "deferUpdate" method which will call forceUpdate after a setTimeout(0) to defer the update.
+	   * This allows the forceUpdate method to be called multiple times while only executing a render 1 time.  This will
+	   * also ensure the component is mounted before calling forceUpdate.
+	   *
+	   * It is added to mixin manager directly because it serves a purpose that benefits when multiple plugins use it
+	   */
+	  React.mixins.add('deferUpdate', {
+	    getInitialState: function() {
+	      // ensure that the state exists because we don't want to call setState (which will cause a render)
+	      return {};
+	    },
+	    deferUpdate: function() {
+	      var state = this.state;
+	      if (!state._deferUpdate) {
+	        state._deferUpdate = true;
+	        var self = this;
+	        setTimeout(function() {
+	          delete state._deferUpdate;
+	          if (self.isMounted()) {
+	            self.forceUpdate();
+	          }
+	        }, 0);
+	      }
+	    }
+	  });
+
+	  /**
+	   * very simple mixin that ensures that the component state is an object.  This is useful if you
+	   * know a component will be using state but won't be initialized with a state to prevent a null check on render
+	   */
+	  React.mixins.add('state', {
+	    getInitialState: function() {
+	      return {};
+	    }
+	  });
+	});
+
+
+/***/ },
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *//*!
@@ -14407,292 +14693,6 @@
 
 
 /***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @jsx React.DOM *//*!
-	 * react-mixin-manager v0.8.0
-	 * https://github.com/jhudson8/react-mixin-manager
-	 *
-	 *
-	 * Copyright (c) 2014 Joe Hudson<joehud_AT_gmail.com>
-	 *
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:
-	 *
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 *
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 */
-	 (function(main) {
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(44)], __WEBPACK_AMD_DEFINE_FACTORY__ = (main), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports !== 'undefined' && typeof require !== 'undefined') {
-	    module.exports = function(React) {
-	      main(React);
-	    };
-	  } else {
-	    main(React);
-	  }
-	})(function(React) {
-
-	  /**
-	   * return the normalized mixin list
-	   * @param values {Array} list of mixin entries
-	   * @param index {Object} hash which contains a truthy value for all named mixins that have been added
-	   * @param initiatedOnce {Object} hash which collects mixins and their parameters that should be initiated once
-	   * @param rtn {Array} the normalized return array
-	   */
-	  function get(values, index, initiatedOnce, rtn) {
-
-	    /**
-	     * add the named mixin and all un-added dependencies to the return array
-	     * @param the mixin name
-	     */
-	    function addTo(name) {
-	      var indexName = name,
-	          match = name.match(/^([^\(]*)\s*\(([^\)]*)\)\s*/),
-	          params = match && match[2];
-	      name = match && match[1] || name;
-
-	      if (!index[indexName]) {
-	        if (params) {
-	          // there can be no function calls here because of the regex match
-	          params = eval('[' + params + ']');
-	        }
-	        var mixin = React.mixins._mixins[name],
-	            checkAgain = false,
-	            skip = false;
-
-	        if (mixin) {
-	          if (typeof mixin === 'function') {
-	            if (React.mixins._initiatedOnce[name]){
-	              initiatedOnce[name] = (initiatedOnce[name] || []);
-	              initiatedOnce[name].push(params);
-	              skip = true;
-	            } else {
-	              mixin = mixin.apply(this, params || []);
-	              checkAgain = true;
-	            }
-	          } else if (params) {
-	            throw new Error('the mixin "' + name + '" does not support parameters');
-	          }
-	          get(React.mixins._dependsOn[name], index, initiatedOnce, rtn);
-	          get(React.mixins._dependsInjected[name], index, initiatedOnce, rtn);
-
-	          index[indexName] = true;
-	          if (checkAgain) {
-	            get([mixin], index, initiatedOnce, rtn);
-	          } else if (!skip) {
-	            rtn.push(mixin);
-	          }
-
-	        } else {
-	          throw new Error('invalid mixin "' + name + '"');
-	        }
-	      }
-	    }
-
-	    function handleMixin(mixin) {
-	      if (mixin) {
-	        if (Array.isArray(mixin)) {
-	          // flatten it out
-	          get(mixin, index, initiatedOnce, rtn);
-	        } else if (typeof mixin === 'string') {
-	          // add the named mixin and all of it's dependencies
-	          addTo(mixin);
-	        } else {
-	          // just add the mixin normally
-	          rtn.push(mixin);
-	        }
-	      }
-	    }
-
-	    if (Array.isArray(values)) {
-	      for (var i=0; i<values.length; i++) {
-	        handleMixin(values[i]);
-	      }
-	    } else {
-	      handleMixin(values);
-	    }
-	  }
-
-	  /**
-	   * add the mixins that should be once initiated to the normalized mixin list
-	   * @param mixins {Object} hash of mixins keys and list of its parameters
-	   * @param rtn {Array} the normalized return array
-	   */
-	  function getInitiatedOnce(mixins, rtn) {
-
-	    /**
-	      * added once initiated mixins to return array
-	      */
-	    function addInitiatedOnce(mixin, params){
-	      mixin = mixin.apply(this, params || []);
-	        rtn.push(mixin);
-	      }
-
-	      for (var m in mixins){
-	        if (mixins.hasOwnProperty(m)){
-	          addInitiatedOnce(React.mixins._mixins[m], mixins[m]);
-	        }
-	      }
-	  }
-
-	  // allow for registered mixins to be extract just by using the standard React.createClass
-	  var _createClass = React.createClass;
-	  React.createClass = function(spec) {
-	    if (spec.mixins) {
-	      spec.mixins = React.mixins.get(spec.mixins);
-	    }
-	    return _createClass.apply(React, arguments);
-	  };
-
-	  function addMixin(name, mixin, depends, override, initiatedOnce) {
-	    var mixins = React.mixins;
-	    if (!override && mixins._mixins[name]) {
-	      return;
-	    }
-	    mixins._dependsOn[name] = depends.length && depends;
-	    mixins._mixins[name] = mixin;
-
-	    if (initiatedOnce){
-	      mixins._initiatedOnce[name] = true;
-	    }
-	  }
-
-	  function GROUP() {
-	    // empty function which is used only as a placeholder to list dependencies
-	  }
-
-	  function mixinParams(args, override) {
-	    var name,
-	        options = args[0],
-	        initiatedOnce = false;
-
-	    if (typeof(options) === 'object'){
-	      name = options.name;
-	      initiatedOnce = options.initiatedOnce;
-	    } else {
-	      name = options;
-	    }
-
-	    if (!name || !name.length){
-	        throw new Error('the mixin name hasn\'t been specified');
-	    }
-
-	    if (Array.isArray(args[1])) {
-	      return [name, args[1][0], Array.prototype.slice.call(args[1], 1), override, initiatedOnce];
-	    } else {
-	      return [name, args[1], Array.prototype.slice.call(args, 2), override, initiatedOnce]
-	    }
-	  }
-
-	  React.mixins = {
-	    /**
-	     * return the normalized mixins.  there can be N arguments with each argument being
-	     * - an array: will be flattened out to the parent list of mixins
-	     * - a string: will match against any registered mixins and append the correct mixin
-	     * - an object: will be treated as a standard mixin and returned in the list of mixins
-	     * any string arguments that are provided will cause any dependent mixins to be included
-	     * in the return list as well
-	     */
-	    get: function() {
-	      var rtn = [],
-	          index = {},
-	          initiatedOnce = {};
-
-	      get(Array.prototype.slice.call(arguments), index, initiatedOnce, rtn);
-	      getInitiatedOnce(initiatedOnce, rtn);
-	      return rtn;
-	    },
-
-	    /**
-	     * Inject dependencies that were not originally defined when a mixin was registered
-	     * @param name {string} the main mixin name
-	     * @param (any additional) {string} dependencies that should be registered against the mixin
-	     */
-	    inject: function(name) {
-	      var l = this._dependsInjected[name];
-	      if (!l) {
-	        l = this._dependsInjected[name] = [];
-	      }
-	      l.push(Array.prototype.slice.call(arguments, 1));
-	    },
-
-	    alias: function(name) {
-	      addMixin(name, GROUP, Array.prototype.slice.call(arguments, 1), false);
-	    },
-
-	    add: function(options, mixin) {
-	      addMixin.apply(this, mixinParams(arguments, false));
-	    },
-
-	    replace: function(options, mixin) {
-	      addMixin.apply(this, mixinParams(arguments, true));
-	    },
-
-	    exists: function(name) {
-	      return this._mixins[name] || false;
-	    },
-
-	    _dependsOn: {},
-	    _dependsInjected: {},
-	    _mixins: {},
-	    _initiatedOnce: {}
-	  };
-
-	  /**
-	   * mixin that exposes a "deferUpdate" method which will call forceUpdate after a setTimeout(0) to defer the update.
-	   * This allows the forceUpdate method to be called multiple times while only executing a render 1 time.  This will
-	   * also ensure the component is mounted before calling forceUpdate.
-	   *
-	   * It is added to mixin manager directly because it serves a purpose that benefits when multiple plugins use it
-	   */
-	  React.mixins.add('deferUpdate', {
-	    getInitialState: function() {
-	      // ensure that the state exists because we don't want to call setState (which will cause a render)
-	      return {};
-	    },
-	    deferUpdate: function() {
-	      var state = this.state;
-	      if (!state._deferUpdate) {
-	        state._deferUpdate = true;
-	        var self = this;
-	        setTimeout(function() {
-	          delete state._deferUpdate;
-	          if (self.isMounted()) {
-	            self.forceUpdate();
-	          }
-	        }, 0);
-	      }
-	    }
-	  });
-
-	  /**
-	   * very simple mixin that ensures that the component state is an object.  This is useful if you
-	   * know a component will be using state but won't be initialized with a state to prevent a null check on render
-	   */
-	  React.mixins.add('state', {
-	    getInitialState: function() {
-	      return {};
-	    }
-	  });
-	});
-
-
-/***/ },
 /* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -14722,7 +14722,7 @@
 	 */
 	 (function(main) {
 	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(44), __webpack_require__(7), __webpack_require__(8)], __WEBPACK_AMD_DEFINE_FACTORY__ = (main), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(44), __webpack_require__(11), __webpack_require__(10)], __WEBPACK_AMD_DEFINE_FACTORY__ = (main), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (typeof exports !== 'undefined' && typeof require !== 'undefined') {
 	    module.exports = function(React, Backbone) {
 	      main(React, Backbone, require('underscore'));
@@ -15445,33 +15445,64 @@
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM *//** @jsx React.DOM */
+	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule ReactWithAddons
+	 */
 
-	var Markdown = __webpack_require__(37);
-	var PackageView = __webpack_require__(31);
+	/**
+	 * This module exists purely in the open source project, and is meant as a way
+	 * to create a separate standalone build of React. This build has "addons", or
+	 * functionality we've built and think might be useful but doesn't have a good
+	 * place to live inside React core.
+	 */
 
-	module.exports = React.createClass({displayName: 'exports',
-	  mixins: ['modelAware'],
+	"use strict";
 
-	  render: function() {
-	    var api = this.getModel();
-	    var apiId = api.domId();
+	var LinkedStateMixin = __webpack_require__(46);
+	var React = __webpack_require__(47);
+	var ReactComponentWithPureRenderMixin =
+	  __webpack_require__(48);
+	var ReactCSSTransitionGroup = __webpack_require__(49);
+	var ReactTransitionGroup = __webpack_require__(50);
 
-	    var packages = api.map(function(pkg, name) {
-	      return PackageView({model: pkg})
-	    }, this);
+	var cx = __webpack_require__(51);
+	var cloneWithProps = __webpack_require__(52);
+	var update = __webpack_require__(53);
 
-	    return (
-	      React.DOM.div({className: "main-section"}, 
-	        React.DOM.h3({className: "ui header", id: apiId}, api.name), 
-	        React.DOM.div({className: "ui divider"}), 
-	        Markdown({body: api.description}), 
-	        packages
-	      )
-	    );
-	  }
-	});
+	React.addons = {
+	  CSSTransitionGroup: ReactCSSTransitionGroup,
+	  LinkedStateMixin: LinkedStateMixin,
+	  PureRenderMixin: ReactComponentWithPureRenderMixin,
+	  TransitionGroup: ReactTransitionGroup,
 
+	  classSet: cx,
+	  cloneWithProps: cloneWithProps,
+	  update: update
+	};
+
+	if ("production" !== process.env.NODE_ENV) {
+	  React.addons.Perf = __webpack_require__(54);
+	  React.addons.TestUtils = __webpack_require__(55);
+	}
+
+	module.exports = React;
+
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 25 */
@@ -15479,30 +15510,27 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(37);
+	var converter = new Showdown.converter();
 
 	module.exports = React.createClass({displayName: 'exports',
-	  mixins: ['modelAware'],
-
+	  getInitialState: function() {
+	    return {
+	      id: this.props.id || _.uniqueId('md-')
+	    };
+	  },
 	  render: function() {
-	    var section = this.getModel();
-	    var level = (this.props.level || 3);
-	    var title = React.DOM['h' + (level)]({className: 'ui header'}, section.get('title'));
-	    var divider = (this.props.topLevel) ? (React.DOM.div({className: "ui divider"})) : undefined;
-
-	    var children = section.sections && section.sections.map(function(section) {
-	      return new module.exports({model: section, topLevel: false, level: level + 1});
-	    });
-
+	    var Container = React.DOM[this.props.tag || 'div'];
+	    var html = converter.makeHtml(
+	      this.props.body || (this.props.children && this.props.children.toString()) || '').replace(/id=\"[^"]*"/g, '');
+	    
 	    return (
-	      React.DOM.div({id: section.domId(), key: 'section-' + section.id}, 
-	        title, 
-	        divider, 
-	        Markdown({className: "content", body: section.get('body')}), 
-	        children
+	      Container({key: this.state.id, id: this.props.id}, 
+	        React.DOM.div({className: this.props.className, dangerouslySetInnerHTML: {__html: html}})
 	      )
 	    );
-	  }
+	  },
+
+
 	});
 
 
@@ -15512,67 +15540,7 @@
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var Markdown = __webpack_require__(37);
-	var navUtil = __webpack_require__(27);
-	var SnippetView = __webpack_require__(28);
-	var APIView = __webpack_require__(24);
-	var SectionView = __webpack_require__(25);
-	var SummaryView = __webpack_require__(34);
-	var util = __webpack_require__(15);
-
-	module.exports = React.createClass({displayName: 'exports',
-	  mixins: ['modelAware'],
-
-	  render: function() {
-
-	    var project = this.getModel();
-	    var children = [];
-	    var viewState = this.props.viewState;
-
-	    var installationView;
-	    if (project.get('installation')) {
-	      installationView = (
-	        React.DOM.div({className: "main-section"}, 
-	          React.DOM.h3({className: "ui header", id: "installation"}, "Installation"), 
-	          React.DOM.div({className: "ui divider"}), 
-	          Markdown({body: project.get('installation')})
-	        )
-	      );
-	    }
-
-	    _.each(project.api, function(api, name) {
-	      children.push(new APIView({model: api}));
-	    }, this);
-
-	    return (
-	      React.DOM.div(null, 
-	        SummaryView({model: project}), 
-	        children, 
-	        ProjectSectionList({model: project}), 
-	        installationView
-	      )
-	    );
-	  }
-	});
-
-	var ProjectSectionList = React.createClass({displayName: 'ProjectSectionList',
-	  mixins: ['modelAware'],
-	  render: function() {
-	    var project = this.getModel();
-	    var children = project.sections && project.sections.map(function(section) {
-	      return new SectionView({model: section, topLevel: true, level: 3, key: section.id});
-	    });
-	    return React.DOM.div({className: "main-section"}, children)
-	  }
-	});
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//** @jsx React.DOM */
-
-	var util = __webpack_require__(15);
+	var util = __webpack_require__(19);
 
 	var KEY_UP = 38;
 	var KEY_DOWN = 40;
@@ -15807,13 +15775,13 @@
 
 
 /***/ },
-/* 28 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var SideNav = __webpack_require__(19);
-	var util = __webpack_require__(15);
+	var SideNav = __webpack_require__(15);
+	var util = __webpack_require__(19);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelAware', 'events'],
@@ -15838,12 +15806,137 @@
 
 
 /***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//** @jsx React.DOM */
+
+	var Markdown = __webpack_require__(25);
+	var PackageView = __webpack_require__(36);
+
+	module.exports = React.createClass({displayName: 'exports',
+	  mixins: ['modelAware'],
+
+	  render: function() {
+	    var api = this.getModel();
+	    var apiId = api.domId();
+
+	    var packages = api.map(function(pkg, name) {
+	      return PackageView({model: pkg})
+	    }, this);
+
+	    return (
+	      React.DOM.div({className: "main-section"}, 
+	        React.DOM.h3({className: "ui header", id: apiId}, api.name), 
+	        React.DOM.div({className: "ui divider"}), 
+	        Markdown({body: api.description}), 
+	        packages
+	      )
+	    );
+	  }
+	});
+
+
+/***/ },
 /* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var util = __webpack_require__(27);
+	var Markdown = __webpack_require__(25);
+
+	module.exports = React.createClass({displayName: 'exports',
+	  mixins: ['modelAware'],
+
+	  render: function() {
+	    var section = this.getModel();
+	    var level = (this.props.level || 3);
+	    var title = React.DOM['h' + (level)]({className: 'ui header'}, section.get('title'));
+	    var divider = (this.props.topLevel) ? (React.DOM.div({className: "ui divider"})) : undefined;
+
+	    var children = section.sections && section.sections.map(function(section) {
+	      return new module.exports({model: section, topLevel: false, level: level + 1});
+	    });
+
+	    return (
+	      React.DOM.div({id: section.domId(), key: 'section-' + section.id}, 
+	        title, 
+	        divider, 
+	        Markdown({className: "content", body: section.get('body')}), 
+	        children
+	      )
+	    );
+	  }
+	});
+
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//** @jsx React.DOM */
+
+	var Markdown = __webpack_require__(25);
+	var navUtil = __webpack_require__(26);
+	var SnippetView = __webpack_require__(27);
+	var APIView = __webpack_require__(28);
+	var SectionView = __webpack_require__(29);
+	var SummaryView = __webpack_require__(39);
+	var util = __webpack_require__(19);
+
+	module.exports = React.createClass({displayName: 'exports',
+	  mixins: ['modelAware'],
+
+	  render: function() {
+
+	    var project = this.getModel();
+	    var children = [];
+	    var viewState = this.props.viewState;
+
+	    var installationView;
+	    if (project.get('installation')) {
+	      installationView = (
+	        React.DOM.div({className: "main-section"}, 
+	          React.DOM.h3({className: "ui header", id: "installation"}, "Installation"), 
+	          React.DOM.div({className: "ui divider"}), 
+	          Markdown({body: project.get('installation')})
+	        )
+	      );
+	    }
+
+	    _.each(project.api, function(api, name) {
+	      children.push(new APIView({model: api}));
+	    }, this);
+
+	    return (
+	      React.DOM.div(null, 
+	        SummaryView({model: project}), 
+	        children, 
+	        ProjectSectionList({model: project}), 
+	        installationView
+	      )
+	    );
+	  }
+	});
+
+	var ProjectSectionList = React.createClass({displayName: 'ProjectSectionList',
+	  mixins: ['modelAware'],
+	  render: function() {
+	    var project = this.getModel();
+	    var children = project.sections && project.sections.map(function(section) {
+	      return new SectionView({model: section, topLevel: true, level: 3, key: section.id});
+	    });
+	    return React.DOM.div({className: "main-section"}, children)
+	  }
+	});
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//** @jsx React.DOM */
+
+	var util = __webpack_require__(26);
 
 	var data = {
 	  outline: {
@@ -15993,249 +16086,132 @@
 
 
 /***/ },
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//** @jsx React.DOM */
-
-	var navUtil = __webpack_require__(27);
-	var Markdown = __webpack_require__(37);
-
-	module.exports = React.createClass({displayName: 'exports',
-	  mixins: ['modelAware'],
-
-	  render: function() {
-	    var pkg = this.getModel();
-	    var children = [];
-
-	      children.push(
-	        React.DOM.h2({key: "project-title", className: "ui header"}, 
-	          React.DOM.a({href: 'https://github.com/' + pkg.project.get('repo') + '/' + pkg.project.get('name'), className: "ui label"}, 
-	            React.DOM.i({className: "large github alternate icon"})
-	          ), 
-	          React.DOM.span({className: "hide-mobile"}, pkg.project.get('repo'), " / "), " ", pkg.project.get('title')
-	        )
-	      );
-
-	    children.push.apply(children, [
-	      React.DOM.h3({key: "api", className: "ui header"}, pkg.get('api')),
-	      React.DOM.div({key: "divider", className: "ui divider"})
-	    ]);
-
-	    if (this.props.showPackageDetails) {
-	      children.push(
-	        React.DOM.h4({key: "package"}, 
-	          React.DOM.i({className: navUtil.icons.package}), 
-	          pkg.get('name')
-	        )
-	      );
-	    }
-	    children.push(this.props.children);
-
-	    return (
-	      React.DOM.div(null, 
-	        children
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 31 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//** @jsx React.DOM */
-
-	var navUtil = __webpack_require__(27);
-	var MethodView = __webpack_require__(32);
-	var Markdown = __webpack_require__(37);
-
-
-	module.exports =  React.createClass({displayName: 'exports',
-	  mixins: ['modelAware'],
-
-	  render: function() {
-	    var pkg = this.getModel(),
-	        project = pkg.project,
-	        methods = pkg.methods.map(function(method) {
-	          return MethodView({model: method, key: method.get('name')})
-	        }, this),
-	        overview = pkg.get('overview');
-	    if (overview) {
-	      overview = Markdown({tag: "p", body: overview})
-	    }
-
-	    var id = pkg.domId();
-
-	    return (
-	      React.DOM.div({id: id, key: 'package-' + pkg.id}, 
-	        React.DOM.h4(null, 
-	          React.DOM.i({className: navUtil.icons.package}), 
-	          pkg.get('name')
-	        ), 
-	        overview, 
-	        methods
-	      )
-	    );
-	  }
-	});
-
-/***/ },
 /* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM *//** @jsx React.DOM */
+	/** @jsx React.DOM */var util = __webpack_require__(61);
 
-	var navUtil = __webpack_require__(27);
-	var Markdown = __webpack_require__(37);
+	module.exports = function(contents) {
 
-	module.exports = React.createClass({displayName: 'exports',
-	  mixins: ['modelAware'],
 
-	  render: function() {
-	    var method = this.getModel(),
-	        id = method.domId(),
-	        project = method.project,
-	        name = method.get('name') + ' ' + _.map(method.get('profiles'), function(profile) {
-	          return '(' + profile + ')';
-	        }).join(' or '),
-	        parameters = _.map(method.get('params'), function(description, name) {
-	          return React.DOM.tr({key: name}, React.DOM.td(null, name, ":"), Markdown({tag: "td", body: description}));
-	        }),
-	        summary = method.get('summary'),
-	        overview = method.get('overview');
+	  headerPattern = /^={3,50}\s*/,
+	  subHeaderPattern = /^-{3,50}\s*/,
+	  h3Pattern = /^#{3}([^#]*)#*\s*$/,
+	  h4Pattern = /^#{4}([^#]*)#*\s*$/,
+	  h5Pattern = /^#{5}([^#]*)#*\s*$/,
+	  paramPattern = /^\s*\*\s*([^:]*):(.*)/;
 
-	    if (overview) {
-	      summary = summary + '\n\n' + overview;
+	  var handlers = {
+	    overview: function(section, data) {
+	      data.overview = section.content.join('\n');
+	    },
+	    sections: function(section, data) {
+	      data.sections = __webpack_require__(62)(section, 3);
+	    },
+	    'bundled projects': function(section, data) {
+	      data.bundledProjects = __webpack_require__(63)(section);
+	    },
+	    'dependencies': function(section, data) {
+	      data.dependantProjects = __webpack_require__(63)(section);
+	    },
+	    'depends on': function(section, data) {
+	      data.dependantProjects = __webpack_require__(63)(section);
+	    },
+	    'install': function(section, data) {
+	      data.installation = section.content.join('\n');
+	    },
+	    'api(: .+)?': function(section, data) {
+	      var api = __webpack_require__(64)(section);
+	      if (!data.api) data.api = {};
+	      data.api[section.name.match(/[Aa][Pp][Ii]:?\s*(.*)/)[1].trim() || 'API'] = api;
 	    }
-	    if (parameters.length) {
-	      parameters = (
-	        React.DOM.table({key: "parameters", className: "ui table"}, 
-	          React.DOM.thead(null, React.DOM.tr(null, React.DOM.th({colSpan: "2"}, "Parameters"))), 
-	          React.DOM.tbody(null, 
-	            parameters
-	          )
-	        )
-	      );
-	    }
-	    var returns;
-	    if (method.get('returns')) {
-	      returns = Markdown({className: "method-return", body: 'return ' + method.get('returns')})
-	    }
+	  };
 
-	    return (
-	      React.DOM.div({id: id, className: 'ui segment', key: 'method-' + method.id}, 
-	        React.DOM.h4(null, 
-	          React.DOM.i({className: navUtil.icons.method}), 
-	          name
-	        ), 
-	        parameters, 
-	        returns, 
-	        Markdown({key: "summary", tag: "p", body: summary})
-	      )
-	    );
+	  var processedHandlers = [];
+	  for (var key in handlers) {
+	    processedHandlers.push({
+	      pattern: new RegExp(key),
+	      handler: handlers[key]
+	    });
 	  }
-	});
+
+	  var tmp = parseBody(contents);
+	  var data = {title: tmp.title, summary: tmp.summary};
+	  var handler;
+	  for (var i=0; i<tmp.sections.length; i++, handler=null) {
+	    var section = tmp.sections[i];
+	    for (var j=0; j<processedHandlers.length && !handler; j++) {
+	      if (processedHandlers[j].pattern.test(section.name.toLowerCase())) {
+	        handler = processedHandlers[j].handler;
+	        break;
+	      }
+	    }
+
+	    if (handler) {
+	      handler(section, data);
+	    } else {
+	      console.log('section "' + section.name + '" ignored');
+	    }
+	  }
+
+	  return JSON.stringify(data);
+	};
+
+	function parseBody (contents) {
+	  var lines = contents.split(/\r?\n/),
+	    buffer = [],
+	    sections = [],
+	    header,
+	    summary,
+	    currentName;
+
+	  function execute(end) {
+	    if (currentName) {
+	      var body = buffer.slice(0, buffer.length - (end?0:1));
+	        name = currentName;
+	      sections.push({name: name, content: body});
+	    } else {
+	      summary = buffer.slice(0, buffer.length-2).join('\n').trim();
+	    }
+	    if (!end) {
+	      currentName = buffer[buffer.length-1].trim();
+	      buffer = [];
+	    }
+	  }
+
+	  for (var i=0; i<lines.length; i++) {
+	    var line = lines[i];
+	    if (line.match(headerPattern)) {
+	      if (currentName) {
+	        throw "there can only be 1 title (using ==========)";
+	      }
+	      // header
+	      header = buffer.join(' ').trim();
+	      buffer = [];
+	    } else if (line.match(subHeaderPattern)) {
+	      execute();
+
+	    } else {
+	      buffer.push(line);
+	    }
+	  }
+	  execute(true);
+	  var summary = util.parseMarkdown(summary);
+	  summary = summary.replace(/^.*[Ff]ancydocs?\].*$/mg, "");
+	  return {title: header, summary: summary, sections: sections};
+	}
+
 
 /***/ },
 /* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM *//** @jsx React.DOM */
-
-	var navUtil = __webpack_require__(27);
-	var Markdown = __webpack_require__(37);
-	var APIView = __webpack_require__(24);
-
-	module.exports = React.createClass({displayName: 'exports',
-	  mixins: ['modelAware'],
-
-	  render: function() {
-	    var api = this.getModel();
-
-	    return (
-	      React.DOM.div(null, 
-	        React.DOM.h2({key: "title", className: "ui header"}, this.props.title), 
-	        this.props.children
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//** @jsx React.DOM */
-
-	var Markdown = __webpack_require__(37);
-
-	module.exports = React.createClass({displayName: 'exports',
-	  mixins: ['modelAware'],
-
-	  render: function() {
-	    var project = this.getModel();
-
-	    return (
-	      React.DOM.div({className: "sub header project-summary"}, 
-	        React.DOM.h2({key: "project-title", className: "ui header"}, 
-	          React.DOM.a({href: 'https://github.com/' + project.get('repo') + '/' + project.get('name'), className: "ui label"}, 
-	            React.DOM.i({className: "large github alternate icon"})
-	          ), 
-	          React.DOM.span({className: "hide-mobile"}, project.get('repo'), " / "), " ", project.get('title')
-	        ), 
-
-	        Markdown({tag: "p", body: project.get('summary')}), 
-	        BundledProjectsList({model: project})
-	      )
-	    );
-	  }
-	});
-
-	var BundledProjectsList = React.createClass({displayName: 'BundledProjectsList',
-	  mixins: ['modelAware'],
-
-	  render: function() {
-	    var project = this.getModel(),
-	        bundledProjects = project.get('bundledProjects');
-	    if (!project.bundledProjects || _.isEmpty(bundledProjects)) {
-	      return React.DOM.div(null);
-	    } else {
-	      var children = _.map(bundledProjects, function(projectInfo) {
-	        var id = projectInfo.id, name = projectInfo.id;
-	        if (id.indexOf('/') < 0) {
-	          id = project.get('repo') + '/' + id;
-	        }
-	        return (
-	          React.DOM.tr(null, 
-	            React.DOM.td(null, React.DOM.a({href: '#project/' + id}, name)), 
-	            Markdown({tag: "td", body: projectInfo.description})
-	          )
-	        );
-	      });
-	    }
-	    return (
-	      React.DOM.div({className: "main-section"}, 
-	        React.DOM.h3({className: "ui header"}, "Bundled Projects"), 
-	        React.DOM.div({className: "ui divider"}), 
-	        React.DOM.table({className: "ui basic table"}, 
-	          children
-	        )
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */var MethodCollection = __webpack_require__(46);
-	var PackageCollection = __webpack_require__(47);
-	var SectionCollection = __webpack_require__(48);
-	var Method = __webpack_require__(49);
-	var Package = __webpack_require__(50);
-	var util = __webpack_require__(15);
+	/** @jsx React.DOM */var MethodCollection = __webpack_require__(56);
+	var PackageCollection = __webpack_require__(57);
+	var SectionCollection = __webpack_require__(58);
+	var Method = __webpack_require__(59);
+	var Package = __webpack_require__(60);
+	var util = __webpack_require__(19);
 
 	module.exports = Backbone.Model.extend({
 	  initialize: function(options) {
@@ -16411,10 +16387,10 @@
 
 
 /***/ },
-/* 36 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM */var Project = __webpack_require__(35);
+	/** @jsx React.DOM */var Project = __webpack_require__(33);
 
 	module.exports = Backbone.Collection.extend({
 	  model: Project,
@@ -16428,42 +16404,246 @@
 
 
 /***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//** @jsx React.DOM */
+
+	var navUtil = __webpack_require__(26);
+	var Markdown = __webpack_require__(25);
+
+	module.exports = React.createClass({displayName: 'exports',
+	  mixins: ['modelAware'],
+
+	  render: function() {
+	    var pkg = this.getModel();
+	    var children = [];
+
+	      children.push(
+	        React.DOM.h2({key: "project-title", className: "ui header"}, 
+	          React.DOM.a({href: 'https://github.com/' + pkg.project.get('repo') + '/' + pkg.project.get('name'), className: "ui label"}, 
+	            React.DOM.i({className: "large github alternate icon"})
+	          ), 
+	          React.DOM.span({className: "hide-mobile"}, pkg.project.get('repo'), " / "), " ", pkg.project.get('title')
+	        )
+	      );
+
+	    children.push.apply(children, [
+	      React.DOM.h3({key: "api", className: "ui header"}, pkg.get('api')),
+	      React.DOM.div({key: "divider", className: "ui divider"})
+	    ]);
+
+	    if (this.props.showPackageDetails) {
+	      children.push(
+	        React.DOM.h4({key: "package"}, 
+	          React.DOM.i({className: navUtil.icons.package}), 
+	          pkg.get('name')
+	        )
+	      );
+	    }
+	    children.push(this.props.children);
+
+	    return (
+	      React.DOM.div(null, 
+	        children
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//** @jsx React.DOM */
+
+	var navUtil = __webpack_require__(26);
+	var MethodView = __webpack_require__(37);
+	var Markdown = __webpack_require__(25);
+
+
+	module.exports =  React.createClass({displayName: 'exports',
+	  mixins: ['modelAware'],
+
+	  render: function() {
+	    var pkg = this.getModel(),
+	        project = pkg.project,
+	        methods = pkg.methods.map(function(method) {
+	          return MethodView({model: method, key: method.get('name')})
+	        }, this),
+	        overview = pkg.get('overview');
+	    if (overview) {
+	      overview = Markdown({tag: "p", body: overview})
+	    }
+
+	    var id = pkg.domId();
+
+	    return (
+	      React.DOM.div({id: id, key: 'package-' + pkg.id}, 
+	        React.DOM.h4(null, 
+	          React.DOM.i({className: navUtil.icons.package}), 
+	          pkg.get('name')
+	        ), 
+	        overview, 
+	        methods
+	      )
+	    );
+	  }
+	});
+
+/***/ },
 /* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
 
-	var converter = new Showdown.converter();
+	var navUtil = __webpack_require__(26);
+	var Markdown = __webpack_require__(25);
 
 	module.exports = React.createClass({displayName: 'exports',
-	  getInitialState: function() {
-	    return {
-	      id: this.props.id || _.uniqueId('md-')
-	    };
-	  },
+	  mixins: ['modelAware'],
+
 	  render: function() {
-	    var Container = React.DOM[this.props.tag || 'div'];
-	    var html = converter.makeHtml(
-	      this.props.body || (this.props.children && this.props.children.toString()) || '').replace(/id=\"[^"]*"/g, '');
-	    
+	    var method = this.getModel(),
+	        id = method.domId(),
+	        project = method.project,
+	        name = method.get('name') + ' ' + _.map(method.get('profiles'), function(profile) {
+	          return '(' + profile + ')';
+	        }).join(' or '),
+	        parameters = _.map(method.get('params'), function(description, name) {
+	          return React.DOM.tr({key: name}, React.DOM.td(null, name, ":"), Markdown({tag: "td", body: description}));
+	        }),
+	        summary = method.get('summary'),
+	        overview = method.get('overview');
+
+	    if (overview) {
+	      summary = summary + '\n\n' + overview;
+	    }
+	    if (parameters.length) {
+	      parameters = (
+	        React.DOM.table({key: "parameters", className: "ui table"}, 
+	          React.DOM.thead(null, React.DOM.tr(null, React.DOM.th({colSpan: "2"}, "Parameters"))), 
+	          React.DOM.tbody(null, 
+	            parameters
+	          )
+	        )
+	      );
+	    }
+	    var returns;
+	    if (method.get('returns')) {
+	      returns = Markdown({className: "method-return", body: 'return ' + method.get('returns')})
+	    }
+
 	    return (
-	      Container({key: this.state.id, id: this.props.id}, 
-	        React.DOM.div({className: this.props.className, dangerouslySetInnerHTML: {__html: html}})
+	      React.DOM.div({id: id, className: 'ui segment', key: 'method-' + method.id}, 
+	        React.DOM.h4(null, 
+	          React.DOM.i({className: navUtil.icons.method}), 
+	          name
+	        ), 
+	        parameters, 
+	        returns, 
+	        Markdown({key: "summary", tag: "p", body: summary})
 	      )
 	    );
-	  },
-
-
+	  }
 	});
-
 
 /***/ },
 /* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
-	var navUtil = __webpack_require__(27);
-	var util = __webpack_require__(15);
+
+	var navUtil = __webpack_require__(26);
+	var Markdown = __webpack_require__(25);
+	var APIView = __webpack_require__(28);
+
+	module.exports = React.createClass({displayName: 'exports',
+	  mixins: ['modelAware'],
+
+	  render: function() {
+	    var api = this.getModel();
+
+	    return (
+	      React.DOM.div(null, 
+	        React.DOM.h2({key: "title", className: "ui header"}, this.props.title), 
+	        this.props.children
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//** @jsx React.DOM */
+
+	var Markdown = __webpack_require__(25);
+
+	module.exports = React.createClass({displayName: 'exports',
+	  mixins: ['modelAware'],
+
+	  render: function() {
+	    var project = this.getModel();
+
+	    return (
+	      React.DOM.div({className: "sub header project-summary"}, 
+	        React.DOM.h2({key: "project-title", className: "ui header"}, 
+	          React.DOM.a({href: 'https://github.com/' + project.get('repo') + '/' + project.get('name'), className: "ui label"}, 
+	            React.DOM.i({className: "large github alternate icon"})
+	          ), 
+	          React.DOM.span({className: "hide-mobile"}, project.get('repo'), " / "), " ", project.get('title')
+	        ), 
+
+	        Markdown({tag: "p", body: project.get('summary')}), 
+	        BundledProjectsList({model: project})
+	      )
+	    );
+	  }
+	});
+
+	var BundledProjectsList = React.createClass({displayName: 'BundledProjectsList',
+	  mixins: ['modelAware'],
+
+	  render: function() {
+	    var project = this.getModel(),
+	        bundledProjects = project.get('bundledProjects');
+	    if (!project.bundledProjects || _.isEmpty(bundledProjects)) {
+	      return React.DOM.div(null);
+	    } else {
+	      var children = _.map(bundledProjects, function(projectInfo) {
+	        var id = projectInfo.id, name = projectInfo.id;
+	        if (id.indexOf('/') < 0) {
+	          id = project.get('repo') + '/' + id;
+	        }
+	        return (
+	          React.DOM.tr(null, 
+	            React.DOM.td(null, React.DOM.a({href: '#project/' + id}, name)), 
+	            Markdown({tag: "td", body: projectInfo.description})
+	          )
+	        );
+	      });
+	    }
+	    return (
+	      React.DOM.div({className: "main-section"}, 
+	        React.DOM.h3({className: "ui header"}, "Bundled Projects"), 
+	        React.DOM.div({className: "ui divider"}), 
+	        React.DOM.table({className: "ui basic table"}, 
+	          children
+	        )
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//** @jsx React.DOM */
+	var navUtil = __webpack_require__(26);
+	var util = __webpack_require__(19);
 
 	module.exports = React.createClass({displayName: 'exports',
 	  mixins: ['modelChangeAware', 'events'],
@@ -16501,11 +16681,11 @@
 	      });
 	    }
 
+	    this.addSection(project, children, level, options);
+
 	    _.each(project.api, function(apiModel, name) {
 	      this.addAPI(name, apiModel, project, children, options);
 	    }, this);
-
-	    this.addSection(project, children, level, options);
 
 	    if (project.bundledProjects) {
 	      project.bundledProjects.each(function(project) {
@@ -16579,11 +16759,11 @@
 
 
 /***/ },
-/* 39 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
-	var util = __webpack_require__(27);
+	var util = __webpack_require__(26);
 
 	// FIXME use util to DRY up with side-nav-methods
 	module.exports = React.createClass({displayName: 'exports',
@@ -16636,11 +16816,11 @@
 
 
 /***/ },
-/* 40 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
-	var util = __webpack_require__(27);
+	var util = __webpack_require__(26);
 
 	// FIXME use util to DRY up with side-nav-packages
 	module.exports = React.createClass({displayName: 'exports',
@@ -16693,11 +16873,11 @@
 
 
 /***/ },
-/* 41 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//** @jsx React.DOM */
-	var util = __webpack_require__(27);
+	var util = __webpack_require__(26);
 	var projectManager = __webpack_require__(14);
 
 	module.exports = React.createClass({displayName: 'exports',
@@ -16726,190 +16906,10 @@
 
 
 /***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */var util = __webpack_require__(61);
-
-	module.exports = function(contents) {
-
-
-	  headerPattern = /^={3,50}\s*/,
-	  subHeaderPattern = /^-{3,50}\s*/,
-	  h3Pattern = /^#{3}([^#]*)#*\s*$/,
-	  h4Pattern = /^#{4}([^#]*)#*\s*$/,
-	  h5Pattern = /^#{5}([^#]*)#*\s*$/,
-	  paramPattern = /^\s*\*\s*([^:]*):(.*)/;
-
-	  var handlers = {
-	    overview: function(section, data) {
-	      data.overview = section.content.join('\n');
-	    },
-	    sections: function(section, data) {
-	      data.sections = __webpack_require__(62)(section, 3);
-	    },
-	    'bundled projects': function(section, data) {
-	      data.bundledProjects = __webpack_require__(63)(section);
-	    },
-	    'dependencies': function(section, data) {
-	      data.dependantProjects = __webpack_require__(63)(section);
-	    },
-	    'depends on': function(section, data) {
-	      data.dependantProjects = __webpack_require__(63)(section);
-	    },
-	    'install': function(section, data) {
-	      data.installation = section.content.join('\n');
-	    },
-	    'api(: .+)?': function(section, data) {
-	      var api = __webpack_require__(64)(section);
-	      if (!data.api) data.api = {};
-	      data.api[section.name.match(/[Aa][Pp][Ii]:?\s*(.*)/)[1].trim() || 'API'] = api;
-	    }
-	  };
-
-	  var processedHandlers = [];
-	  for (var key in handlers) {
-	    processedHandlers.push({
-	      pattern: new RegExp(key),
-	      handler: handlers[key]
-	    });
-	  }
-
-	  var tmp = parseBody(contents);
-	  var data = {title: tmp.title, summary: tmp.summary};
-	  var handler;
-	  for (var i=0; i<tmp.sections.length; i++, handler=null) {
-	    var section = tmp.sections[i];
-	    for (var j=0; j<processedHandlers.length && !handler; j++) {
-	      if (processedHandlers[j].pattern.test(section.name.toLowerCase())) {
-	        handler = processedHandlers[j].handler;
-	        break;
-	      }
-	    }
-
-	    if (handler) {
-	      handler(section, data);
-	    } else {
-	      console.log('section "' + section.name + '" ignored');
-	    }
-	  }
-
-	  return JSON.stringify(data);
-	};
-
-	function parseBody (contents) {
-	  var lines = contents.split(/\r?\n/),
-	    buffer = [],
-	    sections = [],
-	    header,
-	    summary,
-	    currentName;
-
-	  function execute(end) {
-	    if (currentName) {
-	      var body = buffer.slice(0, buffer.length - (end?0:1));
-	        name = currentName;
-	      sections.push({name: name, content: body});
-	    } else {
-	      summary = buffer.slice(0, buffer.length-2).join('\n').trim();
-	    }
-	    if (!end) {
-	      currentName = buffer[buffer.length-1].trim();
-	      buffer = [];
-	    }
-	  }
-
-	  for (var i=0; i<lines.length; i++) {
-	    var line = lines[i];
-	    if (line.match(headerPattern)) {
-	      if (currentName) {
-	        throw "there can only be 1 title (using ==========)";
-	      }
-	      // header
-	      header = buffer.join(' ').trim();
-	      buffer = [];
-	    } else if (line.match(subHeaderPattern)) {
-	      execute();
-
-	    } else {
-	      buffer.push(line);
-	    }
-	  }
-	  execute(true);
-	  var summary = util.parseMarkdown(summary);
-	  summary = summary.replace(/^.*[Ff]ancydocs?\].*$/mg, "");
-	  return {title: header, summary: summary, sections: sections};
-	}
-
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule ReactWithAddons
-	 */
-
-	/**
-	 * This module exists purely in the open source project, and is meant as a way
-	 * to create a separate standalone build of React. This build has "addons", or
-	 * functionality we've built and think might be useful but doesn't have a good
-	 * place to live inside React core.
-	 */
-
-	"use strict";
-
-	var LinkedStateMixin = __webpack_require__(52);
-	var React = __webpack_require__(51);
-	var ReactComponentWithPureRenderMixin =
-	  __webpack_require__(53);
-	var ReactCSSTransitionGroup = __webpack_require__(54);
-	var ReactTransitionGroup = __webpack_require__(55);
-
-	var cx = __webpack_require__(56);
-	var cloneWithProps = __webpack_require__(57);
-	var update = __webpack_require__(58);
-
-	React.addons = {
-	  CSSTransitionGroup: ReactCSSTransitionGroup,
-	  LinkedStateMixin: LinkedStateMixin,
-	  PureRenderMixin: ReactComponentWithPureRenderMixin,
-	  TransitionGroup: ReactTransitionGroup,
-
-	  classSet: cx,
-	  cloneWithProps: cloneWithProps,
-	  update: update
-	};
-
-	if ("production" !== process.env.NODE_ENV) {
-	  React.addons.Perf = __webpack_require__(59);
-	  React.addons.TestUtils = __webpack_require__(60);
-	}
-
-	module.exports = React;
-
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
-
-/***/ },
 /* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM */module.exports = __webpack_require__(51);
+	/** @jsx React.DOM */module.exports = __webpack_require__(47);
 
 
 /***/ },
@@ -18025,7 +18025,7 @@
 	  }
 
 	  // Optimize `isFunction` if appropriate. Work around an IE 11 bug.
-	  if (true) {
+	  if (typeof /./ !== 'function') {
 	    _.isFunction = function(obj) {
 	      return typeof obj == 'function' || false;
 	    };
@@ -18337,155 +18337,56 @@
 /* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM */var Method = __webpack_require__(49);
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule LinkedStateMixin
+	 * @typechecks static-only
+	 */
 
-	module.exports = Backbone.Collection.extend({
-	  model: Method,
-	  comparator: 'name'
-	});
+	"use strict";
+
+	var ReactLink = __webpack_require__(66);
+	var ReactStateSetters = __webpack_require__(67);
+
+	/**
+	 * A simple mixin around ReactLink.forState().
+	 */
+	var LinkedStateMixin = {
+	  /**
+	   * Create a ReactLink that's linked to part of this component's state. The
+	   * ReactLink will have the current value of this.state[key] and will call
+	   * setState() when a change is requested.
+	   *
+	   * @param {string} key state key to update. Note: you may want to use keyOf()
+	   * if you're using Google Closure Compiler advanced mode.
+	   * @return {ReactLink} ReactLink instance linking to the state.
+	   */
+	  linkState: function(key) {
+	    return new ReactLink(
+	      this.state[key],
+	      ReactStateSetters.createStateKeySetter(this, key)
+	    );
+	  }
+	};
+
+	module.exports = LinkedStateMixin;
 
 
 /***/ },
 /* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */var Package = __webpack_require__(50);
-	var util = __webpack_require__(15);
-
-	module.exports = Backbone.Collection.extend({
-	  model: Package,
-	  comparator: 'name',
-
-	  viewUrl: function(removeHash) {
-	    return this.parent.viewUrl(removeHash) + '/api/' + encodeURIComponent(this.name);
-	  },
-
-	  domId: function() {
-	    return ('api_' + util.domIdify(this.name));
-	  }
-	});
-
-
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */var Section = __webpack_require__(65);
-
-	module.exports = Backbone.Collection.extend({
-	  model: Section,
-	  initialize: function() {
-	    Backbone.Collection.prototype.initialize.apply(this, arguments);
-	    this.id = _.uniqueId('s');
-	  },
-	  viewUrl: function(removeHash) {
-	    return (this.project || this.collection.project).viewUrl(removeHash) + '/section/' + this.id;
-	  },
-	});
-
-
-/***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */var util = __webpack_require__(15);
-
-	module.exports = Backbone.Model.extend({
-	  initialize: function() {
-	    Backbone.Model.prototype.initialize.apply(this, arguments);
-	    this.id = _.uniqueId('m');
-	  },
-
-	  parse: function(data) {
-	    var profiles = data.profiles;
-	    if (profiles) {
-	      for (var i=0; i<profiles.length; i++) {
-	        if (profiles[i] === '()') {
-	          profiles[i] = '';
-	        }
-	      }
-	    }
-	    return data;
-	  },
-
-	  viewUrl: function(removeHash, removeSnippet) {
-	    var rtn = this.project.viewUrl(true, removeSnippet);
-	    if (!removeSnippet) {
-	      rtn += '/snippet';
-	    }
-	    rtn += ('/method/' + encodeURIComponent(this.parent.get('name')) + '/' + encodeURIComponent(this.get('name')));
-	    if (!removeHash) {
-	      rtn = '#' + rtn;
-	    }
-	    return rtn;
-	  },
-
-	  isEqual: function(obj) {
-	    return this.checkEquality(this, obj, 'name', 'parent.name', 'project.id');
-	  },
-
-	  domId: function() {
-	    return util.domIdify(this.parent.get('name') + '_' + this.get('name'));
-	  }
-	});
-
-
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */var PackageCollection = __webpack_require__(47);
-	var MethodCollection = __webpack_require__(46);
-	var util = __webpack_require__(15);
-
-	module.exports = Backbone.Model.extend({
-	  initialize: function(options) {
-	    Backbone.Model.prototype.initialize.apply(this, arguments);
-	    this._initCollections();
-	    this.id = _.uniqueId('p');
-	  },
-
-	  parse: function(data) {
-	    this._initCollections();
-
-	    if (!_.isArray(data.methods)) {
-	      util.collectify(data.methods, this.methods, this);
-	    } else {
-	      this.methods.reset(data.methods);
-	    }
-	    delete data.methods;
-
-	    return data;
-	  },
-
-	  _initCollections: function() {
-	    this.methods = this.methods || new MethodCollection();
-	  },
-
-	  viewUrl: function(removeHash, removeSnippet) {
-	    var rtn = (this.project || this.collection.project).viewUrl(true);
-	    if (!removeSnippet) {
-	      rtn += '/snippet';
-	    }
-	    rtn += ('/package/' + encodeURIComponent(this.get('name')));
-	    if (!removeHash) {
-	      rtn = '#' + rtn;
-	    }
-	    return rtn;
-	  },
-
-	  isEqual: function(obj) {
-	    return this.checkEquality(this, obj, 'name', 'project.id');
-	  },
-
-	  domId: function() {
-	    return util.domIdify(this.get('name'));
-	  }
-	});
-
-
-/***/ },
-/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -18508,27 +18409,27 @@
 
 	"use strict";
 
-	var DOMPropertyOperations = __webpack_require__(67);
-	var EventPluginUtils = __webpack_require__(68);
-	var ReactChildren = __webpack_require__(69);
-	var ReactComponent = __webpack_require__(70);
-	var ReactCompositeComponent = __webpack_require__(71);
-	var ReactContext = __webpack_require__(72);
-	var ReactCurrentOwner = __webpack_require__(73);
-	var ReactDescriptor = __webpack_require__(74);
-	var ReactDOM = __webpack_require__(75);
-	var ReactDOMComponent = __webpack_require__(76);
-	var ReactDefaultInjection = __webpack_require__(77);
-	var ReactInstanceHandles = __webpack_require__(78);
-	var ReactMount = __webpack_require__(79);
-	var ReactMultiChild = __webpack_require__(80);
-	var ReactPerf = __webpack_require__(81);
-	var ReactPropTypes = __webpack_require__(82);
-	var ReactServerRendering = __webpack_require__(83);
-	var ReactTextComponent = __webpack_require__(84);
+	var DOMPropertyOperations = __webpack_require__(68);
+	var EventPluginUtils = __webpack_require__(69);
+	var ReactChildren = __webpack_require__(70);
+	var ReactComponent = __webpack_require__(71);
+	var ReactCompositeComponent = __webpack_require__(72);
+	var ReactContext = __webpack_require__(73);
+	var ReactCurrentOwner = __webpack_require__(74);
+	var ReactDescriptor = __webpack_require__(75);
+	var ReactDOM = __webpack_require__(76);
+	var ReactDOMComponent = __webpack_require__(77);
+	var ReactDefaultInjection = __webpack_require__(78);
+	var ReactInstanceHandles = __webpack_require__(79);
+	var ReactMount = __webpack_require__(80);
+	var ReactMultiChild = __webpack_require__(81);
+	var ReactPerf = __webpack_require__(82);
+	var ReactPropTypes = __webpack_require__(83);
+	var ReactServerRendering = __webpack_require__(84);
+	var ReactTextComponent = __webpack_require__(85);
 
-	var onlyChild = __webpack_require__(85);
-	var warning = __webpack_require__(86);
+	var onlyChild = __webpack_require__(86);
+	var warning = __webpack_require__(87);
 
 	ReactDefaultInjection.inject();
 
@@ -18595,7 +18496,7 @@
 	};
 
 	if ("production" !== process.env.NODE_ENV) {
-	  var ExecutionEnvironment = __webpack_require__(87);
+	  var ExecutionEnvironment = __webpack_require__(88);
 	  if (ExecutionEnvironment.canUseDOM &&
 	      window.top === window.self &&
 	      navigator.userAgent.indexOf('Chrome') > -1) {
@@ -18640,62 +18541,10 @@
 
 	module.exports = React;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule LinkedStateMixin
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	var ReactLink = __webpack_require__(89);
-	var ReactStateSetters = __webpack_require__(90);
-
-	/**
-	 * A simple mixin around ReactLink.forState().
-	 */
-	var LinkedStateMixin = {
-	  /**
-	   * Create a ReactLink that's linked to part of this component's state. The
-	   * ReactLink will have the current value of this.state[key] and will call
-	   * setState() when a change is requested.
-	   *
-	   * @param {string} key state key to update. Note: you may want to use keyOf()
-	   * if you're using Google Closure Compiler advanced mode.
-	   * @return {ReactLink} ReactLink instance linking to the state.
-	   */
-	  linkState: function(key) {
-	    return new ReactLink(
-	      this.state[key],
-	      ReactStateSetters.createStateKeySetter(this, key)
-	    );
-	  }
-	};
-
-	module.exports = LinkedStateMixin;
-
-
-/***/ },
-/* 53 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -18718,7 +18567,7 @@
 
 	"use strict";
 
-	var shallowEqual = __webpack_require__(88);
+	var shallowEqual = __webpack_require__(89);
 
 	/**
 	 * If your React component's render function is "pure", e.g. it will render the
@@ -18755,7 +18604,7 @@
 
 
 /***/ },
-/* 54 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -18779,10 +18628,10 @@
 
 	"use strict";
 
-	var React = __webpack_require__(51);
+	var React = __webpack_require__(47);
 
-	var ReactTransitionGroup = __webpack_require__(55);
-	var ReactCSSTransitionGroupChild = __webpack_require__(91);
+	var ReactTransitionGroup = __webpack_require__(50);
+	var ReactCSSTransitionGroupChild = __webpack_require__(90);
 
 	var ReactCSSTransitionGroup = React.createClass({
 	  displayName: 'ReactCSSTransitionGroup',
@@ -18828,7 +18677,7 @@
 
 
 /***/ },
-/* 55 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -18851,12 +18700,12 @@
 
 	"use strict";
 
-	var React = __webpack_require__(51);
-	var ReactTransitionChildMapping = __webpack_require__(92);
+	var React = __webpack_require__(47);
+	var ReactTransitionChildMapping = __webpack_require__(91);
 
-	var cloneWithProps = __webpack_require__(57);
-	var emptyFunction = __webpack_require__(93);
-	var merge = __webpack_require__(94);
+	var cloneWithProps = __webpack_require__(52);
+	var emptyFunction = __webpack_require__(92);
+	var merge = __webpack_require__(93);
 
 	var ReactTransitionGroup = React.createClass({
 	  displayName: 'ReactTransitionGroup',
@@ -19024,7 +18873,7 @@
 
 
 /***/ },
-/* 56 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -19074,7 +18923,7 @@
 
 
 /***/ },
-/* 57 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -19098,10 +18947,10 @@
 
 	"use strict";
 
-	var ReactPropTransferer = __webpack_require__(95);
+	var ReactPropTransferer = __webpack_require__(94);
 
-	var keyOf = __webpack_require__(96);
-	var warning = __webpack_require__(86);
+	var keyOf = __webpack_require__(95);
+	var warning = __webpack_require__(87);
 
 	var CHILDREN_PROP = keyOf({children: null});
 
@@ -19139,10 +18988,10 @@
 
 	module.exports = cloneWithProps;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 58 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -19165,9 +19014,9 @@
 
 	"use strict";
 
-	var copyProperties = __webpack_require__(97);
-	var keyOf = __webpack_require__(96);
-	var invariant = __webpack_require__(98);
+	var copyProperties = __webpack_require__(96);
+	var keyOf = __webpack_require__(95);
+	var invariant = __webpack_require__(97);
 
 	function shallowCopy(x) {
 	  if (Array.isArray(x)) {
@@ -19317,10 +19166,10 @@
 
 	module.exports = update;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 59 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -19344,12 +19193,12 @@
 
 	"use strict";
 
-	var DOMProperty = __webpack_require__(99);
-	var ReactDefaultPerfAnalysis = __webpack_require__(100);
-	var ReactMount = __webpack_require__(79);
-	var ReactPerf = __webpack_require__(81);
+	var DOMProperty = __webpack_require__(98);
+	var ReactDefaultPerfAnalysis = __webpack_require__(99);
+	var ReactMount = __webpack_require__(80);
+	var ReactPerf = __webpack_require__(82);
 
-	var performanceNow = __webpack_require__(101);
+	var performanceNow = __webpack_require__(100);
 
 	function roundFloat(val) {
 	  return Math.floor(val * 100) / 100;
@@ -19587,7 +19436,7 @@
 
 
 /***/ },
-/* 60 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -19610,20 +19459,20 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPluginHub = __webpack_require__(103);
-	var EventPropagators = __webpack_require__(104);
-	var React = __webpack_require__(51);
-	var ReactDescriptor = __webpack_require__(74);
-	var ReactDOM = __webpack_require__(75);
-	var ReactBrowserEventEmitter = __webpack_require__(105);
-	var ReactMount = __webpack_require__(79);
-	var ReactTextComponent = __webpack_require__(84);
-	var ReactUpdates = __webpack_require__(106);
-	var SyntheticEvent = __webpack_require__(107);
+	var EventConstants = __webpack_require__(101);
+	var EventPluginHub = __webpack_require__(102);
+	var EventPropagators = __webpack_require__(103);
+	var React = __webpack_require__(47);
+	var ReactDescriptor = __webpack_require__(75);
+	var ReactDOM = __webpack_require__(76);
+	var ReactBrowserEventEmitter = __webpack_require__(104);
+	var ReactMount = __webpack_require__(80);
+	var ReactTextComponent = __webpack_require__(85);
+	var ReactUpdates = __webpack_require__(105);
+	var SyntheticEvent = __webpack_require__(106);
 
-	var mergeInto = __webpack_require__(108);
-	var copyProperties = __webpack_require__(97);
+	var mergeInto = __webpack_require__(107);
+	var copyProperties = __webpack_require__(96);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
 
@@ -20005,6 +19854,157 @@
 
 
 /***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */var Method = __webpack_require__(59);
+
+	module.exports = Backbone.Collection.extend({
+	  model: Method,
+	  comparator: 'name'
+	});
+
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */var Package = __webpack_require__(60);
+	var util = __webpack_require__(19);
+
+	module.exports = Backbone.Collection.extend({
+	  model: Package,
+	  comparator: 'name',
+
+	  viewUrl: function(removeHash) {
+	    return this.parent.viewUrl(removeHash) + '/api/' + encodeURIComponent(this.name);
+	  },
+
+	  domId: function() {
+	    return ('api_' + util.domIdify(this.name));
+	  }
+	});
+
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */var Section = __webpack_require__(108);
+
+	module.exports = Backbone.Collection.extend({
+	  model: Section,
+	  initialize: function() {
+	    Backbone.Collection.prototype.initialize.apply(this, arguments);
+	    this.id = _.uniqueId('s');
+	  },
+	  viewUrl: function(removeHash) {
+	    return (this.project || this.collection.project).viewUrl(removeHash) + '/section/' + this.id;
+	  },
+	});
+
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */var util = __webpack_require__(19);
+
+	module.exports = Backbone.Model.extend({
+	  initialize: function() {
+	    Backbone.Model.prototype.initialize.apply(this, arguments);
+	    this.id = _.uniqueId('m');
+	  },
+
+	  parse: function(data) {
+	    var profiles = data.profiles;
+	    if (profiles) {
+	      for (var i=0; i<profiles.length; i++) {
+	        if (profiles[i] === '()') {
+	          profiles[i] = '';
+	        }
+	      }
+	    }
+	    return data;
+	  },
+
+	  viewUrl: function(removeHash, removeSnippet) {
+	    var rtn = this.project.viewUrl(true, removeSnippet);
+	    if (!removeSnippet) {
+	      rtn += '/snippet';
+	    }
+	    rtn += ('/method/' + encodeURIComponent(this.parent.get('name')) + '/' + encodeURIComponent(this.get('name')));
+	    if (!removeHash) {
+	      rtn = '#' + rtn;
+	    }
+	    return rtn;
+	  },
+
+	  isEqual: function(obj) {
+	    return this.checkEquality(this, obj, 'name', 'parent.name', 'project.id');
+	  },
+
+	  domId: function() {
+	    return util.domIdify(this.parent.get('name') + '_' + this.get('name'));
+	  }
+	});
+
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */var PackageCollection = __webpack_require__(57);
+	var MethodCollection = __webpack_require__(56);
+	var util = __webpack_require__(19);
+
+	module.exports = Backbone.Model.extend({
+	  initialize: function(options) {
+	    Backbone.Model.prototype.initialize.apply(this, arguments);
+	    this._initCollections();
+	    this.id = _.uniqueId('p');
+	  },
+
+	  parse: function(data) {
+	    this._initCollections();
+
+	    if (!_.isArray(data.methods)) {
+	      util.collectify(data.methods, this.methods, this);
+	    } else {
+	      this.methods.reset(data.methods);
+	    }
+	    delete data.methods;
+
+	    return data;
+	  },
+
+	  _initCollections: function() {
+	    this.methods = this.methods || new MethodCollection();
+	  },
+
+	  viewUrl: function(removeHash, removeSnippet) {
+	    var rtn = (this.project || this.collection.project).viewUrl(true);
+	    if (!removeSnippet) {
+	      rtn += '/snippet';
+	    }
+	    rtn += ('/package/' + encodeURIComponent(this.get('name')));
+	    if (!removeHash) {
+	      rtn = '#' + rtn;
+	    }
+	    return rtn;
+	  },
+
+	  isEqual: function(obj) {
+	    return this.checkEquality(this, obj, 'name', 'project.id');
+	  },
+
+	  domId: function() {
+	    return util.domIdify(this.get('name'));
+	  }
+	});
+
+
+/***/ },
 /* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -20318,51 +20318,6 @@
 /* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM */var util = __webpack_require__(15);
-
-	module.exports = Backbone.Model.extend({
-	  initialize: function() {
-	    Backbone.Model.prototype.initialize.apply(this, arguments);
-	    this._initCollections();
-	    this.id = _.uniqueId('s');
-	  },
-	  viewUrl: function(removeHash) {
-	    var url = this.parent.viewUrl();
-	    if (this.parent === this.project) {
-	      url += '/section';
-	    }
-	    url += '/' + encodeURIComponent(this.get('title'));
-	    return url;
-	  },
-	  parse: function(data) {
-	    this._initCollections();
-	    util.collectify(data.sections, this.sections, this);
-	    delete data.sections;
-	    return data;
-	  },
-	  _initCollections: function() {
-	    var SectionCollection = __webpack_require__(48);
-	    this.sections = this.sections || new SectionCollection();
-	  },
-
-	  domId: function(noEscape) {
-	    var id = '';
-	    if (this.parent != this.project) {
-	      id = this.parent.domId(true) + '_';
-	    }
-	    id += this.get('title');
-	    if (!noEscape) {
-	      id = util.domIdify(id);
-	    }
-	    return id;
-	  }
-	});
-
-
-/***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/** @jsx React.DOM */// shim for using process in browser
 
 	var process = module.exports = {};
@@ -20452,7 +20407,208 @@
 
 
 /***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule ReactLink
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	/**
+	 * ReactLink encapsulates a common pattern in which a component wants to modify
+	 * a prop received from its parent. ReactLink allows the parent to pass down a
+	 * value coupled with a callback that, when invoked, expresses an intent to
+	 * modify that value. For example:
+	 *
+	 * React.createClass({
+	 *   getInitialState: function() {
+	 *     return {value: ''};
+	 *   },
+	 *   render: function() {
+	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
+	 *     return <input valueLink={valueLink} />;
+	 *   },
+	 *   this._handleValueChange: function(newValue) {
+	 *     this.setState({value: newValue});
+	 *   }
+	 * });
+	 *
+	 * We have provided some sugary mixins to make the creation and
+	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
+	 */
+
+	var React = __webpack_require__(47);
+
+	/**
+	 * @param {*} value current value of the link
+	 * @param {function} requestChange callback to request a change
+	 */
+	function ReactLink(value, requestChange) {
+	  this.value = value;
+	  this.requestChange = requestChange;
+	}
+
+	/**
+	 * Creates a PropType that enforces the ReactLink API and optionally checks the
+	 * type of the value being passed inside the link. Example:
+	 *
+	 * MyComponent.propTypes = {
+	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
+	 * }
+	 */
+	function createLinkTypeChecker(linkType) {
+	  var shapes = {
+	    value: typeof linkType === 'undefined' ?
+	      React.PropTypes.any.isRequired :
+	      linkType.isRequired,
+	    requestChange: React.PropTypes.func.isRequired
+	  };
+	  return React.PropTypes.shape(shapes);
+	}
+
+	ReactLink.PropTypes = {
+	  link: createLinkTypeChecker
+	};
+
+	module.exports = ReactLink;
+
+
+/***/ },
 /* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule ReactStateSetters
+	 */
+
+	"use strict";
+
+	var ReactStateSetters = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function(component, funcReturningState) {
+	    return function(a, b, c, d, e, f) {
+	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
+	      if (partialState) {
+	        component.setState(partialState);
+	      }
+	    };
+	  },
+
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function(component, key) {
+	    // Memoize the setters.
+	    var cache = component.__keySetters || (component.__keySetters = {});
+	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
+	  }
+	};
+
+	function createStateKeySetter(component, key) {
+	  // Partial state is allocated outside of the function closure so it can be
+	  // reused with every call, avoiding memory allocation when this function
+	  // is called.
+	  var partialState = {};
+	  return function stateKeySetter(value) {
+	    partialState[key] = value;
+	    component.setState(partialState);
+	  };
+	}
+
+	ReactStateSetters.Mixin = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateSetter(function(xValue) {
+	   *     return {x: xValue};
+	   *   })(1);
+	   *
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function(funcReturningState) {
+	    return ReactStateSetters.createStateSetter(this, funcReturningState);
+	  },
+
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateKeySetter('x')(1);
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function(key) {
+	    return ReactStateSetters.createStateKeySetter(this, key);
+	  }
+	};
+
+	module.exports = ReactStateSetters;
+
+
+/***/ },
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -20476,11 +20632,11 @@
 
 	"use strict";
 
-	var DOMProperty = __webpack_require__(99);
+	var DOMProperty = __webpack_require__(98);
 
-	var escapeTextForBrowser = __webpack_require__(111);
-	var memoizeStringOnly = __webpack_require__(112);
-	var warning = __webpack_require__(86);
+	var escapeTextForBrowser = __webpack_require__(109);
+	var memoizeStringOnly = __webpack_require__(110);
+	var warning = __webpack_require__(87);
 
 	function shouldIgnoreValue(name, value) {
 	  return value == null ||
@@ -20649,10 +20805,10 @@
 
 	module.exports = DOMPropertyOperations;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -20675,9 +20831,9 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
+	var EventConstants = __webpack_require__(101);
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * Injected dependencies:
@@ -20880,10 +21036,10 @@
 
 	module.exports = EventPluginUtils;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -20906,10 +21062,10 @@
 
 	"use strict";
 
-	var PooledClass = __webpack_require__(109);
+	var PooledClass = __webpack_require__(111);
 
-	var traverseAllChildren = __webpack_require__(110);
-	var warning = __webpack_require__(86);
+	var traverseAllChildren = __webpack_require__(112);
+	var warning = __webpack_require__(87);
 
 	var twoArgumentPooler = PooledClass.twoArgumentPooler;
 	var threeArgumentPooler = PooledClass.threeArgumentPooler;
@@ -21040,10 +21196,10 @@
 
 	module.exports = ReactChildren;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -21066,13 +21222,13 @@
 
 	"use strict";
 
-	var ReactDescriptor = __webpack_require__(74);
+	var ReactDescriptor = __webpack_require__(75);
 	var ReactOwner = __webpack_require__(113);
-	var ReactUpdates = __webpack_require__(106);
+	var ReactUpdates = __webpack_require__(105);
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 	var keyMirror = __webpack_require__(114);
-	var merge = __webpack_require__(94);
+	var merge = __webpack_require__(93);
 
 	/**
 	 * Every React component is in one of these life cycles.
@@ -21493,10 +21649,10 @@
 
 	module.exports = ReactComponent;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -21519,29 +21675,29 @@
 
 	"use strict";
 
-	var ReactComponent = __webpack_require__(70);
-	var ReactContext = __webpack_require__(72);
-	var ReactCurrentOwner = __webpack_require__(73);
-	var ReactDescriptor = __webpack_require__(74);
+	var ReactComponent = __webpack_require__(71);
+	var ReactContext = __webpack_require__(73);
+	var ReactCurrentOwner = __webpack_require__(74);
+	var ReactDescriptor = __webpack_require__(75);
 	var ReactDescriptorValidator = __webpack_require__(115);
 	var ReactEmptyComponent = __webpack_require__(116);
 	var ReactErrorUtils = __webpack_require__(117);
 	var ReactOwner = __webpack_require__(113);
-	var ReactPerf = __webpack_require__(81);
-	var ReactPropTransferer = __webpack_require__(95);
+	var ReactPerf = __webpack_require__(82);
+	var ReactPropTransferer = __webpack_require__(94);
 	var ReactPropTypeLocations = __webpack_require__(118);
 	var ReactPropTypeLocationNames = __webpack_require__(119);
-	var ReactUpdates = __webpack_require__(106);
+	var ReactUpdates = __webpack_require__(105);
 
 	var instantiateReactComponent = __webpack_require__(120);
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 	var keyMirror = __webpack_require__(114);
-	var merge = __webpack_require__(94);
+	var merge = __webpack_require__(93);
 	var mixInto = __webpack_require__(121);
 	var monitorCodeUse = __webpack_require__(122);
 	var mapObject = __webpack_require__(123);
 	var shouldUpdateReactComponent = __webpack_require__(124);
-	var warning = __webpack_require__(86);
+	var warning = __webpack_require__(87);
 
 	/**
 	 * Policies that describe methods in `ReactCompositeComponentInterface`.
@@ -22925,10 +23081,10 @@
 
 	module.exports = ReactCompositeComponent;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -22951,7 +23107,7 @@
 
 	"use strict";
 
-	var merge = __webpack_require__(94);
+	var merge = __webpack_require__(93);
 
 	/**
 	 * Keeps track of the current context.
@@ -23001,7 +23157,7 @@
 
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -23046,7 +23202,7 @@
 
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -23069,11 +23225,11 @@
 
 	"use strict";
 
-	var ReactContext = __webpack_require__(72);
-	var ReactCurrentOwner = __webpack_require__(73);
+	var ReactContext = __webpack_require__(73);
+	var ReactCurrentOwner = __webpack_require__(74);
 
-	var merge = __webpack_require__(94);
-	var warning = __webpack_require__(86);
+	var merge = __webpack_require__(93);
+	var warning = __webpack_require__(87);
 
 	/**
 	 * Warn for mutations.
@@ -23301,10 +23457,10 @@
 
 	module.exports = ReactDescriptor;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -23328,11 +23484,11 @@
 
 	"use strict";
 
-	var ReactDescriptor = __webpack_require__(74);
+	var ReactDescriptor = __webpack_require__(75);
 	var ReactDescriptorValidator = __webpack_require__(115);
-	var ReactDOMComponent = __webpack_require__(76);
+	var ReactDOMComponent = __webpack_require__(77);
 
-	var mergeInto = __webpack_require__(108);
+	var mergeInto = __webpack_require__(107);
 	var mapObject = __webpack_require__(123);
 
 	/**
@@ -23519,10 +23675,10 @@
 
 	module.exports = ReactDOM;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -23547,19 +23703,19 @@
 	"use strict";
 
 	var CSSPropertyOperations = __webpack_require__(125);
-	var DOMProperty = __webpack_require__(99);
-	var DOMPropertyOperations = __webpack_require__(67);
+	var DOMProperty = __webpack_require__(98);
+	var DOMPropertyOperations = __webpack_require__(68);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactComponent = __webpack_require__(70);
-	var ReactBrowserEventEmitter = __webpack_require__(105);
-	var ReactMount = __webpack_require__(79);
-	var ReactMultiChild = __webpack_require__(80);
-	var ReactPerf = __webpack_require__(81);
+	var ReactComponent = __webpack_require__(71);
+	var ReactBrowserEventEmitter = __webpack_require__(104);
+	var ReactMount = __webpack_require__(80);
+	var ReactMultiChild = __webpack_require__(81);
+	var ReactPerf = __webpack_require__(82);
 
-	var escapeTextForBrowser = __webpack_require__(111);
-	var invariant = __webpack_require__(98);
-	var keyOf = __webpack_require__(96);
-	var merge = __webpack_require__(94);
+	var escapeTextForBrowser = __webpack_require__(109);
+	var invariant = __webpack_require__(97);
+	var keyOf = __webpack_require__(95);
+	var merge = __webpack_require__(93);
 	var mixInto = __webpack_require__(121);
 
 	var deleteListener = ReactBrowserEventEmitter.deleteListener;
@@ -23944,10 +24100,10 @@
 
 	module.exports = ReactDOMComponent;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -23976,14 +24132,14 @@
 	var CompositionEventPlugin = __webpack_require__(130);
 	var DefaultEventPluginOrder = __webpack_require__(131);
 	var EnterLeaveEventPlugin = __webpack_require__(132);
-	var ExecutionEnvironment = __webpack_require__(87);
+	var ExecutionEnvironment = __webpack_require__(88);
 	var HTMLDOMPropertyConfig = __webpack_require__(133);
 	var MobileSafariClickEventPlugin = __webpack_require__(134);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
 	var ReactComponentBrowserEnvironment =
 	  __webpack_require__(135);
 	var ReactDefaultBatchingStrategy = __webpack_require__(136);
-	var ReactDOM = __webpack_require__(75);
+	var ReactDOM = __webpack_require__(76);
 	var ReactDOMButton = __webpack_require__(137);
 	var ReactDOMForm = __webpack_require__(138);
 	var ReactDOMImg = __webpack_require__(139);
@@ -23993,8 +24149,8 @@
 	var ReactDOMTextarea = __webpack_require__(143);
 	var ReactEventListener = __webpack_require__(144);
 	var ReactInjection = __webpack_require__(145);
-	var ReactInstanceHandles = __webpack_require__(78);
-	var ReactMount = __webpack_require__(79);
+	var ReactInstanceHandles = __webpack_require__(79);
+	var ReactMount = __webpack_require__(80);
 	var SelectEventPlugin = __webpack_require__(146);
 	var ServerReactRootIndex = __webpack_require__(147);
 	var SimpleEventPlugin = __webpack_require__(148);
@@ -24069,7 +24225,7 @@
 	  if ("production" !== process.env.NODE_ENV) {
 	    var url = (ExecutionEnvironment.canUseDOM && window.location.href) || '';
 	    if ((/[?&]react_perf\b/).test(url)) {
-	      var ReactDefaultPerf = __webpack_require__(59);
+	      var ReactDefaultPerf = __webpack_require__(54);
 	      ReactDefaultPerf.start();
 	    }
 	  }
@@ -24079,10 +24235,10 @@
 	  inject: inject
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -24108,7 +24264,7 @@
 
 	var ReactRootIndex = __webpack_require__(151);
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	var SEPARATOR = '.';
 	var SEPARATOR_LENGTH = SEPARATOR.length;
@@ -24424,10 +24580,10 @@
 
 	module.exports = ReactInstanceHandles;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -24450,19 +24606,19 @@
 
 	"use strict";
 
-	var DOMProperty = __webpack_require__(99);
-	var ReactBrowserEventEmitter = __webpack_require__(105);
-	var ReactCurrentOwner = __webpack_require__(73);
-	var ReactDescriptor = __webpack_require__(74);
-	var ReactInstanceHandles = __webpack_require__(78);
-	var ReactPerf = __webpack_require__(81);
+	var DOMProperty = __webpack_require__(98);
+	var ReactBrowserEventEmitter = __webpack_require__(104);
+	var ReactCurrentOwner = __webpack_require__(74);
+	var ReactDescriptor = __webpack_require__(75);
+	var ReactInstanceHandles = __webpack_require__(79);
+	var ReactPerf = __webpack_require__(82);
 
 	var containsNode = __webpack_require__(152);
 	var getReactRootElementInContainer = __webpack_require__(153);
 	var instantiateReactComponent = __webpack_require__(120);
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 	var shouldUpdateReactComponent = __webpack_require__(124);
-	var warning = __webpack_require__(86);
+	var warning = __webpack_require__(87);
 
 	var SEPARATOR = ReactInstanceHandles.SEPARATOR;
 
@@ -25112,10 +25268,10 @@
 
 	module.exports = ReactMount;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -25139,7 +25295,7 @@
 
 	"use strict";
 
-	var ReactComponent = __webpack_require__(70);
+	var ReactComponent = __webpack_require__(71);
 	var ReactMultiChildUpdateTypes = __webpack_require__(154);
 
 	var flattenChildren = __webpack_require__(155);
@@ -25551,7 +25707,7 @@
 
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -25640,10 +25796,10 @@
 
 	module.exports = ReactPerf;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -25666,10 +25822,10 @@
 
 	"use strict";
 
-	var ReactDescriptor = __webpack_require__(74);
+	var ReactDescriptor = __webpack_require__(75);
 	var ReactPropTypeLocationNames = __webpack_require__(119);
 
-	var emptyFunction = __webpack_require__(93);
+	var emptyFunction = __webpack_require__(92);
 
 	/**
 	 * Collection of methods that allow declaration and validation of props that are
@@ -25992,7 +26148,7 @@
 
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -26015,14 +26171,14 @@
 	 */
 	"use strict";
 
-	var ReactDescriptor = __webpack_require__(74);
-	var ReactInstanceHandles = __webpack_require__(78);
+	var ReactDescriptor = __webpack_require__(75);
+	var ReactInstanceHandles = __webpack_require__(79);
 	var ReactMarkupChecksum = __webpack_require__(156);
 	var ReactServerRenderingTransaction =
 	  __webpack_require__(157);
 
 	var instantiateReactComponent = __webpack_require__(120);
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * @param {ReactComponent} component
@@ -26085,10 +26241,10 @@
 	  renderComponentToStaticMarkup: renderComponentToStaticMarkup
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -26112,12 +26268,12 @@
 
 	"use strict";
 
-	var DOMPropertyOperations = __webpack_require__(67);
+	var DOMPropertyOperations = __webpack_require__(68);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactComponent = __webpack_require__(70);
-	var ReactDescriptor = __webpack_require__(74);
+	var ReactComponent = __webpack_require__(71);
+	var ReactDescriptor = __webpack_require__(75);
 
-	var escapeTextForBrowser = __webpack_require__(111);
+	var escapeTextForBrowser = __webpack_require__(109);
 	var mixInto = __webpack_require__(121);
 
 	/**
@@ -26201,7 +26357,7 @@
 
 
 /***/ },
-/* 85 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -26223,9 +26379,9 @@
 	 */
 	"use strict";
 
-	var ReactDescriptor = __webpack_require__(74);
+	var ReactDescriptor = __webpack_require__(75);
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * Returns the first child in a collection of children and verifies that there
@@ -26248,10 +26404,10 @@
 
 	module.exports = onlyChild;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 86 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -26274,7 +26430,7 @@
 
 	"use strict";
 
-	var emptyFunction = __webpack_require__(93);
+	var emptyFunction = __webpack_require__(92);
 
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -26303,10 +26459,10 @@
 
 	module.exports = warning;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 87 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -26362,7 +26518,7 @@
 
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -26417,208 +26573,7 @@
 
 
 /***/ },
-/* 89 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule ReactLink
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	/**
-	 * ReactLink encapsulates a common pattern in which a component wants to modify
-	 * a prop received from its parent. ReactLink allows the parent to pass down a
-	 * value coupled with a callback that, when invoked, expresses an intent to
-	 * modify that value. For example:
-	 *
-	 * React.createClass({
-	 *   getInitialState: function() {
-	 *     return {value: ''};
-	 *   },
-	 *   render: function() {
-	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
-	 *     return <input valueLink={valueLink} />;
-	 *   },
-	 *   this._handleValueChange: function(newValue) {
-	 *     this.setState({value: newValue});
-	 *   }
-	 * });
-	 *
-	 * We have provided some sugary mixins to make the creation and
-	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
-	 */
-
-	var React = __webpack_require__(51);
-
-	/**
-	 * @param {*} value current value of the link
-	 * @param {function} requestChange callback to request a change
-	 */
-	function ReactLink(value, requestChange) {
-	  this.value = value;
-	  this.requestChange = requestChange;
-	}
-
-	/**
-	 * Creates a PropType that enforces the ReactLink API and optionally checks the
-	 * type of the value being passed inside the link. Example:
-	 *
-	 * MyComponent.propTypes = {
-	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
-	 * }
-	 */
-	function createLinkTypeChecker(linkType) {
-	  var shapes = {
-	    value: typeof linkType === 'undefined' ?
-	      React.PropTypes.any.isRequired :
-	      linkType.isRequired,
-	    requestChange: React.PropTypes.func.isRequired
-	  };
-	  return React.PropTypes.shape(shapes);
-	}
-
-	ReactLink.PropTypes = {
-	  link: createLinkTypeChecker
-	};
-
-	module.exports = ReactLink;
-
-
-/***/ },
 /* 90 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule ReactStateSetters
-	 */
-
-	"use strict";
-
-	var ReactStateSetters = {
-	  /**
-	   * Returns a function that calls the provided function, and uses the result
-	   * of that to set the component's state.
-	   *
-	   * @param {ReactCompositeComponent} component
-	   * @param {function} funcReturningState Returned callback uses this to
-	   *                                      determine how to update state.
-	   * @return {function} callback that when invoked uses funcReturningState to
-	   *                    determined the object literal to setState.
-	   */
-	  createStateSetter: function(component, funcReturningState) {
-	    return function(a, b, c, d, e, f) {
-	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
-	      if (partialState) {
-	        component.setState(partialState);
-	      }
-	    };
-	  },
-
-	  /**
-	   * Returns a single-argument callback that can be used to update a single
-	   * key in the component's state.
-	   *
-	   * Note: this is memoized function, which makes it inexpensive to call.
-	   *
-	   * @param {ReactCompositeComponent} component
-	   * @param {string} key The key in the state that you should update.
-	   * @return {function} callback of 1 argument which calls setState() with
-	   *                    the provided keyName and callback argument.
-	   */
-	  createStateKeySetter: function(component, key) {
-	    // Memoize the setters.
-	    var cache = component.__keySetters || (component.__keySetters = {});
-	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
-	  }
-	};
-
-	function createStateKeySetter(component, key) {
-	  // Partial state is allocated outside of the function closure so it can be
-	  // reused with every call, avoiding memory allocation when this function
-	  // is called.
-	  var partialState = {};
-	  return function stateKeySetter(value) {
-	    partialState[key] = value;
-	    component.setState(partialState);
-	  };
-	}
-
-	ReactStateSetters.Mixin = {
-	  /**
-	   * Returns a function that calls the provided function, and uses the result
-	   * of that to set the component's state.
-	   *
-	   * For example, these statements are equivalent:
-	   *
-	   *   this.setState({x: 1});
-	   *   this.createStateSetter(function(xValue) {
-	   *     return {x: xValue};
-	   *   })(1);
-	   *
-	   * @param {function} funcReturningState Returned callback uses this to
-	   *                                      determine how to update state.
-	   * @return {function} callback that when invoked uses funcReturningState to
-	   *                    determined the object literal to setState.
-	   */
-	  createStateSetter: function(funcReturningState) {
-	    return ReactStateSetters.createStateSetter(this, funcReturningState);
-	  },
-
-	  /**
-	   * Returns a single-argument callback that can be used to update a single
-	   * key in the component's state.
-	   *
-	   * For example, these statements are equivalent:
-	   *
-	   *   this.setState({x: 1});
-	   *   this.createStateKeySetter('x')(1);
-	   *
-	   * Note: this is memoized function, which makes it inexpensive to call.
-	   *
-	   * @param {string} key The key in the state that you should update.
-	   * @return {function} callback of 1 argument which calls setState() with
-	   *                    the provided keyName and callback argument.
-	   */
-	  createStateKeySetter: function(key) {
-	    return ReactStateSetters.createStateKeySetter(this, key);
-	  }
-	};
-
-	module.exports = ReactStateSetters;
-
-
-/***/ },
-/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -26642,12 +26597,12 @@
 
 	"use strict";
 
-	var React = __webpack_require__(51);
+	var React = __webpack_require__(47);
 
 	var CSSCore = __webpack_require__(158);
 	var ReactTransitionEvents = __webpack_require__(159);
 
-	var onlyChild = __webpack_require__(85);
+	var onlyChild = __webpack_require__(86);
 
 	// We don't remove the element from the DOM until we receive an animationend or
 	// transitionend event. If the user screws up and forgets to add an animation
@@ -26757,10 +26712,10 @@
 
 	module.exports = ReactCSSTransitionGroupChild;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 92 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -26784,7 +26739,7 @@
 
 	"use strict";
 
-	var ReactChildren = __webpack_require__(69);
+	var ReactChildren = __webpack_require__(70);
 
 	var ReactTransitionChildMapping = {
 	  /**
@@ -26872,7 +26827,7 @@
 
 
 /***/ },
-/* 93 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -26893,7 +26848,7 @@
 	 * @providesModule emptyFunction
 	 */
 
-	var copyProperties = __webpack_require__(97);
+	var copyProperties = __webpack_require__(96);
 
 	function makeEmptyFunction(arg) {
 	  return function() {
@@ -26921,7 +26876,7 @@
 
 
 /***/ },
-/* 94 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -26944,7 +26899,7 @@
 
 	"use strict";
 
-	var mergeInto = __webpack_require__(108);
+	var mergeInto = __webpack_require__(107);
 
 	/**
 	 * Shallow merges two structures into a return value, without mutating either.
@@ -26964,7 +26919,7 @@
 
 
 /***/ },
-/* 95 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -26987,10 +26942,10 @@
 
 	"use strict";
 
-	var emptyFunction = __webpack_require__(93);
-	var invariant = __webpack_require__(98);
+	var emptyFunction = __webpack_require__(92);
+	var invariant = __webpack_require__(97);
 	var joinClasses = __webpack_require__(160);
-	var merge = __webpack_require__(94);
+	var merge = __webpack_require__(93);
 
 	/**
 	 * Creates a transfer strategy that will merge prop values using the supplied
@@ -27130,10 +27085,10 @@
 
 	module.exports = ReactPropTransferer;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 96 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -27180,7 +27135,7 @@
 
 
 /***/ },
-/* 97 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -27238,10 +27193,10 @@
 
 	module.exports = copyProperties;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 98 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -27305,10 +27260,10 @@
 
 	module.exports = invariant;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 99 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -27334,7 +27289,7 @@
 
 	"use strict";
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	var DOMPropertyInjection = {
 	  /**
@@ -27610,10 +27565,10 @@
 
 	module.exports = DOMProperty;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 100 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -27634,7 +27589,7 @@
 	 * @providesModule ReactDefaultPerfAnalysis
 	 */
 
-	var merge = __webpack_require__(94);
+	var merge = __webpack_require__(93);
 
 	// Don't try to save users less than 1.2ms (a number I made up)
 	var DONT_CARE_THRESHOLD = 1.2;
@@ -27822,7 +27777,7 @@
 
 
 /***/ },
-/* 101 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -27861,7 +27816,7 @@
 
 
 /***/ },
-/* 102 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -27944,7 +27899,7 @@
 
 
 /***/ },
-/* 103 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -27968,11 +27923,11 @@
 	"use strict";
 
 	var EventPluginRegistry = __webpack_require__(162);
-	var EventPluginUtils = __webpack_require__(68);
+	var EventPluginUtils = __webpack_require__(69);
 
 	var accumulate = __webpack_require__(163);
 	var forEachAccumulated = __webpack_require__(164);
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 	var isEventSupported = __webpack_require__(165);
 	var monitorCodeUse = __webpack_require__(122);
 
@@ -28238,10 +28193,10 @@
 
 	module.exports = EventPluginHub;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 104 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -28264,8 +28219,8 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPluginHub = __webpack_require__(103);
+	var EventConstants = __webpack_require__(101);
+	var EventPluginHub = __webpack_require__(102);
 
 	var accumulate = __webpack_require__(163);
 	var forEachAccumulated = __webpack_require__(164);
@@ -28388,10 +28343,10 @@
 
 	module.exports = EventPropagators;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 105 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -28415,14 +28370,14 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPluginHub = __webpack_require__(103);
+	var EventConstants = __webpack_require__(101);
+	var EventPluginHub = __webpack_require__(102);
 	var EventPluginRegistry = __webpack_require__(162);
-	var ReactEventEmitterMixin = __webpack_require__(168);
-	var ViewportMetrics = __webpack_require__(169);
+	var ReactEventEmitterMixin = __webpack_require__(166);
+	var ViewportMetrics = __webpack_require__(167);
 
 	var isEventSupported = __webpack_require__(165);
-	var merge = __webpack_require__(94);
+	var merge = __webpack_require__(93);
 
 	/**
 	 * Summary of `ReactBrowserEventEmitter` event handling:
@@ -28757,7 +28712,7 @@
 
 
 /***/ },
-/* 106 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -28780,15 +28735,15 @@
 
 	"use strict";
 
-	var CallbackQueue = __webpack_require__(166);
-	var PooledClass = __webpack_require__(109);
-	var ReactCurrentOwner = __webpack_require__(73);
-	var ReactPerf = __webpack_require__(81);
-	var Transaction = __webpack_require__(167);
+	var CallbackQueue = __webpack_require__(168);
+	var PooledClass = __webpack_require__(111);
+	var ReactCurrentOwner = __webpack_require__(74);
+	var ReactPerf = __webpack_require__(82);
+	var Transaction = __webpack_require__(169);
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 	var mixInto = __webpack_require__(121);
-	var warning = __webpack_require__(86);
+	var warning = __webpack_require__(87);
 
 	var dirtyComponents = [];
 
@@ -29026,10 +28981,10 @@
 
 	module.exports = ReactUpdates;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 107 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -29053,12 +29008,12 @@
 
 	"use strict";
 
-	var PooledClass = __webpack_require__(109);
+	var PooledClass = __webpack_require__(111);
 
-	var emptyFunction = __webpack_require__(93);
-	var getEventTarget = __webpack_require__(171);
-	var merge = __webpack_require__(94);
-	var mergeInto = __webpack_require__(108);
+	var emptyFunction = __webpack_require__(92);
+	var getEventTarget = __webpack_require__(170);
+	var merge = __webpack_require__(93);
+	var mergeInto = __webpack_require__(107);
 
 	/**
 	 * @interface Event
@@ -29199,7 +29154,7 @@
 
 
 /***/ },
-/* 108 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -29223,7 +29178,7 @@
 
 	"use strict";
 
-	var mergeHelpers = __webpack_require__(170);
+	var mergeHelpers = __webpack_require__(171);
 
 	var checkMergeObjectArg = mergeHelpers.checkMergeObjectArg;
 	var checkMergeIntoObjectArg = mergeHelpers.checkMergeIntoObjectArg;
@@ -29251,7 +29206,149 @@
 
 
 /***/ },
+/* 108 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */var util = __webpack_require__(19);
+
+	module.exports = Backbone.Model.extend({
+	  initialize: function() {
+	    Backbone.Model.prototype.initialize.apply(this, arguments);
+	    this._initCollections();
+	    this.id = _.uniqueId('s');
+	  },
+	  viewUrl: function(removeHash) {
+	    var url = this.parent.viewUrl();
+	    if (this.parent === this.project) {
+	      url += '/section';
+	    }
+	    url += '/' + encodeURIComponent(this.get('title'));
+	    return url;
+	  },
+	  parse: function(data) {
+	    this._initCollections();
+	    util.collectify(data.sections, this.sections, this);
+	    delete data.sections;
+	    return data;
+	  },
+	  _initCollections: function() {
+	    var SectionCollection = __webpack_require__(58);
+	    this.sections = this.sections || new SectionCollection();
+	  },
+
+	  domId: function(noEscape) {
+	    var id = '';
+	    if (this.parent != this.project) {
+	      id = this.parent.domId(true) + '_';
+	    }
+	    id += this.get('title');
+	    if (!noEscape) {
+	      id = util.domIdify(id);
+	    }
+	    return id;
+	  }
+	});
+
+
+/***/ },
 /* 109 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule escapeTextForBrowser
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	var ESCAPE_LOOKUP = {
+	  "&": "&amp;",
+	  ">": "&gt;",
+	  "<": "&lt;",
+	  "\"": "&quot;",
+	  "'": "&#x27;"
+	};
+
+	var ESCAPE_REGEX = /[&><"']/g;
+
+	function escaper(match) {
+	  return ESCAPE_LOOKUP[match];
+	}
+
+	/**
+	 * Escapes text to prevent scripting attacks.
+	 *
+	 * @param {*} text Text value to escape.
+	 * @return {string} An escaped string.
+	 */
+	function escapeTextForBrowser(text) {
+	  return ('' + text).replace(ESCAPE_REGEX, escaper);
+	}
+
+	module.exports = escapeTextForBrowser;
+
+
+/***/ },
+/* 110 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule memoizeStringOnly
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	/**
+	 * Memoizes the return value of a function that accepts one string argument.
+	 *
+	 * @param {function} callback
+	 * @return {function}
+	 */
+	function memoizeStringOnly(callback) {
+	  var cache = {};
+	  return function(string) {
+	    if (cache.hasOwnProperty(string)) {
+	      return cache[string];
+	    } else {
+	      return cache[string] = callback.call(this, string);
+	    }
+	  };
+	}
+
+	module.exports = memoizeStringOnly;
+
+
+/***/ },
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -29274,7 +29371,7 @@
 
 	"use strict";
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * Static poolers. Several custom versions for each potential number of
@@ -29374,10 +29471,10 @@
 
 	module.exports = PooledClass;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 110 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -29400,10 +29497,10 @@
 
 	"use strict";
 
-	var ReactInstanceHandles = __webpack_require__(78);
-	var ReactTextComponent = __webpack_require__(84);
+	var ReactInstanceHandles = __webpack_require__(79);
+	var ReactTextComponent = __webpack_require__(85);
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	var SEPARATOR = ReactInstanceHandles.SEPARATOR;
 	var SUBSEPARATOR = ':';
@@ -29574,104 +29671,7 @@
 
 	module.exports = traverseAllChildren;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
-
-/***/ },
-/* 111 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule escapeTextForBrowser
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	var ESCAPE_LOOKUP = {
-	  "&": "&amp;",
-	  ">": "&gt;",
-	  "<": "&lt;",
-	  "\"": "&quot;",
-	  "'": "&#x27;"
-	};
-
-	var ESCAPE_REGEX = /[&><"']/g;
-
-	function escaper(match) {
-	  return ESCAPE_LOOKUP[match];
-	}
-
-	/**
-	 * Escapes text to prevent scripting attacks.
-	 *
-	 * @param {*} text Text value to escape.
-	 * @return {string} An escaped string.
-	 */
-	function escapeTextForBrowser(text) {
-	  return ('' + text).replace(ESCAPE_REGEX, escaper);
-	}
-
-	module.exports = escapeTextForBrowser;
-
-
-/***/ },
-/* 112 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule memoizeStringOnly
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	/**
-	 * Memoizes the return value of a function that accepts one string argument.
-	 *
-	 * @param {function} callback
-	 * @return {function}
-	 */
-	function memoizeStringOnly(callback) {
-	  var cache = {};
-	  return function(string) {
-	    if (cache.hasOwnProperty(string)) {
-	      return cache[string];
-	    } else {
-	      return cache[string] = callback.call(this, string);
-	    }
-	  };
-	}
-
-	module.exports = memoizeStringOnly;
-
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 113 */
@@ -29698,7 +29698,7 @@
 	"use strict";
 
 	var emptyObject = __webpack_require__(172);
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * ReactOwners are capable of storing references to owned components.
@@ -29837,7 +29837,7 @@
 
 	module.exports = ReactOwner;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 114 */
@@ -29864,7 +29864,7 @@
 
 	"use strict";
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * Constructs an enumeration with keys equal to their value.
@@ -29902,7 +29902,7 @@
 
 	module.exports = keyMirror;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 115 */
@@ -29935,9 +29935,9 @@
 
 	"use strict";
 
-	var ReactDescriptor = __webpack_require__(74);
+	var ReactDescriptor = __webpack_require__(75);
 	var ReactPropTypeLocations = __webpack_require__(118);
-	var ReactCurrentOwner = __webpack_require__(73);
+	var ReactCurrentOwner = __webpack_require__(74);
 
 	var monitorCodeUse = __webpack_require__(122);
 
@@ -30217,7 +30217,7 @@
 
 	"use strict";
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	var component;
 	// This registry keeps track of the React IDs of the components that rendered to
@@ -30276,7 +30276,7 @@
 
 	module.exports = ReactEmptyComponent;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 117 */
@@ -30392,7 +30392,7 @@
 
 	module.exports = ReactPropTypeLocationNames;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 120 */
@@ -30419,7 +30419,7 @@
 
 	"use strict";
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * Validate a `componentDescriptor`. This should be exposed publicly in a follow
@@ -30461,7 +30461,7 @@
 
 	module.exports = instantiateReactComponent;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 121 */
@@ -30527,7 +30527,7 @@
 
 	"use strict";
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * Provides open-source compatible instrumentation for monitoring certain API
@@ -30545,7 +30545,7 @@
 
 	module.exports = monitorCodeUse;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 123 */
@@ -30684,7 +30684,7 @@
 
 	var dangerousStyleValue = __webpack_require__(174);
 	var hyphenateStyleName = __webpack_require__(175);
-	var memoizeStringOnly = __webpack_require__(112);
+	var memoizeStringOnly = __webpack_require__(110);
 
 	var processStyleName = memoizeStringOnly(function(styleName) {
 	  return hyphenateStyleName(styleName);
@@ -30783,9 +30783,9 @@
 	"use strict";
 
 	var ReactEmptyComponent = __webpack_require__(116);
-	var ReactMount = __webpack_require__(79);
+	var ReactMount = __webpack_require__(80);
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	var ReactBrowserComponentMixin = {
 	  /**
@@ -30809,7 +30809,7 @@
 
 	module.exports = ReactBrowserComponentMixin;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 127 */
@@ -30836,12 +30836,12 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPropagators = __webpack_require__(104);
-	var ExecutionEnvironment = __webpack_require__(87);
+	var EventConstants = __webpack_require__(101);
+	var EventPropagators = __webpack_require__(103);
+	var ExecutionEnvironment = __webpack_require__(88);
 	var SyntheticInputEvent = __webpack_require__(176);
 
-	var keyOf = __webpack_require__(96);
+	var keyOf = __webpack_require__(95);
 
 	var canUseTextInputEvent = (
 	  ExecutionEnvironment.canUseDOM &&
@@ -31063,16 +31063,16 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPluginHub = __webpack_require__(103);
-	var EventPropagators = __webpack_require__(104);
-	var ExecutionEnvironment = __webpack_require__(87);
-	var ReactUpdates = __webpack_require__(106);
-	var SyntheticEvent = __webpack_require__(107);
+	var EventConstants = __webpack_require__(101);
+	var EventPluginHub = __webpack_require__(102);
+	var EventPropagators = __webpack_require__(103);
+	var ExecutionEnvironment = __webpack_require__(88);
+	var ReactUpdates = __webpack_require__(105);
+	var SyntheticEvent = __webpack_require__(106);
 
 	var isEventSupported = __webpack_require__(165);
 	var isTextInputElement = __webpack_require__(177);
-	var keyOf = __webpack_require__(96);
+	var keyOf = __webpack_require__(95);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
 
@@ -31493,14 +31493,14 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPropagators = __webpack_require__(104);
-	var ExecutionEnvironment = __webpack_require__(87);
+	var EventConstants = __webpack_require__(101);
+	var EventPropagators = __webpack_require__(103);
+	var ExecutionEnvironment = __webpack_require__(88);
 	var ReactInputSelection = __webpack_require__(178);
 	var SyntheticCompositionEvent = __webpack_require__(179);
 
 	var getTextContentAccessor = __webpack_require__(180);
-	var keyOf = __webpack_require__(96);
+	var keyOf = __webpack_require__(95);
 
 	var END_KEYCODES = [9, 13, 27, 32]; // Tab, Return, Esc, Space
 	var START_KEYCODE = 229;
@@ -31762,7 +31762,7 @@
 
 	"use strict";
 
-	 var keyOf = __webpack_require__(96);
+	 var keyOf = __webpack_require__(95);
 
 	/**
 	 * Module that is injectable into `EventPluginHub`, that specifies a
@@ -31814,12 +31814,12 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPropagators = __webpack_require__(104);
+	var EventConstants = __webpack_require__(101);
+	var EventPropagators = __webpack_require__(103);
 	var SyntheticMouseEvent = __webpack_require__(181);
 
-	var ReactMount = __webpack_require__(79);
-	var keyOf = __webpack_require__(96);
+	var ReactMount = __webpack_require__(80);
+	var keyOf = __webpack_require__(95);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
 	var getFirstReactDOM = ReactMount.getFirstReactDOM;
@@ -31966,8 +31966,8 @@
 
 	"use strict";
 
-	var DOMProperty = __webpack_require__(99);
-	var ExecutionEnvironment = __webpack_require__(87);
+	var DOMProperty = __webpack_require__(98);
+	var ExecutionEnvironment = __webpack_require__(88);
 
 	var MUST_USE_ATTRIBUTE = DOMProperty.injection.MUST_USE_ATTRIBUTE;
 	var MUST_USE_PROPERTY = DOMProperty.injection.MUST_USE_PROPERTY;
@@ -32160,9 +32160,9 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
+	var EventConstants = __webpack_require__(101);
 
-	var emptyFunction = __webpack_require__(93);
+	var emptyFunction = __webpack_require__(92);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
 
@@ -32232,12 +32232,12 @@
 
 	var ReactDOMIDOperations = __webpack_require__(182);
 	var ReactMarkupChecksum = __webpack_require__(156);
-	var ReactMount = __webpack_require__(79);
-	var ReactPerf = __webpack_require__(81);
+	var ReactMount = __webpack_require__(80);
+	var ReactPerf = __webpack_require__(82);
 	var ReactReconcileTransaction = __webpack_require__(183);
 
 	var getReactRootElementInContainer = __webpack_require__(153);
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 	var setInnerHTML = __webpack_require__(184);
 
 
@@ -32334,7 +32334,7 @@
 
 	module.exports = ReactComponentBrowserEnvironment;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 136 */
@@ -32360,10 +32360,10 @@
 
 	"use strict";
 
-	var ReactUpdates = __webpack_require__(106);
-	var Transaction = __webpack_require__(167);
+	var ReactUpdates = __webpack_require__(105);
+	var Transaction = __webpack_require__(169);
 
-	var emptyFunction = __webpack_require__(93);
+	var emptyFunction = __webpack_require__(92);
 	var mixInto = __webpack_require__(121);
 
 	var RESET_BATCHED_UPDATES = {
@@ -32441,10 +32441,10 @@
 
 	"use strict";
 
-	var AutoFocusMixin = __webpack_require__(186);
+	var AutoFocusMixin = __webpack_require__(185);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactCompositeComponent = __webpack_require__(71);
-	var ReactDOM = __webpack_require__(75);
+	var ReactCompositeComponent = __webpack_require__(72);
+	var ReactDOM = __webpack_require__(76);
 
 	var keyMirror = __webpack_require__(114);
 
@@ -32516,11 +32516,11 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var LocalEventTrapMixin = __webpack_require__(185);
+	var EventConstants = __webpack_require__(101);
+	var LocalEventTrapMixin = __webpack_require__(186);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactCompositeComponent = __webpack_require__(71);
-	var ReactDOM = __webpack_require__(75);
+	var ReactCompositeComponent = __webpack_require__(72);
+	var ReactDOM = __webpack_require__(76);
 
 	// Store a reference to the <form> `ReactDOMComponent`.
 	var form = ReactDOM.form;
@@ -32576,11 +32576,11 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var LocalEventTrapMixin = __webpack_require__(185);
+	var EventConstants = __webpack_require__(101);
+	var LocalEventTrapMixin = __webpack_require__(186);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactCompositeComponent = __webpack_require__(71);
-	var ReactDOM = __webpack_require__(75);
+	var ReactCompositeComponent = __webpack_require__(72);
+	var ReactDOM = __webpack_require__(76);
 
 	// Store a reference to the <img> `ReactDOMComponent`.
 	var img = ReactDOM.img;
@@ -32634,16 +32634,16 @@
 
 	"use strict";
 
-	var AutoFocusMixin = __webpack_require__(186);
-	var DOMPropertyOperations = __webpack_require__(67);
+	var AutoFocusMixin = __webpack_require__(185);
+	var DOMPropertyOperations = __webpack_require__(68);
 	var LinkedValueUtils = __webpack_require__(187);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactCompositeComponent = __webpack_require__(71);
-	var ReactDOM = __webpack_require__(75);
-	var ReactMount = __webpack_require__(79);
+	var ReactCompositeComponent = __webpack_require__(72);
+	var ReactDOM = __webpack_require__(76);
+	var ReactMount = __webpack_require__(80);
 
-	var invariant = __webpack_require__(98);
-	var merge = __webpack_require__(94);
+	var invariant = __webpack_require__(97);
+	var merge = __webpack_require__(93);
 
 	// Store a reference to the <input> `ReactDOMComponent`.
 	var input = ReactDOM.input;
@@ -32797,7 +32797,7 @@
 
 	module.exports = ReactDOMInput;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 141 */
@@ -32824,10 +32824,10 @@
 	"use strict";
 
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactCompositeComponent = __webpack_require__(71);
-	var ReactDOM = __webpack_require__(75);
+	var ReactCompositeComponent = __webpack_require__(72);
+	var ReactDOM = __webpack_require__(76);
 
-	var warning = __webpack_require__(86);
+	var warning = __webpack_require__(87);
 
 	// Store a reference to the <option> `ReactDOMComponent`.
 	var option = ReactDOM.option;
@@ -32859,7 +32859,7 @@
 
 	module.exports = ReactDOMOption;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 142 */
@@ -32885,13 +32885,13 @@
 
 	"use strict";
 
-	var AutoFocusMixin = __webpack_require__(186);
+	var AutoFocusMixin = __webpack_require__(185);
 	var LinkedValueUtils = __webpack_require__(187);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactCompositeComponent = __webpack_require__(71);
-	var ReactDOM = __webpack_require__(75);
+	var ReactCompositeComponent = __webpack_require__(72);
+	var ReactDOM = __webpack_require__(76);
 
-	var merge = __webpack_require__(94);
+	var merge = __webpack_require__(93);
 
 	// Store a reference to the <select> `ReactDOMComponent`.
 	var select = ReactDOM.select;
@@ -33072,17 +33072,17 @@
 
 	"use strict";
 
-	var AutoFocusMixin = __webpack_require__(186);
-	var DOMPropertyOperations = __webpack_require__(67);
+	var AutoFocusMixin = __webpack_require__(185);
+	var DOMPropertyOperations = __webpack_require__(68);
 	var LinkedValueUtils = __webpack_require__(187);
 	var ReactBrowserComponentMixin = __webpack_require__(126);
-	var ReactCompositeComponent = __webpack_require__(71);
-	var ReactDOM = __webpack_require__(75);
+	var ReactCompositeComponent = __webpack_require__(72);
+	var ReactDOM = __webpack_require__(76);
 
-	var invariant = __webpack_require__(98);
-	var merge = __webpack_require__(94);
+	var invariant = __webpack_require__(97);
+	var merge = __webpack_require__(93);
 
-	var warning = __webpack_require__(86);
+	var warning = __webpack_require__(87);
 
 	// Store a reference to the <textarea> `ReactDOMComponent`.
 	var textarea = ReactDOM.textarea;
@@ -33195,7 +33195,7 @@
 
 	module.exports = ReactDOMTextarea;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 144 */
@@ -33223,13 +33223,13 @@
 	"use strict";
 
 	var EventListener = __webpack_require__(188);
-	var ExecutionEnvironment = __webpack_require__(87);
-	var PooledClass = __webpack_require__(109);
-	var ReactInstanceHandles = __webpack_require__(78);
-	var ReactMount = __webpack_require__(79);
-	var ReactUpdates = __webpack_require__(106);
+	var ExecutionEnvironment = __webpack_require__(88);
+	var PooledClass = __webpack_require__(111);
+	var ReactInstanceHandles = __webpack_require__(79);
+	var ReactMount = __webpack_require__(80);
+	var ReactUpdates = __webpack_require__(105);
 
-	var getEventTarget = __webpack_require__(171);
+	var getEventTarget = __webpack_require__(170);
 	var getUnboundedScrollPosition = __webpack_require__(189);
 	var mixInto = __webpack_require__(121);
 
@@ -33416,16 +33416,16 @@
 
 	"use strict";
 
-	var DOMProperty = __webpack_require__(99);
-	var EventPluginHub = __webpack_require__(103);
-	var ReactComponent = __webpack_require__(70);
-	var ReactCompositeComponent = __webpack_require__(71);
-	var ReactDOM = __webpack_require__(75);
+	var DOMProperty = __webpack_require__(98);
+	var EventPluginHub = __webpack_require__(102);
+	var ReactComponent = __webpack_require__(71);
+	var ReactCompositeComponent = __webpack_require__(72);
+	var ReactDOM = __webpack_require__(76);
 	var ReactEmptyComponent = __webpack_require__(116);
-	var ReactBrowserEventEmitter = __webpack_require__(105);
-	var ReactPerf = __webpack_require__(81);
+	var ReactBrowserEventEmitter = __webpack_require__(104);
+	var ReactPerf = __webpack_require__(82);
 	var ReactRootIndex = __webpack_require__(151);
-	var ReactUpdates = __webpack_require__(106);
+	var ReactUpdates = __webpack_require__(105);
 
 	var ReactInjection = {
 	  Component: ReactComponent.injection,
@@ -33467,15 +33467,15 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPropagators = __webpack_require__(104);
+	var EventConstants = __webpack_require__(101);
+	var EventPropagators = __webpack_require__(103);
 	var ReactInputSelection = __webpack_require__(178);
-	var SyntheticEvent = __webpack_require__(107);
+	var SyntheticEvent = __webpack_require__(106);
 
 	var getActiveElement = __webpack_require__(190);
 	var isTextInputElement = __webpack_require__(177);
-	var keyOf = __webpack_require__(96);
-	var shallowEqual = __webpack_require__(88);
+	var keyOf = __webpack_require__(95);
+	var shallowEqual = __webpack_require__(89);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
 
@@ -33715,11 +33715,11 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(102);
-	var EventPluginUtils = __webpack_require__(68);
-	var EventPropagators = __webpack_require__(104);
+	var EventConstants = __webpack_require__(101);
+	var EventPluginUtils = __webpack_require__(69);
+	var EventPropagators = __webpack_require__(103);
 	var SyntheticClipboardEvent = __webpack_require__(191);
-	var SyntheticEvent = __webpack_require__(107);
+	var SyntheticEvent = __webpack_require__(106);
 	var SyntheticFocusEvent = __webpack_require__(192);
 	var SyntheticKeyboardEvent = __webpack_require__(193);
 	var SyntheticMouseEvent = __webpack_require__(181);
@@ -33728,8 +33728,8 @@
 	var SyntheticUIEvent = __webpack_require__(196);
 	var SyntheticWheelEvent = __webpack_require__(197);
 
-	var invariant = __webpack_require__(98);
-	var keyOf = __webpack_require__(96);
+	var invariant = __webpack_require__(97);
+	var keyOf = __webpack_require__(95);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
 
@@ -34115,7 +34115,7 @@
 
 	module.exports = SimpleEventPlugin;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 149 */
@@ -34143,7 +34143,7 @@
 
 	"use strict";
 
-	var DOMProperty = __webpack_require__(99);
+	var DOMProperty = __webpack_require__(98);
 
 	var MUST_USE_ATTRIBUTE = DOMProperty.injection.MUST_USE_ATTRIBUTE;
 
@@ -34246,9 +34246,9 @@
 	"use strict";
 
 	// Defeat circular references by requiring this directly.
-	var ReactCompositeComponent = __webpack_require__(71);
+	var ReactCompositeComponent = __webpack_require__(72);
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * Create a component that will throw an exception when unmounted.
@@ -34288,7 +34288,7 @@
 
 	module.exports = createFullPageComponent;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 151 */
@@ -34501,8 +34501,8 @@
 
 	"use strict";
 
-	var traverseAllChildren = __webpack_require__(110);
-	var warning = __webpack_require__(86);
+	var traverseAllChildren = __webpack_require__(112);
+	var warning = __webpack_require__(87);
 
 	/**
 	 * @param {function} traverseContext Context passed through traversal.
@@ -34541,7 +34541,7 @@
 
 	module.exports = flattenChildren;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 156 */
@@ -34567,7 +34567,7 @@
 
 	"use strict";
 
-	var adler32 = __webpack_require__(200);
+	var adler32 = __webpack_require__(199);
 
 	var ReactMarkupChecksum = {
 	  CHECKSUM_ATTR_NAME: 'data-react-checksum',
@@ -34627,12 +34627,12 @@
 
 	"use strict";
 
-	var PooledClass = __webpack_require__(109);
-	var CallbackQueue = __webpack_require__(166);
-	var ReactPutListenerQueue = __webpack_require__(199);
-	var Transaction = __webpack_require__(167);
+	var PooledClass = __webpack_require__(111);
+	var CallbackQueue = __webpack_require__(168);
+	var ReactPutListenerQueue = __webpack_require__(200);
+	var Transaction = __webpack_require__(169);
 
-	var emptyFunction = __webpack_require__(93);
+	var emptyFunction = __webpack_require__(92);
 	var mixInto = __webpack_require__(121);
 
 	/**
@@ -34746,7 +34746,7 @@
 	 * @typechecks
 	 */
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * The CSSCore module specifies the API (and implements most of the methods)
@@ -34843,7 +34843,7 @@
 
 	module.exports = CSSCore;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 159 */
@@ -34869,7 +34869,7 @@
 
 	"use strict";
 
-	var ExecutionEnvironment = __webpack_require__(87);
+	var ExecutionEnvironment = __webpack_require__(88);
 
 	/**
 	 * EVENT_NAME_MAP is used to determine which event fired when a
@@ -35042,7 +35042,7 @@
 
 	"use strict";
 
-	var ExecutionEnvironment = __webpack_require__(87);
+	var ExecutionEnvironment = __webpack_require__(88);
 
 	var performance;
 
@@ -35081,7 +35081,7 @@
 
 	"use strict";
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * Injectable ordering of event plugins.
@@ -35344,7 +35344,7 @@
 
 	module.exports = EventPluginRegistry;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 163 */
@@ -35370,7 +35370,7 @@
 
 	"use strict";
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * Accumulates items that must not be null or undefined.
@@ -35405,7 +35405,7 @@
 
 	module.exports = accumulate;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 164 */
@@ -35473,7 +35473,7 @@
 
 	"use strict";
 
-	var ExecutionEnvironment = __webpack_require__(87);
+	var ExecutionEnvironment = __webpack_require__(88);
 
 	var useHasFeature;
 	if (ExecutionEnvironment.canUseDOM) {
@@ -35529,6 +35529,110 @@
 /* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule ReactEventEmitterMixin
+	 */
+
+	"use strict";
+
+	var EventPluginHub = __webpack_require__(102);
+
+	function runEventQueueInBatch(events) {
+	  EventPluginHub.enqueueEvents(events);
+	  EventPluginHub.processEventQueue();
+	}
+
+	var ReactEventEmitterMixin = {
+
+	  /**
+	   * Streams a fired top-level event to `EventPluginHub` where plugins have the
+	   * opportunity to create `ReactEvent`s to be dispatched.
+	   *
+	   * @param {string} topLevelType Record from `EventConstants`.
+	   * @param {object} topLevelTarget The listening component root node.
+	   * @param {string} topLevelTargetID ID of `topLevelTarget`.
+	   * @param {object} nativeEvent Native environment event.
+	   */
+	  handleTopLevel: function(
+	      topLevelType,
+	      topLevelTarget,
+	      topLevelTargetID,
+	      nativeEvent) {
+	    var events = EventPluginHub.extractEvents(
+	      topLevelType,
+	      topLevelTarget,
+	      topLevelTargetID,
+	      nativeEvent
+	    );
+
+	    runEventQueueInBatch(events);
+	  }
+	};
+
+	module.exports = ReactEventEmitterMixin;
+
+
+/***/ },
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule ViewportMetrics
+	 */
+
+	"use strict";
+
+	var getUnboundedScrollPosition = __webpack_require__(189);
+
+	var ViewportMetrics = {
+
+	  currentScrollLeft: 0,
+
+	  currentScrollTop: 0,
+
+	  refreshScrollValues: function() {
+	    var scrollPosition = getUnboundedScrollPosition(window);
+	    ViewportMetrics.currentScrollLeft = scrollPosition.x;
+	    ViewportMetrics.currentScrollTop = scrollPosition.y;
+	  }
+
+	};
+
+	module.exports = ViewportMetrics;
+
+
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
 	 * Copyright 2013-2014 Facebook, Inc.
 	 *
@@ -35549,9 +35653,9 @@
 
 	"use strict";
 
-	var PooledClass = __webpack_require__(109);
+	var PooledClass = __webpack_require__(111);
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 	var mixInto = __webpack_require__(121);
 
 	/**
@@ -35633,10 +35737,10 @@
 
 	module.exports = CallbackQueue;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
-/* 167 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -35659,7 +35763,7 @@
 
 	"use strict";
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * `Transaction` creates a black box that is able to wrap any method such that
@@ -35884,114 +35988,52 @@
 
 	module.exports = Transaction;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
-
-/***/ },
-/* 168 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule ReactEventEmitterMixin
-	 */
-
-	"use strict";
-
-	var EventPluginHub = __webpack_require__(103);
-
-	function runEventQueueInBatch(events) {
-	  EventPluginHub.enqueueEvents(events);
-	  EventPluginHub.processEventQueue();
-	}
-
-	var ReactEventEmitterMixin = {
-
-	  /**
-	   * Streams a fired top-level event to `EventPluginHub` where plugins have the
-	   * opportunity to create `ReactEvent`s to be dispatched.
-	   *
-	   * @param {string} topLevelType Record from `EventConstants`.
-	   * @param {object} topLevelTarget The listening component root node.
-	   * @param {string} topLevelTargetID ID of `topLevelTarget`.
-	   * @param {object} nativeEvent Native environment event.
-	   */
-	  handleTopLevel: function(
-	      topLevelType,
-	      topLevelTarget,
-	      topLevelTargetID,
-	      nativeEvent) {
-	    var events = EventPluginHub.extractEvents(
-	      topLevelType,
-	      topLevelTarget,
-	      topLevelTargetID,
-	      nativeEvent
-	    );
-
-	    runEventQueueInBatch(events);
-	  }
-	};
-
-	module.exports = ReactEventEmitterMixin;
-
-
-/***/ },
-/* 169 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule ViewportMetrics
-	 */
-
-	"use strict";
-
-	var getUnboundedScrollPosition = __webpack_require__(189);
-
-	var ViewportMetrics = {
-
-	  currentScrollLeft: 0,
-
-	  currentScrollTop: 0,
-
-	  refreshScrollValues: function() {
-	    var scrollPosition = getUnboundedScrollPosition(window);
-	    ViewportMetrics.currentScrollLeft = scrollPosition.x;
-	    ViewportMetrics.currentScrollTop = scrollPosition.y;
-	  }
-
-	};
-
-	module.exports = ViewportMetrics;
-
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 170 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule getEventTarget
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	/**
+	 * Gets the target node from a native browser event by accounting for
+	 * inconsistencies in browser DOM APIs.
+	 *
+	 * @param {object} nativeEvent Native browser event.
+	 * @return {DOMEventTarget} Target node.
+	 */
+	function getEventTarget(nativeEvent) {
+	  var target = nativeEvent.target || nativeEvent.srcElement || window;
+	  // Safari may fire events on text nodes (Node.TEXT_NODE is 3).
+	  // @see http://www.quirksmode.org/js/events_properties.html
+	  return target.nodeType === 3 ? target.parentNode : target;
+	}
+
+	module.exports = getEventTarget;
+
+
+/***/ },
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
@@ -36016,7 +36058,7 @@
 
 	"use strict";
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 	var keyMirror = __webpack_require__(114);
 
 	/**
@@ -36142,49 +36184,7 @@
 
 	module.exports = mergeHelpers;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
-
-/***/ },
-/* 171 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule getEventTarget
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	/**
-	 * Gets the target node from a native browser event by accounting for
-	 * inconsistencies in browser DOM APIs.
-	 *
-	 * @param {object} nativeEvent Native browser event.
-	 * @return {DOMEventTarget} Target node.
-	 */
-	function getEventTarget(nativeEvent) {
-	  var target = nativeEvent.target || nativeEvent.srcElement || window;
-	  // Safari may fire events on text nodes (Node.TEXT_NODE is 3).
-	  // @see http://www.quirksmode.org/js/events_properties.html
-	  return target.nodeType === 3 ? target.parentNode : target;
-	}
-
-	module.exports = getEventTarget;
-
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 172 */
@@ -36218,7 +36218,7 @@
 
 	module.exports = emptyObject;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 173 */
@@ -36493,7 +36493,7 @@
 
 	"use strict";
 
-	var SyntheticEvent = __webpack_require__(107);
+	var SyntheticEvent = __webpack_require__(106);
 
 	/**
 	 * @interface Event
@@ -36753,7 +36753,7 @@
 
 	"use strict";
 
-	var SyntheticEvent = __webpack_require__(107);
+	var SyntheticEvent = __webpack_require__(106);
 
 	/**
 	 * @interface Event
@@ -36809,7 +36809,7 @@
 
 	"use strict";
 
-	var ExecutionEnvironment = __webpack_require__(87);
+	var ExecutionEnvironment = __webpack_require__(88);
 
 	var contentKey = null;
 
@@ -36859,7 +36859,7 @@
 	"use strict";
 
 	var SyntheticUIEvent = __webpack_require__(196);
-	var ViewportMetrics = __webpack_require__(169);
+	var ViewportMetrics = __webpack_require__(167);
 
 	var getEventModifierState = __webpack_require__(204);
 
@@ -36956,11 +36956,11 @@
 
 	var CSSPropertyOperations = __webpack_require__(125);
 	var DOMChildrenOperations = __webpack_require__(205);
-	var DOMPropertyOperations = __webpack_require__(67);
-	var ReactMount = __webpack_require__(79);
-	var ReactPerf = __webpack_require__(81);
+	var DOMPropertyOperations = __webpack_require__(68);
+	var ReactMount = __webpack_require__(80);
+	var ReactPerf = __webpack_require__(82);
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 	var setInnerHTML = __webpack_require__(184);
 
 	/**
@@ -37121,7 +37121,7 @@
 
 	module.exports = ReactDOMIDOperations;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 183 */
@@ -37148,12 +37148,12 @@
 
 	"use strict";
 
-	var CallbackQueue = __webpack_require__(166);
-	var PooledClass = __webpack_require__(109);
-	var ReactBrowserEventEmitter = __webpack_require__(105);
+	var CallbackQueue = __webpack_require__(168);
+	var PooledClass = __webpack_require__(111);
+	var ReactBrowserEventEmitter = __webpack_require__(104);
 	var ReactInputSelection = __webpack_require__(178);
-	var ReactPutListenerQueue = __webpack_require__(199);
-	var Transaction = __webpack_require__(167);
+	var ReactPutListenerQueue = __webpack_require__(200);
+	var Transaction = __webpack_require__(169);
 
 	var mixInto = __webpack_require__(121);
 
@@ -37335,7 +37335,7 @@
 
 	"use strict";
 
-	var ExecutionEnvironment = __webpack_require__(87);
+	var ExecutionEnvironment = __webpack_require__(88);
 
 	/**
 	 * Set the innerHTML property of a node, ensuring that whitespace is preserved
@@ -37406,65 +37406,6 @@
 /* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
-	 * Copyright 2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule LocalEventTrapMixin
-	 */
-
-	"use strict";
-
-	var ReactBrowserEventEmitter = __webpack_require__(105);
-
-	var accumulate = __webpack_require__(163);
-	var forEachAccumulated = __webpack_require__(164);
-	var invariant = __webpack_require__(98);
-
-	function remove(event) {
-	  event.remove();
-	}
-
-	var LocalEventTrapMixin = {
-	  trapBubbledEvent:function(topLevelType, handlerBaseName) {
-	    ("production" !== process.env.NODE_ENV ? invariant(this.isMounted(), 'Must be mounted to trap events') : invariant(this.isMounted()));
-	    var listener = ReactBrowserEventEmitter.trapBubbledEvent(
-	      topLevelType,
-	      handlerBaseName,
-	      this.getDOMNode()
-	    );
-	    this._localEventListeners = accumulate(this._localEventListeners, listener);
-	  },
-
-	  // trapCapturedEvent would look nearly identical. We don't implement that
-	  // method because it isn't currently needed.
-
-	  componentWillUnmount:function() {
-	    if (this._localEventListeners) {
-	      forEachAccumulated(this._localEventListeners, remove);
-	    }
-	  }
-	};
-
-	module.exports = LocalEventTrapMixin;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
-
-/***/ },
-/* 186 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/** @jsx React.DOM *//**
 	 * Copyright 2013-2014 Facebook, Inc.
 	 *
@@ -37500,6 +37441,65 @@
 
 
 /***/ },
+/* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/** @jsx React.DOM *//**
+	 * Copyright 2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule LocalEventTrapMixin
+	 */
+
+	"use strict";
+
+	var ReactBrowserEventEmitter = __webpack_require__(104);
+
+	var accumulate = __webpack_require__(163);
+	var forEachAccumulated = __webpack_require__(164);
+	var invariant = __webpack_require__(97);
+
+	function remove(event) {
+	  event.remove();
+	}
+
+	var LocalEventTrapMixin = {
+	  trapBubbledEvent:function(topLevelType, handlerBaseName) {
+	    ("production" !== process.env.NODE_ENV ? invariant(this.isMounted(), 'Must be mounted to trap events') : invariant(this.isMounted()));
+	    var listener = ReactBrowserEventEmitter.trapBubbledEvent(
+	      topLevelType,
+	      handlerBaseName,
+	      this.getDOMNode()
+	    );
+	    this._localEventListeners = accumulate(this._localEventListeners, listener);
+	  },
+
+	  // trapCapturedEvent would look nearly identical. We don't implement that
+	  // method because it isn't currently needed.
+
+	  componentWillUnmount:function() {
+	    if (this._localEventListeners) {
+	      forEachAccumulated(this._localEventListeners, remove);
+	    }
+	  }
+	};
+
+	module.exports = LocalEventTrapMixin;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+
+/***/ },
 /* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -37524,9 +37524,9 @@
 
 	"use strict";
 
-	var ReactPropTypes = __webpack_require__(82);
+	var ReactPropTypes = __webpack_require__(83);
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	var hasReadOnlyValue = {
 	  'button': true,
@@ -37663,7 +37663,7 @@
 
 	module.exports = LinkedValueUtils;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 188 */
@@ -37674,7 +37674,7 @@
 	 * @typechecks
 	 */
 
-	var emptyFunction = __webpack_require__(93);
+	var emptyFunction = __webpack_require__(92);
 
 	/**
 	 * Upstream version of event listener. Does not take into account specific
@@ -37742,7 +37742,7 @@
 
 	module.exports = EventListener;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 189 */
@@ -37860,7 +37860,7 @@
 
 	"use strict";
 
-	var SyntheticEvent = __webpack_require__(107);
+	var SyntheticEvent = __webpack_require__(106);
 
 	/**
 	 * @interface Event
@@ -38169,9 +38169,9 @@
 
 	"use strict";
 
-	var SyntheticEvent = __webpack_require__(107);
+	var SyntheticEvent = __webpack_require__(106);
 
-	var getEventTarget = __webpack_require__(171);
+	var getEventTarget = __webpack_require__(170);
 
 	/**
 	 * @interface UIEvent
@@ -38344,13 +38344,58 @@
 	 * See the License for the specific language governing permissions and
 	 * limitations under the License.
 	 *
+	 * @providesModule adler32
+	 */
+
+	/* jslint bitwise:true */
+
+	"use strict";
+
+	var MOD = 65521;
+
+	// This is a clean-room implementation of adler32 designed for detecting
+	// if markup is not what we expect it to be. It does not need to be
+	// cryptographically strong, only reasonable good at detecting if markup
+	// generated on the server is different than that on the client.
+	function adler32(data) {
+	  var a = 1;
+	  var b = 0;
+	  for (var i = 0; i < data.length; i++) {
+	    a = (a + data.charCodeAt(i)) % MOD;
+	    b = (b + a) % MOD;
+	  }
+	  return a | (b << 16);
+	}
+
+	module.exports = adler32;
+
+
+/***/ },
+/* 200 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM *//**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
 	 * @providesModule ReactPutListenerQueue
 	 */
 
 	"use strict";
 
-	var PooledClass = __webpack_require__(109);
-	var ReactBrowserEventEmitter = __webpack_require__(105);
+	var PooledClass = __webpack_require__(111);
+	var ReactBrowserEventEmitter = __webpack_require__(104);
 
 	var mixInto = __webpack_require__(121);
 
@@ -38390,51 +38435,6 @@
 	PooledClass.addPoolingTo(ReactPutListenerQueue);
 
 	module.exports = ReactPutListenerQueue;
-
-
-/***/ },
-/* 200 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM *//**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule adler32
-	 */
-
-	/* jslint bitwise:true */
-
-	"use strict";
-
-	var MOD = 65521;
-
-	// This is a clean-room implementation of adler32 designed for detecting
-	// if markup is not what we expect it to be. It does not need to be
-	// cryptographically strong, only reasonable good at detecting if markup
-	// generated on the server is different than that on the client.
-	function adler32(data) {
-	  var a = 1;
-	  var b = 0;
-	  for (var i = 0; i < data.length; i++) {
-	    a = (a + data.charCodeAt(i)) % MOD;
-	    b = (b + a) % MOD;
-	  }
-	  return a | (b << 16);
-	}
-
-	module.exports = adler32;
 
 
 /***/ },
@@ -38505,7 +38505,7 @@
 
 	"use strict";
 
-	var ExecutionEnvironment = __webpack_require__(87);
+	var ExecutionEnvironment = __webpack_require__(88);
 
 	var getNodeForCharacterOffset = __webpack_require__(208);
 	var getTextContentAccessor = __webpack_require__(180);
@@ -38827,7 +38827,7 @@
 	var ReactMultiChildUpdateTypes = __webpack_require__(154);
 
 	var getTextContentAccessor = __webpack_require__(180);
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * The DOM property to use when setting text content.
@@ -38981,7 +38981,7 @@
 
 	module.exports = DOMChildrenOperations;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 206 */
@@ -39008,7 +39008,7 @@
 
 	"use strict";
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * Normalization of deprecated HTML5 `key` values
@@ -39103,7 +39103,7 @@
 
 	module.exports = getEventKey;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 207 */
@@ -39257,12 +39257,12 @@
 
 	"use strict";
 
-	var ExecutionEnvironment = __webpack_require__(87);
+	var ExecutionEnvironment = __webpack_require__(88);
 
 	var createNodesFromMarkup = __webpack_require__(210);
-	var emptyFunction = __webpack_require__(93);
+	var emptyFunction = __webpack_require__(92);
 	var getMarkupWrap = __webpack_require__(211);
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	var OPEN_TAG_NAME_EXP = /^(<[^ \/>]+)/;
 	var RESULT_INDEX_ATTR = 'data-danger-index';
@@ -39422,7 +39422,7 @@
 
 	module.exports = Danger;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 210 */
@@ -39449,11 +39449,11 @@
 
 	/*jslint evil: true, sub: true */
 
-	var ExecutionEnvironment = __webpack_require__(87);
+	var ExecutionEnvironment = __webpack_require__(88);
 
 	var createArrayFrom = __webpack_require__(212);
 	var getMarkupWrap = __webpack_require__(211);
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * Dummy container used to render all markup.
@@ -39522,7 +39522,7 @@
 
 	module.exports = createNodesFromMarkup;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 211 */
@@ -39546,9 +39546,9 @@
 	 * @providesModule getMarkupWrap
 	 */
 
-	var ExecutionEnvironment = __webpack_require__(87);
+	var ExecutionEnvironment = __webpack_require__(88);
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * Dummy container used to detect which wraps are necessary.
@@ -39649,7 +39649,7 @@
 
 	module.exports = getMarkupWrap;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ },
 /* 212 */
@@ -39771,7 +39771,7 @@
 	 * @typechecks
 	 */
 
-	var invariant = __webpack_require__(98);
+	var invariant = __webpack_require__(97);
 
 	/**
 	 * Convert array-like objects to arrays.
@@ -39828,7 +39828,7 @@
 
 	module.exports = toArray;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
 
 /***/ }
 /******/ ])
