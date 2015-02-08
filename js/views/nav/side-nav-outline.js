@@ -38,11 +38,11 @@ module.exports = React.createClass({
       });
     }
 
+    this.addSection(project, children, level, options);
+
     _.each(project.api, function(apiModel, name) {
       this.addAPI(name, apiModel, project, children, options);
     }, this);
-
-    this.addSection(project, children, level, options);
 
     if (project.bundledProjects) {
       project.bundledProjects.each(function(project) {
