@@ -26,7 +26,7 @@ module.exports = Backbone.Model.extend({
   },
 
   domId: function(noEscape) {
-    var id = '';
+    var id = '_section_';
     if (this.parent != this.project) {
       id = this.parent.domId(true) + '_';
     }
