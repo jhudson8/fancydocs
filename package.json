@@ -1,17 +1,19 @@
 {
   "dependencies": {
-    "underscore": "*",
-    "underscore.string": "*",
-    "jquery": "*",
-    "react": "~0.11",
     "backbone": "*",
+    "backbone-query-parameters": "*",
     "backbone-reaction": "*",
     "backbone-xhr-events": "*",
-    "react-mixin-manager": "*",
-    "react-events": "*",
+    "highlight.js": "^8.4.0",
+    "jquery": "*",
+    "marked": "^0.3.3",
+    "react": "~0.11",
     "react-backbone": "*",
+    "react-events": "*",
+    "react-mixin-manager": "*",
     "scriptjs": "*",
-    "backbone-query-parameters": "*"
+    "underscore": "*",
+    "underscore.string": "*"
   },
   "devDependencies": {
     "chai": "^1.10.0",
