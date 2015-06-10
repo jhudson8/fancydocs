@@ -28,11 +28,6 @@ module.exports = React.createClass({
     var focus = viewState.focus;
     var className = this.state.navEnabled ? 'nav-enabled' : '';
 
-    if (focus === 'outline' && !project.hasChildren()) {
-      // we don't do snippets in outline but the url might show that
-      snippet = undefined;
-    }
-
     if (snippet) {
       var factory = function() {
         return util.snippets[snippet.type](snippet.model, project);
@@ -105,21 +100,20 @@ module.exports = React.createClass({
       if (jumpTo === 'top' || jumpTo === 'summary') {
         return window.scrollTo(0, 0);
       }
-      var finder;
+
       if (jumpTo) {
-        if (jumpTo === 'summary') {
-          finder = '.project-summary';
-        } else {
-          finder = '#' + jumpTo;
-        }
-      }
-      if (finder) {
-        var el = $(this.getDOMNode()).find(finder)[0];
-        if (el) {
-          var pos = $(el).offset();
-          // add to because of the fixed header
-          window.scrollTo(0, Math.floor(pos.top - 8));
-        }
+        var self = this;
+        setTimeout(function() {
+          var finder = '#' + jumpTo;
+          var el = $(self.getDOMNode()).find(finder)[0];
+          if (el) {
+            var pos = $(el).offset();
+            // add to because of the fixed header
+            $('html, body').animate({
+              scrollTop: Math.floor(pos.top - 8)
+            }, 300);
+          }
+        }, 500);
       }
     }
   },
