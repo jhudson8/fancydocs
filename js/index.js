@@ -21,6 +21,4 @@ $(document).ready(function() {
   Backbone.history.start({});
 });
 
-
-
-
+window.loadTimestamp = new Date().getTime();

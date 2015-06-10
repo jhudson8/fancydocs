@@ -111,9 +111,9 @@ module.exports = React.createClass({
             // add to because of the fixed header
             $('html, body').animate({
               scrollTop: Math.floor(pos.top - 8)
-            }, 300);
+            }, 200);
           }
-        }, 500);
+        }, new Date().getTime() - window.loadTimestamp > 5000 ? 0 : 500);
       }
     }
   },
