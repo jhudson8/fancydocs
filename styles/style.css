@@ -216,3 +216,7 @@ h2 {
     width: 100% !important;
   }
 }
+
+.no-header-nav-items {
+  height: 60px;
+}
