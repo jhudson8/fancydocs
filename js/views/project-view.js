@@ -21,7 +21,6 @@ module.exports = React.createClass({
   },
 
   render: function() {
-
     var project = this.getModel();
     var children = [];
     var viewState = this.state.viewState;
@@ -129,7 +128,6 @@ module.exports = React.createClass({
     var viewState = this.state.viewState;
     if (focus != viewState.focus) {
       viewState.updateFocus(focus);
-      this.forceUpdate();
     }
     this.onNavSelection({type: 'header', value: focus});
   },
