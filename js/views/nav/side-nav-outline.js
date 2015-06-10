@@ -3,6 +3,7 @@ var navUtil = require('./nav-util');
 var util = require('../../utils/util');
 
 module.exports = React.createClass({
+  displayName: 'SideNavOutline',
   mixins: ['modelChangeAware', 'events'],
 
   render: function() {
@@ -26,13 +27,13 @@ module.exports = React.createClass({
 
   addProject: function(project, children, level, options) {
     children.push({
-      key: 'project-summary',
+      key: project.id + '-summary',
       label: 'Summary',
       url: project.viewUrl() + '/summary'
     });
     if (project.get('installation')) {
       children.push({
-        key: 'project-installation',
+        key: project.id + '-installation',
         label: 'Installation',
         url: project.viewUrl() + '/installation'
       });

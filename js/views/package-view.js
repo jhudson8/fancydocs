@@ -6,17 +6,18 @@ var Markdown = require('../components/markdown');
 
 
 module.exports =  React.createClass({
+  displayName: 'PackageView',
   mixins: ['modelAware'],
 
   render: function() {
     var pkg = this.getModel(),
         project = pkg.project,
         methods = pkg.methods.map(function(method) {
-          return <MethodView model={method} key={method.get('name')}/>
+          return <MethodView model={method} key={method.get('name')}/>;
         }, this),
         overview = pkg.get('overview');
     if (overview) {
-      overview = <Markdown tag="p" body={overview}/>
+      overview = <Markdown tag="p" body={overview}/>;
     }
 
     var id = pkg.domId();

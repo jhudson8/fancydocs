@@ -51,12 +51,8 @@ module.exports = React.createClass({
     var html = marked(
       this.props.body || (this.props.children && this.props.children.toString()) || '', options).replace(/id=\"[^"]*"/g, '');
     
-    return (
-      <Container key={this.state.id} id={this.props.id}>
-        <div className={this.props.className} dangerouslySetInnerHTML={{__html: html}}/>
-      </Container>
+    return React.createElement(this.props.tag || 'div', {key: this.state.id, id: this.props.id},
+      <div className={this.props.className} dangerouslySetInnerHTML={{__html: html}}/>
     );
   },
-
-
 });

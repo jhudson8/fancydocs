@@ -10,6 +10,7 @@ var FOCUS_MAP = {
 };
 
 module.exports = React.createClass({
+  displayName: 'SideNav',
   mixins: ['modelChangeAware', 'events'],
 
   events: {
@@ -31,7 +32,7 @@ module.exports = React.createClass({
       viewState.updateFocus(focus);
     }
 
-    var content = new FOCUS_MAP[focus]({
+    var content = React.createElement(FOCUS_MAP[focus], {
       ref: 'body',
       model: project,
       viewState: viewState,

@@ -58,6 +58,7 @@ var data = {
 var defaultFocusOrder = ['outline', 'projects', 'packages', 'methods'];
 
 module.exports = React.createClass({
+  displayName: 'SideNavHeader',
   mixins: ['modelChangeAware', 'events'],
   events: {
     'app:special-key': 'onSpecialKey'
@@ -103,10 +104,10 @@ module.exports = React.createClass({
     var focusData = data[focus];
     var title = _.isFunction(focusData.title) ? focusData.title(project) : focusData.title;
     return (
-      <div key="header">
+      <div key="header" className="nav-header-container">
         {children}
         <div className="nav-header">
-          <h4>{title}</h4>
+          <h4 className={children ? '' : 'no-header-nav-items'}>{title}</h4>
         </div>
       </div>
     );

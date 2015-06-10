@@ -4,6 +4,7 @@ var navUtil = require('./nav/nav-util');
 var Markdown = require('../components/markdown');
 
 module.exports = React.createClass({
+  displayName: 'MethodView',
   mixins: ['modelAware'],
 
   render: function() {
@@ -34,7 +35,7 @@ module.exports = React.createClass({
     }
     var returns;
     if (method.get('returns')) {
-      returns = <Markdown className="method-return" body={'return ' + method.get('returns')}/>
+      returns = <Markdown className="method-return" body={'return ' + method.get('returns')}/>;
     }
 
     return (

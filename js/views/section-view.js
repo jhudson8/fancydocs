@@ -3,6 +3,7 @@
 var Markdown = require('../components/markdown');
 
 module.exports = React.createClass({
+  displayName: 'SectionView',
   mixins: ['modelAware'],
 
   render: function() {
@@ -12,7 +13,7 @@ module.exports = React.createClass({
     var divider = (this.props.topLevel) ? (<div className="ui divider"/>) : undefined;
 
     var children = section.sections && section.sections.map(function(section) {
-      return React.createElement(module.exports, {model: section, topLevel: false, level: level + 1});
+      return React.createElement(module.exports, {key: section.domId(), model: section, topLevel: false, level: level + 1});
     });
 
     return (

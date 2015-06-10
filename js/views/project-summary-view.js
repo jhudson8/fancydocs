@@ -3,6 +3,7 @@
 var Markdown = require('../components/markdown');
 
 module.exports = React.createClass({
+  displayName: 'ProjectSummaryView',
   mixins: ['modelAware'],
 
   render: function() {
@@ -29,11 +30,12 @@ var BundledProjectsList = React.createClass({
 
   render: function() {
     var project = this.getModel(),
-        bundledProjects = project.get('bundledProjects');
+        bundledProjects = project.get('bundledProjects'),
+        children;
     if (!project.bundledProjects || _.isEmpty(bundledProjects)) {
       return <div/>;
     } else {
-      var children = _.map(bundledProjects, function(projectInfo) {
+      children = _.map(bundledProjects, function(projectInfo) {
         var id = projectInfo.id, name = projectInfo.id;
         if (id.indexOf('/') < 0) {
           id = project.get('repo') + '/' + id;

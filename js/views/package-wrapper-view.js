@@ -4,6 +4,7 @@ var navUtil = require('./nav/nav-util');
 var Markdown = require('../components/markdown');
 
 module.exports = React.createClass({
+  displayName: 'PackageWrapperView',
   mixins: ['modelAware'],
 
   render: function() {

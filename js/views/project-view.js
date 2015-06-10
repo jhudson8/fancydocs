@@ -11,6 +11,7 @@ var util = require('../utils/util');
 var SideNavHeadr = require('./nav/side-nav-header');
 
 module.exports = React.createClass({
+  displayName: 'ProjectView',
   mixins: ['modelChangeAware'],
 
   getInitialState: function() {

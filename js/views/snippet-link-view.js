@@ -4,6 +4,7 @@ var SideNav = require('./nav/side-nav');
 var util = require('../utils/util');
 
 module.exports = React.createClass({
+  displayName: 'SnippetLinkView',
   mixins: ['modelAware', 'events'],
 
   render: function() {

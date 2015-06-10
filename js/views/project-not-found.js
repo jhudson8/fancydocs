@@ -1,6 +1,8 @@
 /** @jsx React.DOM */
 
 module.exports = React.createClass({
+  displayName: 'ProjectNotFound',
+
   render: function() {
     var org = this.props.org,
         repo = this.props.repo,

@@ -3,6 +3,7 @@ var util = require('./nav-util');
 var projectManager = require('../../utils/project-manager');
 
 module.exports = React.createClass({
+  displayName: 'SideNavProjects',
   mixins: ['modelAware'],
 
   render: function() {

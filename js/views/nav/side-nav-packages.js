@@ -3,6 +3,7 @@ var util = require('./nav-util');
 
 // FIXME use util to DRY up with side-nav-methods
 module.exports = React.createClass({
+  displayName: 'SideNavPackages',
   mixins: ['modelAware', 'events'],
 
   getInitialState: function() {

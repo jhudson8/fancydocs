@@ -3,6 +3,8 @@
 var projectManager = require('../utils/project-manager');
 
 module.exports = React.createClass({
+  displayName: 'CreateFancyDocView',
+
   render: function() {
     var parsed = (this.state || {}).parsed,
         actionButtons = <button className="ui green button" type="submit">Give me the fancydocs</button>;
@@ -71,12 +73,12 @@ module.exports = React.createClass({
       try {
         var parsed = require('../parser/parser')(text);
         this.setState({parsed: parsed});
-      } catch (e) {
-        console.error(e);
-        alert('the markdown file is invalid (working on meaningful error reporting)')
+      } catch (err) {
+        console.error(err);
+        alert('the markdown file is invalid (working on meaningful error reporting)');
       }
     } else {
-      alert('You need to ernter your file contents first.')
+      alert('You need to ernter your file contents first.');
     }
   },
 
@@ -86,10 +88,12 @@ module.exports = React.createClass({
       var orgName = window.localStorage && localStorage.getItem('defaultOrgName');
       orgName = prompt('What is your github user/organization name?', orgName || '');
       if (orgName) {
-        localStorage && localStorage.setItem('defaultOrgName', orgName);
+        if (localStorage) {
+          localStorage.setItem('defaultOrgName', orgName);
+        }
         projectManager.viewTempProject(orgName, data);
       }
-    }
+    };
   },
 
   startOver: function(data) {
@@ -97,6 +101,6 @@ module.exports = React.createClass({
     return function(event) {
       event.preventDefault();
       self.setState({parsed: false});
-    }
+    };
   }
 });

@@ -9,6 +9,7 @@ var SummaryView = require('./project-summary-view');
 var util = require('../utils/util');
 
 module.exports = React.createClass({
+  displayName: 'ProjectPageView',
   mixins: ['modelAware'],
 
   render: function() {
@@ -29,7 +30,7 @@ module.exports = React.createClass({
     }
 
     _.each(project.api, function(api, name) {
-      children.push(<APIView model={api}/>);
+      children.push(<APIView key={api.name || 'API'} model={api}/>);
     }, this);
 
     return (

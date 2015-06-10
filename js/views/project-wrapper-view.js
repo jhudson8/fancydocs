@@ -5,6 +5,7 @@ var Markdown = require('../components/markdown');
 var APIView = require('./api-view');
 
 module.exports = React.createClass({
+  displayName: 'ProjectWrapperView',
   mixins: ['modelAware'],
 
   render: function() {

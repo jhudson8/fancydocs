@@ -4,6 +4,7 @@ var Markdown = require('../components/markdown');
 var PackageView = require('./package-view');
 
 module.exports = React.createClass({
+  displayName: 'APIView',
   mixins: ['modelAware'],
 
   render: function() {
@@ -11,7 +12,7 @@ module.exports = React.createClass({
     var apiId = api.domId();
 
     var packages = api.map(function(pkg, name) {
-      return <PackageView model={pkg}/>
+      return <PackageView key={name} model={pkg}/>;
     }, this);
 
     return (

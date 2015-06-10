@@ -39,7 +39,7 @@ module.exports = {
         var value = $(e.currentTarget).val();
         self.setState({search: value});
       }
-    }
+    };
   },
 
   filteredNavChildren: function(apis, type, iconType, self) {
@@ -87,8 +87,8 @@ function addMenuChildren (navItems, level, children, self, viewState, options) {
     var icon = navItem.icon && <i className={navItem.icon + ' icon'}/>;
     var label = navItem.label;
     var key = navItem.key;
-    var clazz = url ? React.DOM.a : React.DOM.div;
-    var props = {id: navItem.id, key: key, className: 'item' + className, href: url, onClick: onClick}
+    var clazz = url ? 'a' : 'div';
+    var props = {id: navItem.id, key: key, className: 'item' + className, href: url, onClick: onClick};
     var navItemChildren = navItem.children;
 
     if (level === 1 && navItemChildren && navItemChildren.length > 0 && navItems.length > 1) {
@@ -105,7 +105,7 @@ function addMenuChildren (navItems, level, children, self, viewState, options) {
 
     if (level === 1) {
       props.className = 'item header' + className;
-      children.push(clazz(props, icon, label));
+      children.push(React.createElement(clazz, props, icon, label));
       addMenuChildren(navItemChildren, level+1, children, self, viewState, options);
 
     } else if (level === 2) {
@@ -124,7 +124,7 @@ function addMenuChildren (navItems, level, children, self, viewState, options) {
         var child = label;
         if (url) {
           props.className = '';
-          child = clazz(props, label);
+          child = React.createElement(clazz, props, label);
         }
         children.push(
           <div key={key} className={'item' + className}>
@@ -134,12 +134,12 @@ function addMenuChildren (navItems, level, children, self, viewState, options) {
           </div>
         );
       } else {
-        children.push(clazz(props, icon, label));
+        children.push(React.createElement(clazz, props, icon, label));
       }
 
 
     } else if (level === 3) {
-      children.push(clazz(props, icon, label));
+      children.push(React.createElement(clazz, props, icon, label));
     }
 
   });
@@ -156,7 +156,7 @@ function toggle(toggleId, model, self) {
     }
     state.toggleState[toggleId] = !state.toggleState[toggleId];
     self.forceUpdate();
-  }
+  };
 }
 
 
