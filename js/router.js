@@ -207,7 +207,7 @@ var Router = Backbone.Router.extend({
   },
 
   create: function() {
-    showView(new CreateView());
+    showView(<CreateView/>);
   },
 
   _showProject: function(project, viewState) {
