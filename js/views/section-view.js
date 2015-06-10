@@ -12,7 +12,7 @@ module.exports = React.createClass({
     var divider = (this.props.topLevel) ? (<div className="ui divider"/>) : undefined;
 
     var children = section.sections && section.sections.map(function(section) {
-      return new module.exports({model: section, topLevel: false, level: level + 1});
+      return React.createElement(module.exports, {model: section, topLevel: false, level: level + 1});
     });
 
     return (

@@ -4,29 +4,37 @@ module.exports = {
     package: function(pkg, project) {
       var PackageWrapperView = require('../views/package-wrapper-view');
       var PackageView = require('../views/package-view');      
-      return new PackageWrapperView({model: pkg, project: project}, new PackageView({model: pkg}));
+      return <PackageWrapperView model={pkg} project={project}>
+         <PackageView model={pkg}/>
+      </PackageWrapperView>;
     },
     method: function(method, project) {
       var PackageWrapperView = require('../views/package-wrapper-view');
       var MethodView = require('../views/method-view');
-      return new PackageWrapperView({model: method.parent, project: project, showPackageDetails: true}, new MethodView({model: method}));
+      return <PackageWrapperView model={method.parent} project={project} showPackageDetails={true}>
+        <MethodView model={method}/>
+      </PackageWrapperView>;
     },
     api: function(api, project) {
       var APIView = require('../views/api-view');
       var ProjectWrapperView = require('../views/project-wrapper-view');
-      return new ProjectWrapperView({model: api, title: api.project.get('title'), project: project}, new APIView({model: api}));
+      return <ProjectWrapperView model={api} title={api.project.get('title')} project={project}>
+        <APIView model={api}/>
+      </ProjectWrapperView>;
     },
     section: function(section, project) {
       var SectionView = require('../views/section-view');
       var ProjectWrapperView = require('../views/project-wrapper-view');
-      return new ProjectWrapperView({model: section, title: section.project.get('title'), project: project},
-        new SectionView({model: section, topLevel: true}));
+      return <ProjectWrapperView model={section} title={section.project.get('title')} project={project}>
+        <SectionView model={section} topLevel={true}/>
+      </ProjectWrapperView>;
     },
     summary: function(project, parentProject) {
       var SummaryView = require('../views/project-summary-view');
       var ProjectWrapperView = require('../views/project-wrapper-view');
-      return new ProjectWrapperView({model: section, title: project.get('title'), project: parentProject},
-        new SummaryView({model: project}));
+      return <ProjectWrapperView model={section} title={project.get('title')} project={parentProject}>
+        <SummaryView model={project}/>
+      </ProjectWrapperView>;
     },
     project: function(project, parentProject) {
       var ProjectView = require('../views/project-page-view');
@@ -87,6 +95,6 @@ module.exports = {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(location.search);
-    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   }
 };

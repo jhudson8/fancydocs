@@ -29,7 +29,7 @@ module.exports = React.createClass({
     }
 
     _.each(project.api, function(api, name) {
-      children.push(new APIView({model: api}));
+      children.push(<APIView model={api}/>);
     }, this);
 
     return (
@@ -48,8 +48,8 @@ var ProjectSectionList = React.createClass({
   render: function() {
     var project = this.getModel();
     var children = project.sections && project.sections.map(function(section) {
-      return new SectionView({model: section, topLevel: true, level: 3, key: section.id});
+      return <SectionView model={section} topLevel={true} level={3} key={section.id}/>;
     });
-    return <div className="main-section">{children}</div>
+    return <div className="main-section">{children}</div>;
   }
 });

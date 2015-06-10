@@ -16,7 +16,7 @@
   render: function() {
     var src = this.props.src;
 
-    // React won't always get initial state here and we need to makek sure the image is loaded
+    // React won't always get initial state here and we need to make sure the image is loaded
     if (this.state.loaded === src) {
       return this.transferPropsTo(React.DOM.img());
     } else {

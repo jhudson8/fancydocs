@@ -32,26 +32,32 @@ $(document.body).on('click', 'a', function(ev) {
 // that follow the same general pattern
 var projectRoutes = {
   '': function(project, args) {
-    return function(args) {
+    return function() {
+      var args = {};
       args.jumpTo = 'top';
       this._showProject(project, args);
     };
   },
   'summary': function(project) {
-    return function(args) {
+    return function() {
+      var args = {};
       args.jumpTo = 'summary';
       this._showProject(project, args);
     };
   },
   'installation': function(project) {
-    return function(args) {
+    return function() {
+      var args = {};
       args.jumpTo = 'installation';
       this._showProject(project, args);
     };
   },
   'section/*section': function(project) {
-    return function(args) {
-      var section = project.findSection(args.section.split('/'));
+    return function(_section) {
+      var args = {
+        section: _section
+      };
+      var section = project.findSection(_.map(args.section.split('/'), function(val) { return decodeURIComponent(val); }) );
       if (section) {
         args.jumpTo = section.domId();
       }
@@ -59,8 +65,11 @@ var projectRoutes = {
     };
   },
   'api/:api': function(project) {
-    return function(args) {
-      var api = project.api[args.api];
+    return function(_api) {
+      var args = {
+        api: _api
+      };
+      var api = project.api[_api];
       if (api) {
         args.jumpTo = api.domId();
       }
@@ -68,8 +77,11 @@ var projectRoutes = {
     };
   },
   'package/:package': function(project) {
-    return function(args) {
-      var pkg = project.findPackage(args.package);
+    return function(_package) {
+      var args = {
+        package: _package
+      };
+      var pkg = project.findPackage(_package);
       if (pkg) {
         args.jumpTo = pkg.domId();
       }
@@ -77,8 +89,12 @@ var projectRoutes = {
     };
   },
   'method/:package/:method': function(project) {
-    return function(args) {
-      var method = project.findMethod(args.package, args.method);
+    return function(_package, _method) {
+      var args = {
+        package: _package,
+        method: _method
+      };
+      var method = project.findMethod(_package, _method);
       if (method) {
         args.jumpTo = method.domId();
       }
@@ -86,8 +102,11 @@ var projectRoutes = {
     };
   },
   'snippet/package/:package': function(project) {
-    return function(args) {
-      var pkg = project.findPackage(args.package);
+    return function(_package) {
+      var args = {
+        package: _package
+      };
+      var pkg = project.findPackage(_package);
       args.snippet = {
         type: 'package',
         model: pkg
@@ -96,8 +115,12 @@ var projectRoutes = {
     };
   },
   'snippet/method/:package/:method': function(project) {
-    return function(args) {
-      var method = project.findMethod(args.package, args.method);
+    return function(_package, _method) {
+      var args = {
+        package: _package,
+        method: _method
+      };
+      var method = project.findMethod(_package, _method);
       args.snippet = {
         type: 'method',
         model: method
@@ -106,8 +129,11 @@ var projectRoutes = {
     };    
   },
   'snippet/api/:api': function(project) {
-    return function(args) {
-      var api = project.api[args.api];
+    return function(_api) {
+      var args = {
+        api: _api
+      };
+      var api = project.api[_api];
       args.snippet = {
         type: 'api',
         model: api
@@ -116,7 +142,8 @@ var projectRoutes = {
     };    
   },
   'snippet/summary': function(project) {
-    return function(args) {
+    return function() {
+      var args = {};
       args.snippet = {
         type: 'summary',
         model: project
@@ -130,17 +157,19 @@ projectRoutes = _.map(projectRoutes, function(func, route) {
   var rtn = {};
   var routeSuffix = route && '/' + route || '';
 
-  rtn['project/:org/:repo' + routeSuffix] = function(args) {
+  rtn['project/:org/:repo' + routeSuffix] = function(org, repo) {
     var self = this;
-    this._withProject(args.org, args.repo, function(project) {
-      func(project).call(self, args);
+    var args = Array.prototype.slice.call(arguments, 2);
+    this._withProject(org, repo, function(project) {
+      func(project).apply(self, args);
     });
   };
 
-  rtn['project/:org/:repo/bundle/:childOrg/:childRepo' + routeSuffix] = function(args) {
+  rtn['project/:org/:repo/bundle/:childOrg/:childRepo' + routeSuffix] = function(org, repo, childOrg, childRepo) {
     var self = this;
-    this._withBundle(args.org, args.repo, args.childOrg, args.childRepo, function(project) {
-      func(project).call(self, args);
+    var args = Array.prototype.slice.call(arguments, 2);
+    this._withBundle(org, repo, childOrg, childRepo, function(project) {
+      func(project).apply(self, args);
     });
   };
 
@@ -171,7 +200,7 @@ var Router = Backbone.Router.extend({
     if (lastProject) {
       var project = lastProject.urlMatch(url);
       if (project) {
-        return Backbone.history.navigate(project.viewUrl(true), {trigger: true, replace: true});
+        return Backbone.history.navigate(project.viewUrl(true), { trigger: true, replace: true });
       }
     }
     window.location.href = url;
@@ -183,10 +212,7 @@ var Router = Backbone.Router.extend({
 
   _showProject: function(project, viewState) {
     viewState = new ViewState(viewState, project);
-    var view = new ProjectView({
-      model: project,
-      viewState: viewState
-    });
+    var view = <ProjectView model={project} viewState={viewState}/>;
     lastProject = project;
     showView(view);
   },
@@ -221,7 +247,7 @@ var Router = Backbone.Router.extend({
 
   _projectNotFound: function(org, repo) {
     if (org === 'tmp') {
-      Backbone.history.navigate('create', {replace: true, trigger: true});
+      Backbone.history.navigate('create', { replace: true, trigger: true });
     } else {
       showView(new ProjectNotFoundView({org: org, repo: repo}));
     }
@@ -232,15 +258,21 @@ var Router = Backbone.Router.extend({
 function showView(view) {
   var el = document.getElementById('page-container');
   React.unmountComponentAtNode(el);
-  React.renderComponent(view, el);
+  React.render(view, el);
 }
 
 var ViewState = function(params, project) {
   _.extend(this, params);
+  if (!this.focus) {
+    this.focus = 'outline';
+  }
 };
 _.extend(ViewState.prototype, {
   updateFocus: function(focus) {
+    // we aren't persisting focus
     this.focus = focus;
+
+/*
     var fragment = Backbone.history.getFragment();
     var focusPart = 'focus=' + (focus || '');
     var match = fragment.match('focus=');
@@ -252,10 +284,11 @@ _.extend(ViewState.prototype, {
       fragment += ('?' + focusPart);
     }
     Backbone.history.navigate(fragment, {trigger: false, replace: true});
+*/
   },
 
   toUrl: function(url, focus) {
-    return url + '?focus=' + this.focus;
+    return url;
   }
 });
 

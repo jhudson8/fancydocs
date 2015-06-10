@@ -146,4 +146,4 @@ module.exports.defaultFocus = function(project) {
       return defaultFocusOrder[i];
     }
   }
-}
+};

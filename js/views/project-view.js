@@ -20,6 +20,7 @@ module.exports = React.createClass({
   },
 
   render: function() {
+
     var project = this.getModel();
     var children = [];
     var viewState = this.state.viewState;
@@ -36,8 +37,8 @@ module.exports = React.createClass({
       var factory = function() {
         return util.snippets[snippet.type](snippet.model, project);
       };
-      children = new SnippetView({ref: 'snippet', key: snippet.model.id, model: snippet.model, project: project, factory: factory,
-        snippet: snippet, onJumpTo: this.jumpToModel});
+      children = <SnippetView ref="snippet" key={snippet.model.id} model={snippet.model} project={project}
+        factory={factory} snippet={snippet} onJumpTo={this.jumpToModel}/>;
     }
     else {
       children = this.getProjectPage();

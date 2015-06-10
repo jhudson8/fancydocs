@@ -11,7 +11,8 @@ module.exports = Backbone.Model.extend({
     if (this.parent === this.project) {
       url += '/section';
     }
-    url += '/' + encodeURIComponent(this.get('title'));
+    // double encode so we can deal with sections containing "/"
+    url += '/' + encodeURIComponent(encodeURIComponent(this.get('title')));
     return url;
   },
   parse: function(data) {

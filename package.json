@@ -3,9 +3,8 @@
     "underscore": "*",
     "underscore.string": "*",
     "jquery": "*",
-    "react": "~0.11",
-    "backbone": "*",
-    "backbone-reaction": "*",
+    "react": "~0.12.0",
+    "backbone": "~1.0.0",
     "backbone-xhr-events": "*",
     "react-mixin-manager": "*",
     "react-events": "*",
@@ -22,15 +21,18 @@
     "gulp-jsx": "^0.5.0",
     "jsdom": "^1.3.1",
     "json-loader": "*",
-    "jsx-loader": "~0.11",
+    "jsx-loader": "~0.12.0",
+    "mocha": "*",
     "nib": "^1.0.4",
+    "node-libs-browser": "^0.5.2",
     "react-tools": "0.11.1",
     "sinon": "^1.12.1",
     "style-loader": "^0.8.2",
     "stylus-loader": "0.3.1",
     "stylus-normalize": "^3.0.3",
     "url-loader": "*",
-    "mocha": "*"
+    "webpack": "^1.9.10",
+    "webpack-dev-server": "^1.9.0"
   },
   "scripts": {
     "test": "mocha build/test/index.js"

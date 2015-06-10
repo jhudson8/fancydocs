@@ -85,7 +85,7 @@ var exports = module.exports = {
           name = profileMatch[1];
           var profileStr = profileMatch[2];
           if (profileStr) {
-            profileStr = profileStr.replace(/^\s*\((.*)\)\s*/, '$1').trim()
+            profileStr = profileStr.replace(/^\s*\((.*)\)\s*/, '$1').trim();
             profiles = profileStr.split(/\)\s*;?\s*\(/).map(function(part) {
               var match = part.match(/^\s*\(?\s*([^)]*)\s*\)?\s*$/);
               return match && match[1] || part;
@@ -198,7 +198,11 @@ function parseMarkdown(s) {
   }
 
   s = s.replace(/\[([^\]]*)\]\s*\(([^\)]*)\)/g, function(match, label, url) {
-    return '[' + label + '](#link/' + encodeURIComponent(url) + ')';
+    if (url.indexOf('.') > 0) {
+      return '[' + label + '](' + url + ')';
+    } else {
+      return '[' + label + '](#link/' + encodeURIComponent(url) + ')';
+    }
   });
 
   return s;

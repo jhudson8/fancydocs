@@ -2,7 +2,7 @@ module.exports = function() {
 
   global.App = _.extend({}, Backbone.Events);
   // alow for "app" declarative event bindings
-  React.events.handle('app', {
+  require('react-events').handle('app', {
     target: global.App
   });
 
