@@ -203,7 +203,7 @@ var Router = Backbone.Router.extend({
         return Backbone.history.navigate(project.viewUrl(true), { trigger: true, replace: true });
       }
     }
-    window.location.href = url;
+    window.location.replace(url);
   },
 
   create: function() {

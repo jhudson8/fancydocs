@@ -35,8 +35,8 @@ module.exports = React.createClass({
     return (
       <div>
         <SummaryView model={project}/>
-        {children}
         <ProjectSectionList model={project}/>
+        {children}
         {installationView}
       </div>
     );

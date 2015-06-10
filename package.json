@@ -6,11 +6,16 @@
     "react": "~0.12.0",
     "backbone": "~1.0.0",
     "backbone-xhr-events": "*",
-    "react-mixin-manager": "*",
-    "react-events": "*",
+    "highlight.js": "^8.4.0",
+    "jquery": "*",
+    "marked": "^0.3.3",
+    "react": "~0.12.0",
     "react-backbone": "*",
+    "react-events": "*",
+    "react-mixin-manager": "*",
     "scriptjs": "*",
-    "backbone-query-parameters": "*"
+    "underscore": "*",
+    "underscore.string": "*"
   },
   "devDependencies": {
     "chai": "^1.10.0",
